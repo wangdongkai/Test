@@ -59,10 +59,16 @@ class LoginViewController: UIViewController {
         
         NetworkTool.shareInstance.request(method: .GET, url: "http://www.qxueyou.com/qxueyou/sys/login/loginNew/\(userTextField.text!)", param: ["password": passTextField.text!]) { (task: URLSessionDataTask, success: Any?, error: Error?) in
             
-            print(success)
+            guard var dict = success as? Dictionary<String, Any> else {
+                
+                return
+            }
+            
+            
             let response = task.response as! HTTPURLResponse
-            let headers = response.allHeaderFields
-            print(headers["Set-Cookie"])
+            dict["cookie"] = response.allHeaderFields["Set-Cookie"]
+            let result = UserModel.init(dict: dict)
+            
             
         }
         

@@ -101,6 +101,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		54A21E4A1F30B938005CAFB9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		54BEAE4D1F3014110033F68C = {
 			isa = PBXGroup;
 			children = (
@@ -178,7 +185,7 @@
 			children = (
 				54BEAE8C1F301C7D0033F68C /* Controller */,
 				54BEAE8D1F301C7D0033F68C /* Model */,
-				54BEAE8E1F301C7D0033F68C /* View */,
+				54A21E4A1F30B938005CAFB9 /* View */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -198,13 +205,6 @@
 				54BEAEBB1F3094D00033F68C /* UserModel.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		54BEAE8E1F301C7D0033F68C /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		54BEAE951F3024800033F68C /* Other */ = {

@@ -17,4 +17,13 @@ class UserModel: NSObject {
     var userName: String?
     var cookie: String?
     
+    init(dict: [String: Any]) {
+        super.init()
+        self.setValuesForKeys(dict)
+        
+    }
+    
+    override func setValue(_ value: Any?, forUndefinedKey key: String) {
+        
+    }
 }
