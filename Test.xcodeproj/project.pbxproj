@@ -8,12 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		54BEAE5A1F3014120033F68C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAE591F3014120033F68C /* AppDelegate.swift */; };
-		54BEAE5C1F3014120033F68C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAE5B1F3014120033F68C /* ViewController.swift */; };
-		54BEAE5F1F3014120033F68C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54BEAE5D1F3014120033F68C /* Main.storyboard */; };
 		54BEAE611F3014120033F68C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54BEAE601F3014120033F68C /* Assets.xcassets */; };
 		54BEAE641F3014120033F68C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54BEAE621F3014120033F68C /* LaunchScreen.storyboard */; };
 		54BEAE6F1F3014120033F68C /* TestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAE6E1F3014120033F68C /* TestTests.swift */; };
 		54BEAE7A1F3014120033F68C /* TestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAE791F3014120033F68C /* TestUITests.swift */; };
+		54BEAE931F301D270033F68C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAE911F301D270033F68C /* LoginViewController.swift */; };
+		54BEAE941F301D270033F68C /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54BEAE921F301D270033F68C /* LoginViewController.xib */; };
+		54BEAE9A1F3024A10033F68C /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAE991F3024A10033F68C /* CustomNavigationController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,8 +37,6 @@
 /* Begin PBXFileReference section */
 		54BEAE561F3014120033F68C /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54BEAE591F3014120033F68C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		54BEAE5B1F3014120033F68C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		54BEAE5E1F3014120033F68C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		54BEAE601F3014120033F68C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		54BEAE631F3014120033F68C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		54BEAE651F3014120033F68C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -47,6 +46,9 @@
 		54BEAE751F3014120033F68C /* TestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		54BEAE791F3014120033F68C /* TestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUITests.swift; sourceTree = "<group>"; };
 		54BEAE7B1F3014120033F68C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		54BEAE911F301D270033F68C /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		54BEAE921F301D270033F68C /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		54BEAE991F3024A10033F68C /* CustomNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,9 +99,8 @@
 		54BEAE581F3014120033F68C /* Test */ = {
 			isa = PBXGroup;
 			children = (
+				54BEAE891F301C7D0033F68C /* Classes */,
 				54BEAE591F3014120033F68C /* AppDelegate.swift */,
-				54BEAE5B1F3014120033F68C /* ViewController.swift */,
-				54BEAE5D1F3014120033F68C /* Main.storyboard */,
 				54BEAE601F3014120033F68C /* Assets.xcassets */,
 				54BEAE621F3014120033F68C /* LaunchScreen.storyboard */,
 				54BEAE651F3014120033F68C /* Info.plist */,
@@ -123,6 +124,88 @@
 				54BEAE7B1F3014120033F68C /* Info.plist */,
 			);
 			path = TestUITests;
+			sourceTree = "<group>";
+		};
+		54BEAE891F301C7D0033F68C /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				54BEAE8A1F301C7D0033F68C /* Main */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		54BEAE8A1F301C7D0033F68C /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				54BEAE951F3024800033F68C /* Other */,
+				54BEAE8B1F301C7D0033F68C /* Login */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		54BEAE8B1F301C7D0033F68C /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				54BEAE8C1F301C7D0033F68C /* Controller */,
+				54BEAE8D1F301C7D0033F68C /* Model */,
+				54BEAE8E1F301C7D0033F68C /* View */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		54BEAE8C1F301C7D0033F68C /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54BEAE911F301D270033F68C /* LoginViewController.swift */,
+				54BEAE921F301D270033F68C /* LoginViewController.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		54BEAE8D1F301C7D0033F68C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		54BEAE8E1F301C7D0033F68C /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		54BEAE951F3024800033F68C /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				54BEAE961F3024800033F68C /* Controller */,
+				54BEAE971F3024800033F68C /* Model */,
+				54BEAE981F3024800033F68C /* View */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
+		54BEAE961F3024800033F68C /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				54BEAE991F3024A10033F68C /* CustomNavigationController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		54BEAE971F3024800033F68C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		54BEAE981F3024800033F68C /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -234,7 +317,7 @@
 			files = (
 				54BEAE641F3014120033F68C /* LaunchScreen.storyboard in Resources */,
 				54BEAE611F3014120033F68C /* Assets.xcassets in Resources */,
-				54BEAE5F1F3014120033F68C /* Main.storyboard in Resources */,
+				54BEAE941F301D270033F68C /* LoginViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,7 +342,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				54BEAE5C1F3014120033F68C /* ViewController.swift in Sources */,
+				54BEAE9A1F3024A10033F68C /* CustomNavigationController.swift in Sources */,
+				54BEAE931F301D270033F68C /* LoginViewController.swift in Sources */,
 				54BEAE5A1F3014120033F68C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -296,14 +380,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		54BEAE5D1F3014120033F68C /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				54BEAE5E1F3014120033F68C /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		54BEAE621F3014120033F68C /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -413,6 +489,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Test/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.IQtogether.Test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -425,6 +502,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Test/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.IQtogether.Test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
