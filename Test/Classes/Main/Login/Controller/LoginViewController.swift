@@ -55,6 +55,8 @@ class LoginViewController: UIViewController {
             return
         }
         
+        let examineVC = ExamineMainViewController()
+        self.navigationController?.pushViewController(examineVC, animated: true)
         
 
     }
