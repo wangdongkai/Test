@@ -23,20 +23,16 @@ class ExamineDetailViewController: UICollectionViewController {
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
-
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
         return 100
     }
-
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! ExamineDetailViewCell
         cell.backgroundColor = UIColor.red
         
-    
         // Configure the cell
     
         return cell
@@ -54,18 +50,24 @@ private extension ExamineDetailViewController {
         title = "模拟测试"
 
         self.view.backgroundColor = UIColor.white
+        self.collectionView?.backgroundColor = UIColor.clear
         
         self.navigationItem.rightBarButtonItems = [
             UIBarButtonItem.barButtonItemWith(image: "submit", target: self, action: #selector(ExamineDetailViewController.submitClick)),
-            UIBarButtonItem.barButtonItemWith(image: "STAR", target: self, action: #selector(ExamineDetailViewController.collectClick))
+            UIBarButtonItem.barButtonItemWith(image: "star", target: self, action: #selector(ExamineDetailViewController.collectClick))
         ]
         
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 100, height: 100)
-        
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 0.0
+        layout.minimumInteritemSpacing = 0.0
+
+        layout.itemSize = CGSize(width: view.frame.width, height: view.frame.height - 64)
         self.collectionView?.collectionViewLayout = layout
         
         self.collectionView?.register(UINib.init(nibName: "ExamineDetailViewCell", bundle: nil), forCellWithReuseIdentifier: identifier)
+        
+        self.collectionView?.isPagingEnabled = true
         
     }
 }
