@@ -13,14 +13,18 @@ class CustomNavigationController: UINavigationController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let button = UIButton(type: .custom)
-        button.sizeToFit()
-        button.setImage(UIImage.init(named: "back"), for: .normal)
-        button.setImage(UIImage.init(named: "back"), for: .highlighted)
-        button.addTarget(self, action: #selector(backClick), for: .touchUpInside)
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+        /*
+        let pan = UIPanGestureRecognizer.init(target: self.interactivePopGestureRecognizer, action: Selector("handleNavigationTransition:"))
+        pan.delegate = self
+        self.view.addGestureRecognizer(pan)
+        
+        self.interactivePopGestureRecognizer?.isEnabled = false
+        
+        
+        print(self.interactivePopGestureRecognizer)
+        
+         */
         
         // Do any additional setup after loading the view.
     }
@@ -28,11 +32,23 @@ class CustomNavigationController: UINavigationController {
     
 }
 
+extension CustomNavigationController {
+    
+    override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+        
+        if childViewControllers.count > 0 {
+            
+            viewController.navigationItem.leftBarButtonItem = UIBarButtonItem.barButtonItemWith(image: "back", target: self, action: #selector(CustomNavigationController.backClick))
+        }
+        
+        super.pushViewController(viewController, animated: animated)
+    }
+}
 private extension CustomNavigationController {
     
     @objc func backClick() {
         
-        self.navigationController?.popViewController(animated: true)
+        self.popViewController(animated: true)
         
     }
 }

@@ -8,6 +8,8 @@
 
 import UIKit
 
+private let identifier = "ExamineMainViewCell"
+
 class ExamineMainViewController: UITableViewController {
 
     override func viewDidLoad() {
@@ -20,21 +22,26 @@ class ExamineMainViewController: UITableViewController {
 
         // MARK: - Table view data source
 
-       override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return 3
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineMainViewCell", for: indexPath) as! ExamineMainViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! ExamineMainViewCell
         cell.selectionStyle = .none
         
         return cell
     }
     
 
-    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let detailVC = ExamineDetailViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        navigationController!.pushViewController(detailVC, animated: true)
+    }
 }
 private extension ExamineMainViewController {
     
@@ -42,21 +49,11 @@ private extension ExamineMainViewController {
         
         title = "模拟测试"
         self.view.backgroundColor = UIColor.white
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem.barButtonItemWith(image: "back", target: self, action: #selector(backClick))
 
         self.tableView.rowHeight = 72
-        self.tableView.register(UINib.init(nibName: "ExamineMainViewCell", bundle: nil), forCellReuseIdentifier: "ExamineMainViewCell")
+        self.tableView.register(UINib.init(nibName: "ExamineMainViewCell", bundle: nil), forCellReuseIdentifier: identifier)
         self.tableView.tableFooterView = UIView()
 
         
     }
-}
-private extension ExamineMainViewController {
-    
-    @objc func backClick() {
-        
-        self.navigationController?.popViewController(animated: true)
-        
-    }
-
 }
