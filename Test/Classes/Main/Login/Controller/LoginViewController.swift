@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AFNetworking
 
 class LoginViewController: UIViewController {
 
@@ -55,10 +56,21 @@ class LoginViewController: UIViewController {
             return
         }
         
-        let examineVC = ExamineMainViewController()
-        self.navigationController?.pushViewController(examineVC, animated: true)
         
-
+        NetworkTool.shareInstance.request(method: .GET, url: "http://www.qxueyou.com/qxueyou/sys/login/loginNew/\(userTextField.text!)", param: ["password": passTextField.text!]) { (task: URLSessionDataTask, success: Any?, error: Error?) in
+            
+            print(success)
+            let response = task.response as! HTTPURLResponse
+            let headers = response.allHeaderFields
+            print(headers["Set-Cookie"])
+            
+        }
+        
+        
+        //let examineVC = ExamineMainViewController()
+        //self.navigationController?.pushViewController(examineVC, animated: true)
+        
+        
     }
     
 }
