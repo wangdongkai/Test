@@ -8,6 +8,7 @@
 
 import UIKit
 import AFNetworking
+import SVProgressHUD
 
 class LoginViewController: UIViewController {
 
@@ -56,9 +57,20 @@ class LoginViewController: UIViewController {
             return
         }
         
+        weak var weakSelf = self
         
         NetworkTool.shareInstance.request(method: .GET, url: "http://www.qxueyou.com/qxueyou/sys/login/loginNew/\(userTextField.text!)", param: ["password": passTextField.text!]) { (task: URLSessionDataTask, success: Any?, error: Error?) in
             
+            if let _ = error {
+                
+                let alertVC = UIAlertController(title: "提示", message: "登录失败", preferredStyle: .alert)
+                let action = UIAlertAction(title: "确定", style: .default, handler: nil)
+                alertVC.addAction(action)
+                
+                self.present(alertVC, animated: true, completion: nil)
+
+                return
+            }
             guard var dict = success as? Dictionary<String, Any> else {
                 
                 return
@@ -69,12 +81,13 @@ class LoginViewController: UIViewController {
             dict["cookie"] = response.allHeaderFields["Set-Cookie"]
             let result = UserModel.init(dict: dict)
             
-            
+            let examineVC = ExamineMainViewController()
+            examineVC.user = result
+            weakSelf!.navigationController?.pushViewController(examineVC, animated: true)
+
         }
         
         
-        //let examineVC = ExamineMainViewController()
-        //self.navigationController?.pushViewController(examineVC, animated: true)
         
         
     }

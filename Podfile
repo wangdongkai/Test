@@ -5,5 +5,6 @@ target 'Test' do
   use_frameworks!
 
   pod 'AFNetworking'
-  
+  pod 'SVProgressHUD'
+
 end

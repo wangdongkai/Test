@@ -12,11 +12,14 @@ private let identifier = "ExamineMainViewCell"
 
 class ExamineMainViewController: UITableViewController {
 
+    var user: UserModel?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setup()
         
+        setupNetwork()
 
     }
 
@@ -55,5 +58,16 @@ private extension ExamineMainViewController {
         self.tableView.tableFooterView = UIView()
 
         
+    }
+    
+    func setupNetwork() {
+        
+        NetworkTool.shareInstance.request(method: .GET, url: "http://www.qxueyou.com/qxueyou/exercise/Exercise/examsListNew", param: ["page": "1", "limit": "10"]) { (_, success: Any?, error: Error?) in
+            
+            print(success)
+            
+            print(error)
+            
+        }
     }
 }
