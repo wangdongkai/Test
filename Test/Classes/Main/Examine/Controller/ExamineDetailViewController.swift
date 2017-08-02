@@ -38,7 +38,7 @@ class ExamineDetailViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! ExamineDetailViewCell
         cell.backgroundColor = UIColor.white
-        cell.model = self.dataArray[indexPath.item]
+        cell.model = self.dataArray[indexPath.row]
         
         return cell
     }
@@ -82,11 +82,16 @@ private extension ExamineDetailViewController {
         
         NetworkTool.shareInstance.get("http://www.qxueyou.com/qxueyou/exercise/Exercise/examExercise", parameters: param, progress: nil, success: { (_, data: Any?) in
             
-            let detailModel: ExamineDetailModel = ExamineDetailModel.mj_object(withKeyValues: data)
+            guard let dict = data as? [String: Any] else {
+                
+                return
+            }
+
+            let detailModel: ExamineDetailModel = ExamineDetailModel.mj_object(withKeyValues: dict)
             
             self.dataArray = detailModel.items!
-            self.collectionView?.reloadData()
             
+            self.collectionView?.reloadData()
             
         }) { (_, error: Error) in
             

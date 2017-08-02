@@ -10,7 +10,20 @@ import UIKit
 
 class ExamineDetailViewCell: UICollectionViewCell {
 
-    var model: ExamineItemModel?
+    var model: ExamineItemModel? {
+        didSet{
+            
+            guard let m = model else {
+                
+                return
+            }
+            
+            titleLabel.text = m.title
+        }
+    }
+    
+    @IBOutlet weak var titleLabel: UILabel!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

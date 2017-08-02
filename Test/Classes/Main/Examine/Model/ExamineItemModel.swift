@@ -21,6 +21,20 @@ class ExamineItemModel: NSObject {
     var maxScore: NSNumber?
     var averageScore: NSNumber?
     
+    override func mj_keyValuesDidFinishConvertingToObject() {
+        if self.options?.isEmpty == false {
+            self.options = ExamineOptionModel.mj_objectArray(withKeyValuesArray: self.options).copy() as? [ExamineOptionModel]
+        }
+        
+        if self.analisisResult?.isEmpty == false {
+            self.analisisResult = ExamineAnalisisResultModel.mj_objectArray(withKeyValuesArray: self.analisisResult).copy() as? [ExamineAnalisisResultModel]
+        }
+        
+        if self.imgs?.isEmpty == false {
+            self.imgs = ExamineImgModel.mj_objectArray(withKeyValuesArray: self.imgs).copy() as? [ExamineImgModel]
+        }
+
+    }
 }
 
 class ExamineOptionModel: NSObject {

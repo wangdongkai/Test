@@ -16,4 +16,14 @@ class ExamineDetailModel: NSObject {
     var exerciseRecordId: String?
     var result: String?
     
+    override func mj_keyValuesDidFinishConvertingToObject() {
+        if self.items?.isEmpty == false {
+            self.items = ExamineItemModel.mj_objectArray(withKeyValuesArray: self.items).copy() as? [ExamineItemModel]
+        }
+        
+        if self.answers?.isEmpty == false{
+            self.answers = ExamineAnswerModel.mj_objectArray(withKeyValuesArray: self.items).copy() as? [ExamineAnswerModel]
+        }
+        
+    }
 }
