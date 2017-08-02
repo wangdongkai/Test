@@ -7,16 +7,20 @@
 //
 
 import UIKit
+import AFNetworking
 
 private let identifier = "ExamineMainViewCell"
 
 class ExamineMainViewController: UITableViewController {
 
+    var model: UserModel?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setup()
         
+        setupNetwork()
 
     }
 
@@ -54,6 +58,19 @@ private extension ExamineMainViewController {
         self.tableView.register(UINib.init(nibName: "ExamineMainViewCell", bundle: nil), forCellReuseIdentifier: identifier)
         self.tableView.tableFooterView = UIView()
 
+    }
+    
+    func setupNetwork() {
         
+        NetworkTool.shareInstance.get("http://www.qxueyou.com/qxueyou/exercise/Exercise/examsListNew", parameters: ["page": "1", "limit": "10"], progress: nil, success: { (_, data: Any?) in
+            
+            print(data)
+
+        }) { (_, error: Error) in
+            
+            print(error)
+
+        }
+                
     }
 }

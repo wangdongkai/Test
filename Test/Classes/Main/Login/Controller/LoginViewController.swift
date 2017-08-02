@@ -56,25 +56,43 @@ class LoginViewController: UIViewController {
             return
         }
         
+        let url = "http://www.qxueyou.com/qxueyou/sys/login/loginNew/\(userTextField.text!)"
         
-        NetworkTool.shareInstance.request(method: .GET, url: "http://www.qxueyou.com/qxueyou/sys/login/loginNew/\(userTextField.text!)", param: ["password": passTextField.text!]) { (task: URLSessionDataTask, success: Any?, error: Error?) in
+        NetworkTool.shareInstance.request(method: .GET, url: url, param: ["password": passTextField.text!]) { (task: URLSessionDataTask, success: Any?, error: Error?) in
             
-            guard var dict = success as? Dictionary<String, Any> else {
+            guard let dict = success as? Dictionary<String, Any> else {
                 
                 return
             }
+            guard let cookies = HTTPCookieStorage.shared.cookies(for: URL(string: url)!) else {
+                
+                return
+            }
+            var cookieDict: Dictionary<String, Any> = [String: Any]()
+            var cookieValue: String = String()
             
+            for cookie in cookies {
+                
+                cookieDict[cookie.name] = cookie.value
             
-            let response = task.response as! HTTPURLResponse
-            dict["cookie"] = response.allHeaderFields["Set-Cookie"]
-            let result = UserModel.init(dict: dict)
+            }
             
+            for key in cookieDict {
+                
+                cookieValue.append("\(key.key)=\(key.value);")
+            }
             
+            UserDefaults.standard.set(cookieValue, forKey: "Cookie")
+            UserDefaults.standard.synchronize()
+            
+            let examineVC = ExamineMainViewController()
+            examineVC.model = UserModel(dict: dict)
+            
+            self.navigationController?.pushViewController(examineVC, animated: true)
+
         }
         
         
-        //let examineVC = ExamineMainViewController()
-        //self.navigationController?.pushViewController(examineVC, animated: true)
         
         
     }
