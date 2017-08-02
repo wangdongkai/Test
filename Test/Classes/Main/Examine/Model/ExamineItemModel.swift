@@ -21,6 +21,9 @@ class ExamineItemModel: NSObject {
     var maxScore: NSNumber?
     var averageScore: NSNumber?
     
+    var totalCount: Int = 0
+    var currentCount: Int = 0
+    
     override func mj_keyValuesDidFinishConvertingToObject() {
         if self.options?.isEmpty == false {
             self.options = ExamineOptionModel.mj_objectArray(withKeyValuesArray: self.options).copy() as? [ExamineOptionModel]
