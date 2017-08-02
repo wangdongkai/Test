@@ -61,6 +61,16 @@ class LoginViewController: UIViewController {
         
         NetworkTool.shareInstance.request(method: .GET, url: url, param: ["password": passTextField.text!]) { (task: URLSessionDataTask, success: Any?, error: Error?) in
             
+            if let _ = error {
+                
+                let alertVC = UIAlertController(title: "提示", message: "登录失败", preferredStyle: .alert)
+                let action = UIAlertAction(title: "确定", style: .default, handler: nil)
+                alertVC.addAction(action)
+                
+                self.present(alertVC, animated: true, completion: nil)
+
+                return
+            }
             guard let dict = success as? Dictionary<String, Any> else {
                 
                 return

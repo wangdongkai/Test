@@ -89,14 +89,4 @@ private extension ExamineMainViewController {
                 
     }
     
-    func setupNetwork() {
-        
-        NetworkTool.shareInstance.request(method: .GET, url: "http://www.qxueyou.com/qxueyou/exercise/Exercise/examsListNew", param: ["page": "1", "limit": "10"]) { (_, success: Any?, error: Error?) in
-            
-            print(success)
-            
-            print(error)
-            
-        }
     }
-}
