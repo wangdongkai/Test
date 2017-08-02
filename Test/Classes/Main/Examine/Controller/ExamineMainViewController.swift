@@ -47,6 +47,7 @@ class ExamineMainViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let detailVC = ExamineDetailViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        detailVC.model = self.modelArray[indexPath.row]
         
         navigationController!.pushViewController(detailVC, animated: true)
     }

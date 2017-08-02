@@ -12,6 +12,8 @@ class ExamineMainModel: NSObject {
 
     // 组id
     var groupId: String?
+    //
+    var exerciseRecordId: String?
     // 名字
     var name: String?
     // 完成数

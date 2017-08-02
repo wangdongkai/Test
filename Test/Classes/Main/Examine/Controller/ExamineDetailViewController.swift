@@ -12,10 +12,14 @@ private let identifier = "ExamineDetailViewCell"
 
 class ExamineDetailViewController: UICollectionViewController {
 
+    var model: ExamineMainModel?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setup()
+        
+        setupNetwork()
         
     }
 
@@ -31,7 +35,7 @@ class ExamineDetailViewController: UICollectionViewController {
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! ExamineDetailViewCell
-        cell.backgroundColor = UIColor.red
+        cell.backgroundColor = UIColor.white
         
         // Configure the cell
     
@@ -69,6 +73,20 @@ private extension ExamineDetailViewController {
         
         self.collectionView?.isPagingEnabled = true
         
+    }
+    
+    func setupNetwork() {
+        
+        let param = ["groupId": model?.groupId! ?? "", "exerciseRecordId": model?.exerciseRecordId! ?? "", "getExercise": true, "getAnswer": true] as [String : Any]
+        
+        NetworkTool.shareInstance.get("http://www.qxueyou.com/qxueyou/exercise/Exercise/examExercise", parameters: param, progress: nil, success: { (_, data: Any?) in
+            
+            print(data)
+            
+        }) { (_, error: Error) in
+            
+            print(error)
+        }
     }
 }
 
