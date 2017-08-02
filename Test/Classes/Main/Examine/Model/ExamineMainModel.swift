@@ -15,9 +15,9 @@ class ExamineMainModel: NSObject {
     // 名字
     var name: String?
     // 完成数
-    var doCount: NSNumber?
+    var doCount: Int64 = 0
     // 总数
-    var allCount: NSNumber?
+    var allCount: Int64 = 0
     // 考试时间
     var exerciseTime: NSNumber?
     // 答题更新时间
@@ -32,6 +32,22 @@ class ExamineMainModel: NSObject {
     }
     var update: String?
     
+    // 状态
+    var status: String? {
+        didSet {
+            
+            if status == "0" {
+                // 已做未提交和未做未提交
+                buttonStatus = doCount > 0 ? 2 : 0
+            } else {
+                // 已提交
+                buttonStatus = 1
+            }
+        
+        }
+    }
+    var buttonStatus: Int = 0
+
     init(dict: [String: Any]) {
         super.init()
         
