@@ -7,5 +7,5 @@ target 'Test' do
   pod 'AFNetworking'
   pod 'SVProgressHUD'
   pod 'MJExtension'
-  
+
 end

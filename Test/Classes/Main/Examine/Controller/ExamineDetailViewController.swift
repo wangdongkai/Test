@@ -88,7 +88,7 @@ private extension ExamineDetailViewController {
             }
 
             let detailModel: ExamineDetailModel = ExamineDetailModel.mj_object(withKeyValues: dict)
-            
+                        
             self.dataArray = detailModel.items!
             
             self.collectionView?.reloadData()

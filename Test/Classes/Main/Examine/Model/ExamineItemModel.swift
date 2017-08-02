@@ -16,7 +16,7 @@ class ExamineItemModel: NSObject {
     var updateTime: Int64?
     var answer: String?
     var options: [ExamineOptionModel]?
-    var analisisResult: [ExamineAnalisisResultModel]?
+    var analisisResult: [String: Any]?
     var imgs: [ExamineImgModel]?
     var maxScore: NSNumber?
     var averageScore: NSNumber?
@@ -24,10 +24,6 @@ class ExamineItemModel: NSObject {
     override func mj_keyValuesDidFinishConvertingToObject() {
         if self.options?.isEmpty == false {
             self.options = ExamineOptionModel.mj_objectArray(withKeyValuesArray: self.options).copy() as? [ExamineOptionModel]
-        }
-        
-        if self.analisisResult?.isEmpty == false {
-            self.analisisResult = ExamineAnalisisResultModel.mj_objectArray(withKeyValuesArray: self.analisisResult).copy() as? [ExamineAnalisisResultModel]
         }
         
         if self.imgs?.isEmpty == false {
@@ -57,17 +53,4 @@ class ExamineImgModel: NSObject {
     var imgPath: String?
     var imgOrder: Int64?
     var objectType: Int64?
-}
-
-class ExamineAnalisisResultModel: NSObject {
-    
-    var allAccuracy: Int64?
-    var analysis: String?
-    var submitAllNumber: Int64?
-    var usualFaultAnswers: String?
-    var exerciseAnalisisUId: String?
-    var accuracy: Int64?
-    var submitNumber: Int64?
-    var submitErrorNumber: Int64?
-    
 }
