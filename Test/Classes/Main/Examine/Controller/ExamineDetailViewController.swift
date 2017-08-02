@@ -7,13 +7,15 @@
 //
 
 import UIKit
+import MJExtension
 
 private let identifier = "ExamineDetailViewCell"
 
 class ExamineDetailViewController: UICollectionViewController {
 
     var model: ExamineMainModel?
-
+    var dataArray: [ExamineItemModel] = [ExamineItemModel]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -31,14 +33,13 @@ class ExamineDetailViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 100
+        return self.dataArray.count
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! ExamineDetailViewCell
         cell.backgroundColor = UIColor.white
+        cell.model = self.dataArray[indexPath.item]
         
-        // Configure the cell
-    
         return cell
     }
 
@@ -81,7 +82,11 @@ private extension ExamineDetailViewController {
         
         NetworkTool.shareInstance.get("http://www.qxueyou.com/qxueyou/exercise/Exercise/examExercise", parameters: param, progress: nil, success: { (_, data: Any?) in
             
-            print(data)
+            let detailModel: ExamineDetailModel = ExamineDetailModel.mj_object(withKeyValues: data)
+            
+            self.dataArray = detailModel.items!
+            self.collectionView?.reloadData()
+            
             
         }) { (_, error: Error) in
             

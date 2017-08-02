@@ -10,6 +10,8 @@ import UIKit
 
 class ExamineDetailViewCell: UICollectionViewCell {
 
+    var model: ExamineItemModel?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
