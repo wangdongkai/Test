@@ -56,7 +56,8 @@ private extension ExamineMainViewController {
     
     func setup() {
         
-        title = "模拟测试"
+        title = self.model?.courseName!
+        
         self.view.backgroundColor = UIColor.white
 
         self.tableView.rowHeight = 72
