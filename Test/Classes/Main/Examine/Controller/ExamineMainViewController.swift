@@ -15,6 +15,8 @@ class ExamineMainViewController: UITableViewController {
 
     var model: UserModel?
     
+    var modelArray: Array<ExamineMainModel>  = [ExamineMainModel]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -28,13 +30,15 @@ class ExamineMainViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 3
+        return modelArray.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! ExamineMainViewCell
         cell.selectionStyle = .none
+        
+        cell.model = self.modelArray[indexPath.row]
         
         return cell
     }
@@ -62,10 +66,21 @@ private extension ExamineMainViewController {
     
     func setupNetwork() {
         
+        weak var weakSelf = self
         NetworkTool.shareInstance.get("http://www.qxueyou.com/qxueyou/exercise/Exercise/examsListNew", parameters: ["page": "1", "limit": "10"], progress: nil, success: { (_, data: Any?) in
             
-            print(data)
+            guard let result = data as? [Dictionary<String, Any>] else {
+                
+                return
+            }
+            
+            for dict in result {
+                
+                weakSelf!.modelArray.append(ExamineMainModel(dict: dict))
+            }
 
+            weakSelf?.tableView.reloadData()
+            
         }) { (_, error: Error) in
             
             print(error)

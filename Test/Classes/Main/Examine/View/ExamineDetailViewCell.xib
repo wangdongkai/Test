@@ -28,7 +28,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BmM-j7-QBA">
                         <rect key="frame" x="16" y="90" width="287" height="35"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y2n-xW-DwC" customClass="CircleButton" customModule="Test" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y2n-xW-DwC">
                                 <rect key="frame" x="0.0" y="5" width="25" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="y2n-xW-DwC" secondAttribute="height" id="kB2-Hf-XCM"/>

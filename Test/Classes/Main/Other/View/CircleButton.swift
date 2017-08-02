@@ -13,7 +13,7 @@ class CircleButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        let path = UIBezierPath.init(arcCenter: self.center, radius: self.frame.midX / 2.0, startAngle: 0, endAngle: CGFloat(M_PI * 2), clockwise: true)
+        _ = UIBezierPath.init(arcCenter: self.center, radius: self.frame.midX / 2.0, startAngle: 0, endAngle: CGFloat(M_PI * 2), clockwise: true)
         
     }
     
