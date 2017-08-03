@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TYAttributedLabel
 
 extension UIBarButtonItem {
     

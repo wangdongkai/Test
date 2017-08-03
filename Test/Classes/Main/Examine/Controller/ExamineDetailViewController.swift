@@ -37,8 +37,11 @@ class ExamineDetailViewController: UICollectionViewController {
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! ExamineDetailViewCell
+        
         cell.backgroundColor = UIColor.white
         let model = self.dataArray[indexPath.row]
+        print(model.title)
+        
         model.totalCount = self.dataArray.count
         model.currentCount = indexPath.row
 
@@ -74,7 +77,8 @@ private extension ExamineDetailViewController {
         layout.itemSize = CGSize(width: view.frame.width, height: view.frame.height - 64)
         self.collectionView?.collectionViewLayout = layout
         
-        self.collectionView?.register(UINib.init(nibName: "ExamineDetailViewCell", bundle: nil), forCellWithReuseIdentifier: identifier)
+        //self.collectionView?.register(UINib.init(nibName: "ExamineDetailViewCell", bundle: nil), forCellWithReuseIdentifier: identifier)
+        self.collectionView?.register(ExamineDetailViewCell.self, forCellWithReuseIdentifier: identifier)
         
         self.collectionView?.isPagingEnabled = true
         
