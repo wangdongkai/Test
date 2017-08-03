@@ -31,8 +31,8 @@ class ExamineItemModel: NSObject {
     var updateTime: Int64?
     var answer: String?
     var options: [ExamineOptionModel]?
-    var analisisResult: [String: Any]?
     var imgs: [ExamineImgModel]?
+    var analisisResult: [String: Any]?
     var maxScore: NSNumber?
     var averageScore: NSNumber?
     

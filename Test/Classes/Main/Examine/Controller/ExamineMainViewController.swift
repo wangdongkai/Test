@@ -56,7 +56,7 @@ private extension ExamineMainViewController {
     
     func setup() {
         
-        title = self.model?.courseName!
+        title = self.model?.courseName ?? "测试"
         
         self.view.backgroundColor = UIColor.white
 
