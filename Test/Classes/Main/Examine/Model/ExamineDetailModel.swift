@@ -12,9 +12,6 @@ class ExamineDetailModel: NSObject {
 
     var items: [ExamineItemModel]?
     var answers: [ExamineAnswerModel]?
-    var exerciseGroupId: String?
-    var exerciseRecordId: String?
-    var result: String?
     
     override func mj_keyValuesDidFinishConvertingToObject() {
         if self.items?.isEmpty == false {
@@ -26,4 +23,6 @@ class ExamineDetailModel: NSObject {
         }
         
     }
+    
+    
 }

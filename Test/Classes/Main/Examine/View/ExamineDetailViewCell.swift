@@ -7,11 +7,15 @@
 //
 
 import UIKit
-import YYText
 import SDWebImage
+import TYAttributedLabel
 
 class ExamineDetailViewCell: UICollectionViewCell {
-
+    
+    let margin: CGFloat = 15.0
+    
+    var contentLabel: TYAttributedLabel?
+    
     var model: ExamineItemModel? {
         didSet{
             
@@ -19,45 +23,56 @@ class ExamineDetailViewCell: UICollectionViewCell {
                 
                 return
             }
-            let text = "\(m.typeString!) \(m.currentCount + 1)/\(m.totalCount).\(m.title!)"
+            let text = "\(m.typeString!)\(m.currentCount + 1)/\(m.totalCount).\(m.title!)\n"
+            if self.contentLabel != nil {
 
-            let attrTitle = NSMutableAttributedString(string: text)
-            attrTitle.yy_setColor(UIColor.purple, range: NSMakeRange(0, 4))
-            attrTitle.yy_setColor(UIColor.orange, range: NSMakeRange(5, 6))
-            let url = "http://res.iqtogether.com/web/res/upload/img/exercise/297ebe0e5509907a01550af81f115ff9/297ebe0e55c9e6eb0155cede59812104/9321b4a3b18a42a5ae43f4eea05a143d/9321b4a3b18a42a5ae43f4eea05a143d.png"
-            let i = UIImage(named: "STAR")
-            print(i!.size)
+                self.contentLabel?.removeFromSuperview()
+                self.contentLabel = nil
+            }
             
-            let attach = NSMutableAttributedString.yy_attachmentString(withContent: i!, contentMode: .center, width: i!.size.width, ascent: 10, descent: 10)
+            self.contentLabel = TYAttributedLabel()
+            self.contentLabel?.textColor = UIColor.darkGray
             
-            attrTitle.append(attach)
-            /*
+            let textStorage = TYTextStorage()
+            textStorage.range = NSMakeRange(0, 4)
+            textStorage.textColor = UIColor.lightGray
+            self.contentLabel?.addTextStorage(textStorage)
+            
+            self.contentLabel?.appendText(text)
+            
+            let width = UIScreen.main.bounds.width - margin * 2
+
             if let imgs = m.imgs {
-             
-                for imgModel in imgs {
-                    SDWebImageManager.shared().loadImage(with: URL(string: imgModel.imgURL ?? ""), options: [], progress: nil, completed: { (image: UIImage?, _, error: Error?, _, _, _) in
-                        
-                        if let img = image {
-                            attrTitle.append(NSMutableAttributedString.yy_attachmentString(withContent: img, contentMode: .scaleAspectFit, width: img.size.width, ascent: 0, descent: 0))
-                            
-                        }
-                    })
+                
+                let imgViewWidth = width / CGFloat(imgs.count)
+                
+                for num in 0..<imgs.count {
+                    
+                    let url = imgs[num].imgURL ?? ""
+                    
+                    let imgView = UIImageView(frame: CGRect(x: 0, y: 0, width: imgViewWidth, height: 70))
+                    imgView.contentMode = .scaleAspectFit
+                    imgView.sd_setImage(with: URL(string: url))
+                    self.contentLabel?.append(imgView)
                     
                 }
-
             }
-            */
             
-            titleLabel.attributedText = attrTitle
+            self.contentLabel?.setFrameWithOrign(CGPoint(x: margin, y: 10), width: width)
+            self.contentView.addSubview(self.contentLabel!)
+            
         }
     }
     
-    @IBOutlet weak var titleLabel: YYLabel!
-    
+        
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        
         // Initialization code
     }
 
+    
 }
+

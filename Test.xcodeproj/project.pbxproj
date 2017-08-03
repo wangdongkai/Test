@@ -26,8 +26,6 @@
 		54BEAEA91F3034C00033F68C /* AppExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAEA81F3034C00033F68C /* AppExtension.swift */; };
 		54BEAEB11F3054570033F68C /* ExamineDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAEB01F3054570033F68C /* ExamineDetailViewController.swift */; };
 		54BEAEB41F3054770033F68C /* ExamineDetailViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAEB21F3054770033F68C /* ExamineDetailViewCell.swift */; };
-		54BEAEB51F3054770033F68C /* ExamineDetailViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54BEAEB31F3054770033F68C /* ExamineDetailViewCell.xib */; };
-		54BEAEB71F307AC70033F68C /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAEB61F307AC70033F68C /* CircleButton.swift */; };
 		54BEAEBA1F3089C00033F68C /* NetworkTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAEB91F3089C00033F68C /* NetworkTool.swift */; };
 		54BEAEBC1F3094D00033F68C /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAEBB1F3094D00033F68C /* UserModel.swift */; };
 /* End PBXBuildFile section */
@@ -74,8 +72,6 @@
 		54BEAEA81F3034C00033F68C /* AppExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppExtension.swift; sourceTree = "<group>"; };
 		54BEAEB01F3054570033F68C /* ExamineDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamineDetailViewController.swift; sourceTree = "<group>"; };
 		54BEAEB21F3054770033F68C /* ExamineDetailViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamineDetailViewCell.swift; sourceTree = "<group>"; };
-		54BEAEB31F3054770033F68C /* ExamineDetailViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExamineDetailViewCell.xib; sourceTree = "<group>"; };
-		54BEAEB61F307AC70033F68C /* CircleButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
 		54BEAEB91F3089C00033F68C /* NetworkTool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkTool.swift; sourceTree = "<group>"; };
 		54BEAEBB1F3094D00033F68C /* UserModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		68C115F8E48BD42489C6902A /* Pods-Test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test.release.xcconfig"; path = "Pods/Target Support Files/Pods-Test/Pods-Test.release.xcconfig"; sourceTree = "<group>"; };
@@ -243,7 +239,6 @@
 		54BEAE981F3024800033F68C /* View */ = {
 			isa = PBXGroup;
 			children = (
-				54BEAEB61F307AC70033F68C /* CircleButton.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -284,7 +279,6 @@
 				54BEAEA31F302CCB0033F68C /* ExamineMainViewCell.swift */,
 				54BEAEA41F302CCB0033F68C /* ExamineMainViewCell.xib */,
 				54BEAEB21F3054770033F68C /* ExamineDetailViewCell.swift */,
-				54BEAEB31F3054770033F68C /* ExamineDetailViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -432,7 +426,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				54BEAEB51F3054770033F68C /* ExamineDetailViewCell.xib in Resources */,
 				54BEAE641F3014120033F68C /* LaunchScreen.storyboard in Resources */,
 				54BEAE611F3014120033F68C /* Assets.xcassets in Resources */,
 				54BEAE941F301D270033F68C /* LoginViewController.xib in Resources */,
@@ -484,7 +477,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		FFA7CEC52690673E2CE20155 /* [CP] Copy Pods Resources */ = {
@@ -513,7 +506,6 @@
 				54BEAE9A1F3024A10033F68C /* CustomNavigationController.swift in Sources */,
 				54BEAEA51F302CCB0033F68C /* ExamineMainViewCell.swift in Sources */,
 				54BEAEA21F302C440033F68C /* ExamineMainViewController.swift in Sources */,
-				54BEAEB71F307AC70033F68C /* CircleButton.swift in Sources */,
 				54BEAEBA1F3089C00033F68C /* NetworkTool.swift in Sources */,
 				54BEAEB41F3054770033F68C /* ExamineDetailViewCell.swift in Sources */,
 				54BEAEA91F3034C00033F68C /* AppExtension.swift in Sources */,

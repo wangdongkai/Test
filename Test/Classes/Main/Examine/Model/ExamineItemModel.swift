@@ -73,7 +73,7 @@ class ExamineImgModel: NSObject {
             guard let path = self.imgPath else {
                 return
             }
-            imgURL = "http://www.qxueyou.com\(path)"
+            imgURL = "http://www.qxueyou.com/qxueyou\(path)"
         }
     }
     var imgURL: String?

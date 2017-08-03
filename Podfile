@@ -7,7 +7,6 @@ target 'Test' do
   pod 'AFNetworking'
   pod 'SVProgressHUD'
   pod 'MJExtension'
-  pod 'YYText'
   pod 'SDWebImage'
-  
+  pod 'TYAttributedLabel'
 end
