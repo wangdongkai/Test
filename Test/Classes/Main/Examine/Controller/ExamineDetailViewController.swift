@@ -38,7 +38,11 @@ class ExamineDetailViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! ExamineDetailViewCell
         cell.backgroundColor = UIColor.white
-        cell.model = self.dataArray[indexPath.row]
+        let model = self.dataArray[indexPath.row]
+        model.totalCount = self.dataArray.count
+        model.currentCount = indexPath.row
+
+        cell.model = model
         
         return cell
     }
@@ -52,7 +56,7 @@ private extension ExamineDetailViewController {
     
     func setup() {
         
-        title = "模拟测试"
+        title = self.model?.name
 
         self.view.backgroundColor = UIColor.white
         self.collectionView?.backgroundColor = UIColor.clear
