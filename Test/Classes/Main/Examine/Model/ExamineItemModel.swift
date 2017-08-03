@@ -12,7 +12,22 @@ class ExamineItemModel: NSObject {
     
     var exerciseId: String?
     var title: String?
-    var type: Int64?
+    var type: Int64 = 0{
+        didSet {
+            if self.type == 1 {
+                
+                typeString = "【单选】"
+            } else if self.type == 2 {
+                
+                typeString = "【多选】"
+            } else {
+                
+                typeString = "【判断】"
+            }
+
+        }
+    }
+    var typeString: String?
     var updateTime: Int64?
     var answer: String?
     var options: [ExamineOptionModel]?
@@ -53,7 +68,16 @@ class ExamineImgModel: NSObject {
     
     var imgId: String?
     var exerciseObjectId: String?
-    var imgPath: String?
+    var imgPath: String? {
+        didSet{
+            guard let path = self.imgPath else {
+                return
+            }
+            imgURL = "http://www.qxueyou.com\(path)"
+        }
+    }
+    var imgURL: String?
+    
     var imgOrder: Int64?
     var objectType: Int64?
 }

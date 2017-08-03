@@ -18,7 +18,8 @@ class ExamineDetailViewCell: UICollectionViewCell {
                 return
             }
             
-            titleLabel.text = "\(m.currentCount + 1)/\(m.totalCount).\(m.title!)"
+            titleLabel.text = "\(m.typeString!) \(m.currentCount + 1)/\(m.totalCount).\(m.title!)"
+            
         }
     }
     
