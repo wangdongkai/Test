@@ -41,7 +41,7 @@ class ExamineOptionViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
+
     }
     
     
@@ -57,12 +57,8 @@ private extension ExamineOptionViewCell {
         self.answerButton.setBackgroundImage(UIImage(named: "circle"), for: .normal)
         self.answerButton.setBackgroundImage(UIImage(named: "circle_select"), for: .selected)
 
-        self.answerButton.addTarget(self, action: #selector(clickButton(button:)), for: .touchUpInside)
-        
+        self.model?.optionState = self.answerButton.isSelected
     }
     
-    @objc func clickButton(button: UIButton) {
-        
-        button.isSelected = !button.isSelected
-    }
+    
 }

@@ -89,6 +89,8 @@ class ExamineDetailViewCell: UICollectionViewCell {
         self.dataTableView?.register(UINib.init(nibName: "ExamineOptionViewCell", bundle: nil), forCellReuseIdentifier: "ExamineOptionViewCell")
         
         self.dataTableView?.dataSource = self
+        self.dataTableView?.delegate = self
+        
         self.contentView.addSubview(self.dataTableView!)
         
         
@@ -117,7 +119,16 @@ extension ExamineDetailViewCell: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        
+        let cell = tableView.cellForRow(at: indexPath) as! ExamineOptionViewCell
+
+        if model?.type == 2 {
+            
+            cell.answerButton.isSelected = !cell.answerButton.isSelected
+            
+        } else {
+            
+            
+        }
     }
 }
 
