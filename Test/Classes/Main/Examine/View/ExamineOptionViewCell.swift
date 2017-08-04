@@ -26,6 +26,8 @@ class ExamineOptionViewCell: UITableViewCell {
             self.answerButton.setTitle(m.optionAnswer, for: .selected)
             
             self.answerLabel.text = m.optionContent
+            
+            self.answerButton.isSelected = m.optionState
         }
     }
     override func awakeFromNib() {
@@ -49,10 +51,18 @@ private extension ExamineOptionViewCell {
     
     func setupButton() {
         
-        self.answerButton.layer.cornerRadius = self.answerButton.frame.width / 2.0
-        self.answerButton.layer.borderColor = UIColor.lightGray.cgColor
-        self.answerButton.layer.borderWidth = 1.0
-        self.answerButton.layer.masksToBounds = false
+        self.answerButton.setTitleColor(UIColor.white, for: .selected)
+        self.answerButton.setTitleColor(UIColor.colorWithHex(color: "bfbfbf", alpha: 1.0), for: .normal)
         
+        self.answerButton.setBackgroundImage(UIImage(named: "circle"), for: .normal)
+        self.answerButton.setBackgroundImage(UIImage(named: "circle_select"), for: .selected)
+
+        self.answerButton.addTarget(self, action: #selector(clickButton(button:)), for: .touchUpInside)
+        
+    }
+    
+    @objc func clickButton(button: UIButton) {
+        
+        button.isSelected = !button.isSelected
     }
 }

@@ -73,6 +73,7 @@ class ExamineOptionModel: NSObject {
     
     var optionAnswer: String?
     var optionContent: String?
+    var optionState: Bool = false
     
     var exerciseItemId: String?
     var score: Int64?
