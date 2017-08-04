@@ -16,6 +16,9 @@ class ExamineDetailViewCell: UICollectionViewCell {
     
     var contentLabel: TYAttributedLabel?
     
+    var dataTableView: UITableView?
+    fileprivate var data: [ExamineOptionModel] = [ExamineOptionModel]()
+    
     var model: ExamineItemModel? {
         didSet{
             
@@ -61,6 +64,12 @@ class ExamineDetailViewCell: UICollectionViewCell {
             self.contentLabel?.setFrameWithOrign(CGPoint(x: margin, y: 10), width: width)
             self.contentView.addSubview(self.contentLabel!)
             
+            self.dataTableView?.frame = CGRect(x: margin, y: self.contentLabel!.frame.maxY + margin, width: width, height: UIScreen.main.bounds.height - self.contentLabel!.frame.maxY)
+            self.dataTableView?.tableFooterView = UIView()
+            
+            self.data = m.options!
+            self.dataTableView?.reloadData()
+            
         }
     }
     
@@ -70,9 +79,40 @@ class ExamineDetailViewCell: UICollectionViewCell {
         super.awakeFromNib()
         
         
-        // Initialization code
     }
 
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.dataTableView = UITableView()
+        self.dataTableView?.rowHeight = 40
+        self.dataTableView?.register(UINib.init(nibName: "ExamineOptionViewCell", bundle: nil), forCellReuseIdentifier: "ExamineOptionViewCell")
+        
+        self.dataTableView?.dataSource = self
+        self.contentView.addSubview(self.dataTableView!)
+        
+        
+    }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+}
+
+extension ExamineDetailViewCell: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return self.data.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineOptionViewCell", for: indexPath) as! ExamineOptionViewCell
+        cell.model = self.data[indexPath.row]
+        
+        return cell
+    }
 }
 
