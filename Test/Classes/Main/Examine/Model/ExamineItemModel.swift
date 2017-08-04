@@ -56,7 +56,24 @@ class ExamineOptionModel: NSObject {
     var optionId: String?
     var checked: Bool?
     var content: String?
-    var optionOrder: String?
+    var optionOrder: String? {
+        didSet {
+            if optionOrder == "True" {
+                optionAnswer = "B"
+                optionContent = "错误"
+            } else if optionOrder == "False" {
+                optionAnswer = "A"
+                optionContent = "正确"
+            } else {
+                optionAnswer = optionOrder
+                optionContent = content
+            }
+        }
+    }
+    
+    var optionAnswer: String?
+    var optionContent: String?
+    
     var exerciseItemId: String?
     var score: Int64?
     var exerciseItemScoreId: String?

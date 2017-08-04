@@ -22,10 +22,10 @@ class ExamineOptionViewCell: UITableViewCell {
                 return
             }
             
-            self.answerButton.setTitle(m.optionOrder, for: .normal)
-            self.answerButton.setTitle(m.optionOrder, for: .selected)
+            self.answerButton.setTitle(m.optionAnswer, for: .normal)
+            self.answerButton.setTitle(m.optionAnswer, for: .selected)
             
-            self.answerLabel.text = m.content
+            self.answerLabel.text = m.optionContent
         }
     }
     override func awakeFromNib() {

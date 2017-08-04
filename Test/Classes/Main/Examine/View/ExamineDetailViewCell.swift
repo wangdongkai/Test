@@ -100,7 +100,7 @@ class ExamineDetailViewCell: UICollectionViewCell {
     
 }
 
-extension ExamineDetailViewCell: UITableViewDataSource {
+extension ExamineDetailViewCell: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -113,6 +113,11 @@ extension ExamineDetailViewCell: UITableViewDataSource {
         cell.model = self.data[indexPath.row]
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        
     }
 }
 
