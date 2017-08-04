@@ -40,7 +40,6 @@ class ExamineDetailViewController: UICollectionViewController {
         
         cell.backgroundColor = UIColor.white
         let model = self.dataArray[indexPath.row]
-        print(model.title)
         
         model.totalCount = self.dataArray.count
         model.currentCount = indexPath.row
