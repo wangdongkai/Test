@@ -58,18 +58,18 @@ class LoginViewController: UIViewController {
             return
         }
         
+        
         let url = "http://www.qxueyou.com/qxueyou/sys/login/loginNew/\(userTextField.text!)"
+        SVProgressHUD.show(withStatus: "登录中...")
         
         NetworkTool.shareInstance.request(method: .GET, url: url, param: ["password": passTextField.text!]) { (task: URLSessionDataTask, success: Any?, error: Error?) in
             
+            SVProgressHUD.dismiss()
+            
             if let _ = error {
                 
-                let alertVC = UIAlertController(title: "提示", message: "登录失败", preferredStyle: .alert)
-                let action = UIAlertAction(title: "确定", style: .default, handler: nil)
-                alertVC.addAction(action)
+                SVProgressHUD.showError(withStatus: error?.localizedDescription)
                 
-                self.present(alertVC, animated: true, completion: nil)
-
                 return
             }
             guard let dict = success as? Dictionary<String, Any> else {
@@ -99,11 +99,14 @@ class LoginViewController: UIViewController {
             UserDefaults.standard.synchronize()
             
             self.setupDataBase(name: self.userTextField.text!)
+            
             let examineVC = ExamineMainViewController()
             examineVC.model = UserModel(dict: dict)
             
             self.navigationController?.pushViewController(examineVC, animated: true)
 
+            SVProgressHUD.dismiss()
+            
         }
         
         
@@ -135,5 +138,5 @@ private extension LoginViewController {
         }
     }
 
-}
+    }
 

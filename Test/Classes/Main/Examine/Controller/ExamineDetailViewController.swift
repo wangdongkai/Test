@@ -91,6 +91,36 @@ private extension ExamineDetailViewController {
     
     func setupNetwork() {
         
+        // MAR: - 提交答案请求
+        /*
+        let p =
+            ["exerciseGroupId": "8a2aa19d5d9cd52a015d9d2aa708143d",
+             "subjectId": "",
+            "exerciseRecordId": "",
+            "exerciseExtendId": "",
+            "currTitleNum": 1,
+            "status": 0,
+            "type": 4,
+            "doCount": 1,
+            "correctCount": 1,
+            "allCount": 174,
+            "submitTime": "2017-08-07 12:12:12",
+            "submitType": 0,
+            "items": [
+                ["exerciseId": "8a29e1345d9cd620015d9d2b198f4b2b", "type": 1, "answer": "C", "correct": 1]
+                ]] as [String : Any]
+    
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: p, options: .prettyPrinted) else {
+            
+            return
+        }
+        
+        var json = NSString.init(data: jsonData, encoding: 0)
+        
+        
+        print(json!)
+        */
+        
         let param = ["groupId": model?.groupId! ?? "", "exerciseRecordId": model?.exerciseRecordId! ?? "", "getExercise": true, "getAnswer": true] as [String : Any]
         
         NetworkTool.shareInstance.get("http://www.qxueyou.com/qxueyou/exercise/Exercise/examExercise", parameters: param, progress: nil, success: { (_, data: Any?) in
@@ -122,6 +152,6 @@ private extension ExamineDetailViewController {
     
     @objc func submitClick() {
     
-    
+        
     }
 }

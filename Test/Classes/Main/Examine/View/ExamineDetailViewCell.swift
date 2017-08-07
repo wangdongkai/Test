@@ -124,13 +124,17 @@ extension ExamineDetailViewCell: UITableViewDataSource, UITableViewDelegate {
         
         if model?.type == 2 {
             
-            cell.answerButton.isSelected = !cell.answerButton.isSelected
+           // cell.answerButton.isSelected = !cell.answerButton.isSelected
+            cell.model!.optionState = !cell.model!.optionState
             
         } else {
             
-            cell.answerButton.isSelected = !cell.answerButton.isSelected
-
+           // cell.answerButton.isSelected = !cell.answerButton.isSelected
+            cell.model!.optionState = !cell.model!.optionState
+            
         }
+        
+                tableView.reloadRows(at: [indexPath], with: .automatic)
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -139,10 +143,12 @@ extension ExamineDetailViewCell: UITableViewDataSource, UITableViewDelegate {
 
         if model?.type != 2 {
             
-            cell.answerButton.isSelected = !cell.answerButton.isSelected
-            
+           // cell.answerButton.isSelected = !cell.answerButton.isSelected
+            cell.model!.optionState = !cell.model!.optionState
+
         }
-       
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+
         
     }
 }
