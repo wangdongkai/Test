@@ -38,6 +38,7 @@ class ExamineDetailViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! ExamineDetailViewCell
         
+        
         cell.backgroundColor = UIColor.white
         let model = self.dataArray[indexPath.row]
         
@@ -45,6 +46,7 @@ class ExamineDetailViewController: UICollectionViewController {
         model.currentCount = indexPath.row
 
         cell.model = model
+        
         
         return cell
     }

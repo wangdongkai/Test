@@ -112,6 +112,7 @@ extension ExamineDetailViewCell: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineOptionViewCell", for: indexPath) as! ExamineOptionViewCell
+        cell.answerButton.tag = indexPath.row
         cell.model = self.data[indexPath.row]
         
         return cell
@@ -120,15 +121,29 @@ extension ExamineDetailViewCell: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let cell = tableView.cellForRow(at: indexPath) as! ExamineOptionViewCell
-
+        
         if model?.type == 2 {
             
             cell.answerButton.isSelected = !cell.answerButton.isSelected
             
         } else {
             
+            cell.answerButton.isSelected = !cell.answerButton.isSelected
+
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        
+        let cell = tableView.cellForRow(at: indexPath) as! ExamineOptionViewCell
+
+        if model?.type != 2 {
+            
+            cell.answerButton.isSelected = !cell.answerButton.isSelected
             
         }
+       
+        
     }
 }
 
