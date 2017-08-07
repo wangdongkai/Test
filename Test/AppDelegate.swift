@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let loginVC = LoginViewController(nibName: "LoginViewController", bundle: nil)
         let navigationVC = CustomNavigationController(rootViewController: loginVC)
         window?.rootViewController = navigationVC
-        
+                
         // Override point for customization after application launch.
         return true
     }

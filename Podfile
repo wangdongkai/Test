@@ -9,4 +9,6 @@ target 'Test' do
   pod 'MJExtension'
   pod 'SDWebImage'
   pod 'TYAttributedLabel'
+  pod 'FMDB'
+  
 end

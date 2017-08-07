@@ -9,6 +9,7 @@
 import UIKit
 import AFNetworking
 import SVProgressHUD
+import FMDB
 
 class LoginViewController: UIViewController {
 
@@ -94,8 +95,10 @@ class LoginViewController: UIViewController {
             }
             
             UserDefaults.standard.set(cookieValue, forKey: "Cookie")
+            UserDefaults.standard.set(self.userTextField.text!, forKey: "username")
             UserDefaults.standard.synchronize()
             
+            self.setupDataBase(name: self.userTextField.text!)
             let examineVC = ExamineMainViewController()
             examineVC.model = UserModel(dict: dict)
             
@@ -120,4 +123,17 @@ private extension LoginViewController {
         
     }
     
+    func setupDataBase(name: String) {
+        
+        let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
+        
+        let sqlPath = path.appendingPathComponent("\(name).sqlite")
+        let db = FMDatabase(path: sqlPath)
+        
+        if db.open() {
+            print("open success")
+        }
+    }
+
 }
+

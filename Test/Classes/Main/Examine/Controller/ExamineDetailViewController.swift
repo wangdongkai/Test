@@ -51,6 +51,10 @@ class ExamineDetailViewController: UICollectionViewController {
         return cell
     }
 
+    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
+        
+    }
     // MARK: UICollectionViewDelegate
 
     
