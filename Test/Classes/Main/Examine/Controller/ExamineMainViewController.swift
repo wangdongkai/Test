@@ -8,6 +8,7 @@
 
 import UIKit
 import AFNetworking
+import MJRefresh
 
 private let identifier = "ExamineMainViewCell"
 
@@ -22,7 +23,7 @@ class ExamineMainViewController: UITableViewController {
 
         setup()
         
-        setupNetwork()
+        setupHeader()
 
     }
 
@@ -66,8 +67,25 @@ private extension ExamineMainViewController {
 
     }
     
-    func setupNetwork() {
+    func setupHeader() {
         
+        let header = MJRefreshStateHeader(refreshingTarget: self, refreshingAction: "setupNetwork")
+        header?.setTitle("下拉刷新", for: .idle)
+        header?.setTitle("释放以更新", for: .pulling)
+        header?.setTitle("加载中", for: .refreshing)
+        tableView.mj_header = header
+        header?.beginRefreshing()
+        
+        
+    }
+    
+   @objc func setupNetwork() {
+        
+        self.tableView.mj_header.endRefreshing()
+        if self.modelArray.count != 0 {
+            self.modelArray.removeAll()
+   
+        }
         weak var weakSelf = self
         NetworkTool.shareInstance.get("http://www.qxueyou.com/qxueyou/exercise/Exercise/examsListNew", parameters: ["page": "1", "limit": "10"], progress: nil, success: { (_, data: Any?) in
             
@@ -80,7 +98,7 @@ private extension ExamineMainViewController {
                 
                 weakSelf!.modelArray.append(ExamineMainModel(dict: dict))
             }
-
+            
             weakSelf?.tableView.reloadData()
             
         }) { (_, error: Error) in
@@ -91,4 +109,5 @@ private extension ExamineMainViewController {
                 
     }
     
-    }
+    
+}

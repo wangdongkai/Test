@@ -10,5 +10,6 @@ target 'Test' do
   pod 'SDWebImage'
   pod 'TYAttributedLabel'
   pod 'FMDB'
+  pod 'MJRefresh'
   
 end
