@@ -43,6 +43,8 @@ private extension ExamineDetailsViewCell {
         
         self.dataTableView.rowHeight = UITableViewAutomaticDimension
         self.dataTableView.estimatedRowHeight = 44.0
+        self.dataTableView.separatorStyle = .none
+        self.dataTableView.tableFooterView = UIView()
         
     }
 }
@@ -81,6 +83,14 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
         }
         
         
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if indexPath.section == 1 {
+            
+            
+        }
     }
     
     

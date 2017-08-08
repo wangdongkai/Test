@@ -40,29 +40,6 @@ class ExamineOptionLabelCell: UITableViewCell {
                 
                 self.imageHeightCons.constant = 70
 
-                /*
-
-                weak var weakSelf = self
-                SDWebImageManager.shared().loadImage(with: URL(string: img), options: SDWebImageOptions.cacheMemoryOnly, progress: nil, completed: { (image: UIImage?, _, error: Error?, _, _, _) in
-                    
-                    //weakSelf!.clickButton.setImage(image, for: .normal)
-                    //weakSelf!.clickButton.setBackgroundImage(image, for: .normal)
-                    
-                })
-                                
-                self.contentView.layoutIfNeeded()
-                
-            } else {
-                
-                self.buttonHeightConstraint.constant = 1
-                self.clickButton.setImage(nil, for: .normal)
-                
-                self.contentView.layoutIfNeeded()
-
-            }
- 
-              */
-                
             self.clickImage.sd_setImage(with: URL(string: img))
            
             } else {

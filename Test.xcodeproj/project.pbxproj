@@ -31,7 +31,6 @@
 		54BEAEA61F302CCB0033F68C /* ExamineMainViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54BEAEA41F302CCB0033F68C /* ExamineMainViewCell.xib */; };
 		54BEAEA91F3034C00033F68C /* AppExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAEA81F3034C00033F68C /* AppExtension.swift */; };
 		54BEAEB11F3054570033F68C /* ExamineDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAEB01F3054570033F68C /* ExamineDetailViewController.swift */; };
-		54BEAEB41F3054770033F68C /* ExamineDetailViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAEB21F3054770033F68C /* ExamineDetailViewCell.swift */; };
 		54BEAEBA1F3089C00033F68C /* NetworkTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAEB91F3089C00033F68C /* NetworkTool.swift */; };
 		54BEAEBC1F3094D00033F68C /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAEBB1F3094D00033F68C /* UserModel.swift */; };
 /* End PBXBuildFile section */
@@ -83,7 +82,6 @@
 		54BEAEA41F302CCB0033F68C /* ExamineMainViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExamineMainViewCell.xib; sourceTree = "<group>"; };
 		54BEAEA81F3034C00033F68C /* AppExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppExtension.swift; sourceTree = "<group>"; };
 		54BEAEB01F3054570033F68C /* ExamineDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamineDetailViewController.swift; sourceTree = "<group>"; };
-		54BEAEB21F3054770033F68C /* ExamineDetailViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamineDetailViewCell.swift; sourceTree = "<group>"; };
 		54BEAEB91F3089C00033F68C /* NetworkTool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkTool.swift; sourceTree = "<group>"; };
 		54BEAEBB1F3094D00033F68C /* UserModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		68C115F8E48BD42489C6902A /* Pods-Test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test.release.xcconfig"; path = "Pods/Target Support Files/Pods-Test/Pods-Test.release.xcconfig"; sourceTree = "<group>"; };
@@ -290,7 +288,6 @@
 			children = (
 				54BEAEA31F302CCB0033F68C /* ExamineMainViewCell.swift */,
 				54BEAEA41F302CCB0033F68C /* ExamineMainViewCell.xib */,
-				54BEAEB21F3054770033F68C /* ExamineDetailViewCell.swift */,
 				54AC20B41F3948FE0055E28D /* ExamineDetailsViewCell.swift */,
 				54AC20B51F3948FE0055E28D /* ExamineDetailsViewCell.xib */,
 				54A860D41F341A310033C854 /* ExamineOptionViewCell.swift */,
@@ -528,7 +525,6 @@
 				54BEAEA51F302CCB0033F68C /* ExamineMainViewCell.swift in Sources */,
 				54BEAEA21F302C440033F68C /* ExamineMainViewController.swift in Sources */,
 				54BEAEBA1F3089C00033F68C /* NetworkTool.swift in Sources */,
-				54BEAEB41F3054770033F68C /* ExamineDetailViewCell.swift in Sources */,
 				54BEAEA91F3034C00033F68C /* AppExtension.swift in Sources */,
 				5472C5981F31B19600BDFB7E /* ExamineAnswerModel.swift in Sources */,
 				54BEAE931F301D270033F68C /* LoginViewController.swift in Sources */,

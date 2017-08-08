@@ -12,6 +12,8 @@ class ExamineOptionViewCell: UITableViewCell {
 
     @IBOutlet weak var answerButton: UIButton!
     @IBOutlet weak var answerLabel: UILabel!
+    @IBOutlet weak var clickImage: UIImageView!
+    @IBOutlet weak var imgHieghtCons: NSLayoutConstraint!
     
     var model: ExamineOptionModel? {
         
@@ -28,6 +30,24 @@ class ExamineOptionViewCell: UITableViewCell {
             self.answerLabel.text = m.optionContent
             
             self.answerButton.isSelected = m.optionState
+            
+            if self.model?.imgs != nil && (self.model?.imgs!.count)! > 0 {
+                
+                guard let img = self.model?.imgs![0].imgURL else {
+                    
+                    return
+                }
+                
+                self.clickImage.sd_setImage(with: URL(string: img))
+                
+                self.imgHieghtCons!.constant = 70
+
+            } else {
+                
+                self.clickImage.image = nil
+                self.imgHieghtCons!.constant = 1
+
+            }
         }
     }
     override func awakeFromNib() {
@@ -58,6 +78,8 @@ private extension ExamineOptionViewCell {
         self.answerButton.setBackgroundImage(UIImage(named: "circle_select"), for: .selected)
 
         self.model?.optionState = self.answerButton.isSelected
+        
+        
     }
     
     

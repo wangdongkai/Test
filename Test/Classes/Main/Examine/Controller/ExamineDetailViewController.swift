@@ -81,7 +81,6 @@ private extension ExamineDetailViewController {
         self.collectionView?.collectionViewLayout = layout
         
         self.collectionView?.register(UINib.init(nibName: "ExamineDetailsViewCell", bundle: nil), forCellWithReuseIdentifier: identifier)
-        //self.collectionView?.register(ExamineDetailViewCell.self, forCellWithReuseIdentifier: identifier)
 
         self.collectionView?.isPagingEnabled = true
         

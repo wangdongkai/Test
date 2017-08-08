@@ -80,6 +80,13 @@ class ExamineOptionModel: NSObject {
     var exerciseItemScoreId: String?
     var imgs: [ExamineImgModel]?
     
+    override func mj_keyValuesDidFinishConvertingToObject() {
+        
+        if self.imgs?.isEmpty == false {
+            self.imgs = ExamineImgModel.mj_objectArray(withKeyValuesArray: self.imgs).copy() as? [ExamineImgModel]
+        }
+
+    }
 }
 
 class ExamineImgModel: NSObject {
