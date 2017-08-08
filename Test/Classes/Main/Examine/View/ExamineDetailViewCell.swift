@@ -64,7 +64,7 @@ class ExamineDetailViewCell: UICollectionViewCell {
             self.contentLabel?.setFrameWithOrign(CGPoint(x: margin, y: 10), width: width)
             self.contentView.addSubview(self.contentLabel!)
             
-            self.dataTableView?.frame = CGRect(x: margin, y: self.contentLabel!.frame.maxY + margin, width: width, height: UIScreen.main.bounds.height - self.contentLabel!.frame.maxY)
+            self.dataTableView?.frame = CGRect(x: margin, y: self.contentLabel!.frame.maxY + margin, width: width, height: self.frame.height)
             self.dataTableView?.tableFooterView = UIView()
             
             self.data = m.options!
@@ -85,6 +85,7 @@ class ExamineDetailViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         self.dataTableView = UITableView()
+        self.dataTableView?.isScrollEnabled = false
         self.dataTableView?.rowHeight = 40
         self.dataTableView?.register(UINib.init(nibName: "ExamineOptionViewCell", bundle: nil), forCellReuseIdentifier: "ExamineOptionViewCell")
         

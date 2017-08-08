@@ -70,6 +70,8 @@ class LoginViewController: UIViewController {
                 
                 SVProgressHUD.showError(withStatus: error?.localizedDescription)
                 
+                SVProgressHUD.dismiss()
+                
                 return
             }
             guard let dict = success as? Dictionary<String, Any> else {

@@ -11,5 +11,5 @@ target 'Test' do
   pod 'TYAttributedLabel'
   pod 'FMDB'
   pod 'MJRefresh'
-  
+  pod 'YYText'
 end

@@ -9,7 +9,7 @@
 import UIKit
 import MJExtension
 
-private let identifier = "ExamineDetailViewCell"
+private let identifier = "ExamineDetailsViewCell"
 
 class ExamineDetailViewController: UICollectionViewController {
 
@@ -36,10 +36,8 @@ class ExamineDetailViewController: UICollectionViewController {
         return self.dataArray.count
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! ExamineDetailViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! ExamineDetailsViewCell
         
-        
-        cell.backgroundColor = UIColor.white
         let model = self.dataArray[indexPath.row]
         
         model.totalCount = self.dataArray.count
@@ -82,9 +80,9 @@ private extension ExamineDetailViewController {
         layout.itemSize = CGSize(width: view.frame.width, height: view.frame.height - 64)
         self.collectionView?.collectionViewLayout = layout
         
-        //self.collectionView?.register(UINib.init(nibName: "ExamineDetailViewCell", bundle: nil), forCellWithReuseIdentifier: identifier)
-        self.collectionView?.register(ExamineDetailViewCell.self, forCellWithReuseIdentifier: identifier)
-        
+        self.collectionView?.register(UINib.init(nibName: "ExamineDetailsViewCell", bundle: nil), forCellWithReuseIdentifier: identifier)
+        //self.collectionView?.register(ExamineDetailViewCell.self, forCellWithReuseIdentifier: identifier)
+
         self.collectionView?.isPagingEnabled = true
         
     }
