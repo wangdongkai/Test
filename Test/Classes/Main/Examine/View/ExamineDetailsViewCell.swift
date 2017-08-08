@@ -29,7 +29,6 @@ class ExamineDetailsViewCell: UICollectionViewCell {
         
         setupUI()
         
-        // Initialization code
     }
 
 }
