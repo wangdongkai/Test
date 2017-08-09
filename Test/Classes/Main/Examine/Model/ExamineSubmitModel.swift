@@ -32,7 +32,9 @@ class ExamineSubmitItemModel: NSObject {
     
     var exerciseId: String = ""
     var type: Int64 = 0
-    var answer: String = ""
+    var answer: String = "" 
+    var ans : String?
+    
     var correct: Int64 = 0
     
 }
