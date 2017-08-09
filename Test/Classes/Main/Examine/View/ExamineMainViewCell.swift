@@ -56,7 +56,6 @@ class ExamineMainViewCell: UITableViewCell {
         
         setupUI()
         
-        // Initialization code
     }
 
     

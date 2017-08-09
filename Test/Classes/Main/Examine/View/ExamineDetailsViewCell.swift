@@ -88,8 +88,22 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
         
         if indexPath.section == 1 {
             
-            let cell = tableView.cellForRow(at: indexPath) as! ExamineOptionViewCell
-            cell.answerButton.isSelected = true
+            if self.model!.type == 2 {
+                
+                let option = self.model!.options?[indexPath.row]
+                option?.optionState = !option!.optionState
+                
+                tableView.reloadRows(at: [indexPath], with: .none)
+           
+            } else {
+                
+                let cell = tableView.cellForRow(at: indexPath) as! ExamineOptionViewCell
+                cell.answerButton.isSelected = true
+                let option = self.model!.options?[indexPath.row]
+                option?.optionState = true
+
+            }
+           
             
         }
     }
@@ -98,9 +112,15 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
         
         if indexPath.section == 1 {
             
-            let cell = tableView.cellForRow(at: indexPath) as! ExamineOptionViewCell
-            cell.answerButton.isSelected = false
+            if self.model!.type != 2 {
+                
+                let cell = tableView.cellForRow(at: indexPath) as! ExamineOptionViewCell
+                let option = self.model!.options?[indexPath.row]
+                option?.optionState = false
+                cell.answerButton.isSelected = false
 
+            }
+            
         }
     }
 }
