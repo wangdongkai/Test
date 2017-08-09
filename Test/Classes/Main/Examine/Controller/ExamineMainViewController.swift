@@ -69,7 +69,7 @@ private extension ExamineMainViewController {
     
     func setupHeader() {
         
-        let header = MJRefreshStateHeader(refreshingTarget: self, refreshingAction: "setupNetwork")
+        let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: "setupNetwork")
         header?.setTitle("下拉刷新", for: .idle)
         header?.setTitle("释放以更新", for: .pulling)
         header?.setTitle("加载中", for: .refreshing)
@@ -81,7 +81,6 @@ private extension ExamineMainViewController {
     
    @objc func setupNetwork() {
         
-        self.tableView.mj_header.endRefreshing()
         if self.modelArray.count != 0 {
             self.modelArray.removeAll()
    
@@ -100,9 +99,12 @@ private extension ExamineMainViewController {
             }
             
             weakSelf?.tableView.reloadData()
-            
+            weakSelf?.tableView.mj_header.endRefreshing()
+
         }) { (_, error: Error) in
             
+            weakSelf?.tableView.mj_header.endRefreshing()
+
             print(error)
 
         }

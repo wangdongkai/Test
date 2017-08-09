@@ -8,6 +8,7 @@
 
 import UIKit
 import MJExtension
+import MJRefresh
 
 private let identifier = "ExamineDetailsViewCell"
 
@@ -108,12 +109,21 @@ private extension ExamineDetailViewController {
 
         self.collectionView?.isPagingEnabled = true
         
+        let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: "setupNetwork")
+        header?.setTitle("下拉刷新", for: .idle)
+        header?.setTitle("释放以更新", for: .pulling)
+        header?.setTitle("加载中", for: .refreshing)
+        self.collectionView!.mj_header = header
+        header?.beginRefreshing()
+
     }
     
     func setupNetwork() {
         
         
         let param = ["groupId": model?.groupId! ?? "", "exerciseRecordId": model?.exerciseRecordId! ?? "", "getExercise": true, "getAnswer": true] as [String : Any]
+        
+        weak var weakSelf = self
         
         NetworkTool.shareInstance.get("http://www.qxueyou.com/qxueyou/exercise/Exercise/examExercise", parameters: param, progress: nil, success: { (_, data: Any?) in
             
@@ -124,13 +134,19 @@ private extension ExamineDetailViewController {
 
             let detailModel: ExamineDetailModel = ExamineDetailModel.mj_object(withKeyValues: dict)
                         
-            self.dataArray = detailModel.items!
+            weakSelf?.dataArray = detailModel.items!
             
-            self.collectionView?.reloadData()
+            weakSelf?.collectionView?.reloadData()
+            
+            weakSelf?.collectionView?.mj_header.endRefreshing()
+            
             
         }) { (_, error: Error) in
             
             print(error)
+            
+            weakSelf?.collectionView?.mj_header.endRefreshing()
+
         }
     }
 }
