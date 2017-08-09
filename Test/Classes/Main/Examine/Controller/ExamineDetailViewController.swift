@@ -56,6 +56,7 @@ class ExamineDetailViewController: UICollectionViewController {
         let point = self.view.convert(self.collectionView!.center, to: self.collectionView)
         let index = self.collectionView?.indexPathForItem(at: point)
         
+        self.submitModel.currTitleNum = index!.item
         
     }
 
@@ -75,8 +76,7 @@ class ExamineDetailViewController: UICollectionViewController {
                 self.submitModel.items.append(cell.submitModel)
 
             }
-            print(cell.submitModel.answer)
-            print(cell.submitModel.correct)
+            
         }
         
     }
@@ -162,43 +162,34 @@ private extension ExamineDetailViewController {
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         self.submitModel.submitTime = formatter.string(from: Date())
         
-        // MAR: - 提交答案请求
-        
-         /*
-         ["exerciseGroupId": "8a2aa19d5d9cd52a015d9d2aa708143d",
-         "subjectId": "",
-         "exerciseRecordId": "",
-         "exerciseExtendId": "",
-         "currTitleNum": 1,
-         "status": 0,
-         "type": 4,
-         "doCount": 1,
-         "correctCount": 1,
-         "allCount": 174,
-         "submitTime": "2017-08-07 12:12:12",
-         "submitType": 0,
-         "items": [
-         ["exerciseId": "8a29e1345d9cd620015d9d2b198f4b2b", "type": 1, "answer": "C", "correct": 1]
-         ]] as [String : Any]
-         
-        
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: p, options: JSONSerialization.WritingOptions(rawValue: 0)) else {
-         
-         
+        let dict = self.submitModel.mj_keyValues()
+    
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: dict!, options: .prettyPrinted) else {
+            
             return
-        
         }
         
-        var json = NSString.init(data: jsonData, encoding: 0)
+        let encoding = String(data: jsonData, encoding: .utf8)?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         
-        var url = "http://www.qxueyou.com/qxueyou/exercise/Exercise/exerAnswers/\(json)"
+        let url = "http://www.qxueyou.com/qxueyou/exercise/Exercise/exerAnswers?answers=\(encoding!)"
         
-        NetworkTool.shareInstance.request(method: .GET, url: url, param: []) { (_ , success: Any?, error: Error?) in
+        NetworkTool.shareInstance.request(method: .POST, url: url, param: nil) { (_, success: Any?, error: Error?) in
             
-            print(success)
-            print(error)
+            guard let data = success as? [String: Any] else {
+                
+                return
+            }
+            
+            let isSuccess = data["success"] as! Bool
+            let msg = data["msg"] as! String
+            
+            if isSuccess == true {
+                
+                print("成功, \(msg)")
+            }
             
         }
-        */
+       
+        
     }
 }
