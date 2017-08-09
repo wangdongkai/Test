@@ -68,6 +68,8 @@ class ExamineDetailViewController: UICollectionViewController {
         
         if cell.submitModel.answer.characters.count > 0 {
             
+            self.submitModel.currTitleNum = index!.item
+            
             if self.submitModel.items.contains(cell.submitModel) == false{
                 
                 self.submitModel.items.append(cell.submitModel)
@@ -142,9 +144,27 @@ private extension ExamineDetailViewController {
     
     @objc func submitClick() {
     
+        self.submitModel.allCount = self.model!.allCount
+        self.submitModel.doCount = self.submitModel.items.count
+        for i in 0..<self.submitModel.items.count {
+            
+            let item = self.submitModel.items[i]
+            if item.correct == 1 {
+                
+                self.submitModel.correctCount += 1
+            }
+        }
+        self.submitModel.exerciseGroupId = self.dataArray[0].exerciseGroupId
+        self.submitModel.exerciseRecordId = self.dataArray[0].exerciseRecordId
+        self.submitModel.exerciseExtendId = self.dataArray[0].exerciseExtendId
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        self.submitModel.submitTime = formatter.string(from: Date())
+        
         // MAR: - 提交答案请求
         
-         let p =
+         /*
          ["exerciseGroupId": "8a2aa19d5d9cd52a015d9d2aa708143d",
          "subjectId": "",
          "exerciseRecordId": "",
@@ -168,7 +188,7 @@ private extension ExamineDetailViewController {
             return
         
         }
-         /*
+        
         var json = NSString.init(data: jsonData, encoding: 0)
         
         var url = "http://www.qxueyou.com/qxueyou/exercise/Exercise/exerAnswers/\(json)"

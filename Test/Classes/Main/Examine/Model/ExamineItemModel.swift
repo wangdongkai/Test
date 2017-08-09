@@ -46,6 +46,9 @@ class ExamineItemModel: NSObject {
     
     var totalCount: Int = 0
     var currentCount: Int = 0
+    var exerciseGroupId: String?
+    var exerciseRecordId: String?
+    var exerciseExtendId: String?
     
     override func mj_keyValuesDidFinishConvertingToObject() {
         if self.options?.isEmpty == false {

@@ -19,7 +19,7 @@ class ExamineSubmitModel: NSObject {
     var type: Int = 4
     var doCount: Int = 0
     var correctCount: Int = 0
-    var allCount: Int = 0
+    var allCount: Int64 = 0
     var submitTime: String?
     var submitType: Int = 0
     
