@@ -14,6 +14,8 @@ private let identifier = "ExamineDetailsViewCell"
 class ExamineDetailViewController: UICollectionViewController {
 
     var model: ExamineMainModel?
+    var submitModel: ExamineSubmitModel = ExamineSubmitModel()
+    
     var dataArray: [ExamineItemModel] = [ExamineItemModel]()
     
     override func viewDidLoad() {
@@ -51,11 +53,31 @@ class ExamineDetailViewController: UICollectionViewController {
 
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
+        let point = self.view.convert(self.collectionView!.center, to: self.collectionView)
+        let index = self.collectionView?.indexPathForItem(at: point)
+        
         
     }
-    // MARK: UICollectionViewDelegate
 
-    
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        
+        let point = self.view.convert(self.collectionView!.center, to: self.collectionView)
+        let index = self.collectionView?.indexPathForItem(at: point)
+        
+        let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
+        
+        if cell.submitModel.answer.characters.count > 0 {
+            
+            if self.submitModel.items.contains(cell.submitModel) == false{
+                
+                self.submitModel.items.append(cell.submitModel)
+
+            }
+            print(cell.submitModel.answer)
+            print(cell.submitModel.correct)
+        }
+        
+    }
 }
 
 private extension ExamineDetailViewController {

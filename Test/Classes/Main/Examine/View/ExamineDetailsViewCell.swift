@@ -11,6 +11,8 @@ import UIKit
 class ExamineDetailsViewCell: UICollectionViewCell {
 
     @IBOutlet weak var dataTableView: UITableView!
+    var submitModel: ExamineSubmitItemModel = ExamineSubmitItemModel()
+    
     var model: ExamineItemModel? {
         
         didSet {
@@ -18,6 +20,8 @@ class ExamineDetailsViewCell: UICollectionViewCell {
                 
                 return
             }
+            submitModel.exerciseId = model!.exerciseId!
+            submitModel.type = model!.type
             
             self.dataTableView.reloadData()
 
@@ -88,10 +92,25 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
         
         if indexPath.section == 1 {
             
-            if self.model!.type == 2 {
+            if self.model!.type == 2 { //多选
                 
                 let option = self.model!.options?[indexPath.row]
                 option?.optionState = !option!.optionState
+                
+                if option?.optionState == true {
+                    
+                    if self.submitModel.answer.contains(option!.optionOrder!) == false {
+                        
+                        self.submitModel.answer.append(option!.optionOrder!)
+                    }
+                } else {
+                    
+                    if self.submitModel.answer.contains(option!.optionOrder!) {
+                        
+                        self.submitModel.answer = self.submitModel.answer.replacingOccurrences(of: option!.optionOrder!, with: "")
+                    }
+                    
+                }
                 
                 tableView.reloadRows(at: [indexPath], with: .none)
            
@@ -102,9 +121,20 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
                 let option = self.model!.options?[indexPath.row]
                 option?.optionState = true
 
+                self.submitModel.answer = (option?.optionOrder)!
+                
             }
            
-            
+            if self.submitModel.answer != self.model!.ans! {
+                
+                self.submitModel.correct = 0
+                
+            } else {
+                
+                self.submitModel.correct = 1
+                
+            }
+
         }
     }
     

@@ -29,7 +29,15 @@ class ExamineItemModel: NSObject {
     }
     var typeString: String?
     var updateTime: Int64?
-    var answer: String?
+    var answer: String? {
+        
+        didSet {
+            
+            ans = answer?.replacingOccurrences(of: ",", with: "")
+        }
+    }
+    var ans: String?
+    
     var options: [ExamineOptionModel]?
     var imgs: [ExamineImgModel]?
     var analisisResult: [String: Any]?
