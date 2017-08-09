@@ -20,6 +20,12 @@ class ExamineDetailsViewCell: UICollectionViewCell {
                 
                 return
             }
+            
+            if submitModel != nil {
+                
+                submitModel = ExamineSubmitItemModel()
+            }
+            
             submitModel.exerciseId = model!.exerciseId!
             submitModel.type = model!.type
             

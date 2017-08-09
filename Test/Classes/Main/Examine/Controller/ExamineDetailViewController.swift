@@ -68,6 +68,8 @@ class ExamineDetailViewController: UICollectionViewController {
         
         let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
         
+        print(cell.submitModel)
+        
         if cell.submitModel.answer.characters.count > 0 {
             
             self.submitModel.currTitleNum = index!.item
