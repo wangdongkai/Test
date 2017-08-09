@@ -26,6 +26,9 @@ class ExamineDetailViewController: UICollectionViewController {
         
         setupNetwork()
         
+        collectionView?.showsVerticalScrollIndicator = false
+        collectionView?.showsVerticalScrollIndicator = false
+        
     }
 
     // MARK: UICollectionViewDataSource
@@ -56,12 +59,14 @@ class ExamineDetailViewController: UICollectionViewController {
         
         let point = self.view.convert(self.collectionView!.center, to: self.collectionView)
         let index = self.collectionView?.indexPathForItem(at: point)
-        
+        let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
+
         self.submitModel.currTitleNum = index!.item
         
     }
 
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        
         
         let point = self.view.convert(self.collectionView!.center, to: self.collectionView)
         let index = self.collectionView?.indexPathForItem(at: point)
@@ -111,13 +116,6 @@ private extension ExamineDetailViewController {
 
         self.collectionView?.isPagingEnabled = true
         
-        let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: "setupNetwork")
-        header?.setTitle("下拉刷新", for: .idle)
-        header?.setTitle("释放以更新", for: .pulling)
-        header?.setTitle("加载中", for: .refreshing)
-        self.collectionView!.mj_header = header
-        header?.beginRefreshing()
-
     }
     
     func setupNetwork() {
@@ -140,14 +138,10 @@ private extension ExamineDetailViewController {
             
             weakSelf?.collectionView?.reloadData()
             
-            weakSelf?.collectionView?.mj_header.endRefreshing()
-            
-            
         }) { (_, error: Error) in
             
             print(error)
             
-            weakSelf?.collectionView?.mj_header.endRefreshing()
 
         }
     }
