@@ -20,6 +20,7 @@ class NetworkTool: AFHTTPSessionManager {
        
         let tools = NetworkTool()
         tools.responseSerializer.acceptableContentTypes?.insert("text/html")
+        tools.responseSerializer.acceptableContentTypes?.insert("text/plain")
         
         if let cookie = UserDefaults.standard.object(forKey: "Cookie") as! String? {
             

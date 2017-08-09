@@ -88,9 +88,19 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
         
         if indexPath.section == 1 {
             
+            let cell = tableView.cellForRow(at: indexPath) as! ExamineOptionViewCell
+            cell.answerButton.isSelected = true
             
         }
     }
     
-    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        
+        if indexPath.section == 1 {
+            
+            let cell = tableView.cellForRow(at: indexPath) as! ExamineOptionViewCell
+            cell.answerButton.isSelected = false
+
+        }
+    }
 }
