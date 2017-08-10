@@ -58,7 +58,7 @@ extension ExamineStaticssticsViewController: UICollectionViewDelegate, UICollect
         
         for view in cell.contentView.subviews {
             
-            if type(of: view) == UIButton.self || type(of: view) == UILabel.self {
+            if type(of: view) == UIButton.self || type(of: view) == UILabel.self || type(of: view) == UIImageView.self{
                 
                 view.removeFromSuperview()
             }
@@ -69,15 +69,25 @@ extension ExamineStaticssticsViewController: UICollectionViewDelegate, UICollect
         button.center = cell.contentView.center
         button.setImage(UIImage(named: "circle"), for: .normal)
 
-        let label = UILabel(frame: button.bounds)
-        label.center = button.center
-        label.textColor = UIColor.black
-        label.font = UIFont.systemFont(ofSize: 10.0)
-        label.textAlignment = .center
-        label.text = "1000"
-        
+        if indexPath.row == 100 {
+            
+            let image = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+            image.center = button.center
+            image.image = UIImage(named: "pen")
+            cell.contentView.addSubview(image)
+
+        } else {
+            
+            let label = UILabel(frame: button.bounds)
+            label.center = button.center
+            label.textColor = UIColor.black
+            label.font = UIFont.systemFont(ofSize: 10.0)
+            label.textAlignment = .center
+            label.text = "\(indexPath.row)"
+            cell.contentView.addSubview(label)
+
+        }
         cell.contentView.addSubview(button)
-        cell.contentView.addSubview(label)
         
         return cell
     }
