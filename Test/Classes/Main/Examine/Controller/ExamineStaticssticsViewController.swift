@@ -45,6 +45,8 @@ extension ExamineStaticssticsViewController: UICollectionViewDelegate, UICollect
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
         
+        var itemModel: ExamineSubmitItemModel = ExamineSubmitItemModel()
+        
         for view in cell.contentView.subviews {
             
             if type(of: view) == UIButton.self || type(of: view) == UILabel.self || type(of: view) == UIImageView.self{
@@ -56,20 +58,21 @@ extension ExamineStaticssticsViewController: UICollectionViewDelegate, UICollect
         let button = UIButton(type: .custom)
         button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         button.center = cell.contentView.center
-        button.setImage(UIImage(named: "circle"), for: .normal)
+        let image = itemModel.ans == nil ? UIImage(named: "circle") : UIImage(named: "circle_selected")
+        button.setImage(image, for: .normal)
 
         if indexPath.row == 100 {
             
             let image = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
             image.center = button.center
-            image.image = UIImage(named: "pen")
+            image.image = itemModel.ans == nil ? UIImage(named: "pen") : UIImage(named: "pen_white")
             cell.contentView.addSubview(image)
 
         } else {
             
             let label = UILabel(frame: button.bounds)
             label.center = button.center
-            label.textColor = UIColor.black
+            label.textColor = itemModel.ans == nil ? UIColor.black : UIColor.white
             label.font = UIFont.systemFont(ofSize: 10.0)
             label.textAlignment = .center
             label.text = "\(indexPath.row + 1)"

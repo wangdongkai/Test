@@ -129,7 +129,14 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
 
                 self.submitModel.answer = (option?.optionOrder)!
                 
+                print(self.next?.next)
                 
+                if self.next!.next!.next!.isKind(of: ExamineDetailViewController.self) {
+                    
+                    let vc = self.next?.next?.next as! ExamineDetailViewController
+                    vc.index = (self.model?.currentCount)! + 1
+                }
+
             }
            
             if self.submitModel.answer != self.model!.ans! {

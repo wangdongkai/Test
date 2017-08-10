@@ -66,7 +66,6 @@ class ExamineDetailViewController: UICollectionViewController {
 
         cell.model = model
         
-        
         return cell
     }
     
@@ -83,7 +82,6 @@ class ExamineDetailViewController: UICollectionViewController {
             if self.submitModel.items.contains(cell.submitModel) == false{
                 
                 self.submitModel.items.append(cell.submitModel)
-                
             }
             
         }
@@ -109,7 +107,6 @@ class ExamineDetailViewController: UICollectionViewController {
             if self.submitModel.items.contains(cell.submitModel) == false{
                 
                 self.submitModel.items.append(cell.submitModel)
-
             }
             
         }
