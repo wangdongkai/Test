@@ -21,6 +21,8 @@ class ExamineDetailViewController: UICollectionViewController {
     
     fileprivate let button: UIButton = UIButton(type: .custom)
     
+    fileprivate var timer: DispatchSourceTimer?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -48,6 +50,7 @@ class ExamineDetailViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! ExamineDetailsViewCell
         
+        
         let model = self.dataArray[indexPath.row]
         
         model.totalCount = self.dataArray.count
@@ -58,7 +61,7 @@ class ExamineDetailViewController: UICollectionViewController {
         
         return cell
     }
-
+    
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
         let point = self.view.convert(self.collectionView!.center, to: self.collectionView)
@@ -104,6 +107,7 @@ class ExamineDetailViewController: UICollectionViewController {
         }
         
     }
+ 
 }
 
 private extension ExamineDetailViewController {
@@ -144,19 +148,33 @@ private extension ExamineDetailViewController {
         self.button.backgroundColor = UIColor.colorWithHex(color: "bfbfbf", alpha: 1.0)
         self.button.titleLabel?.font = UIFont.systemFont(ofSize: 10.0)
         
-        let h = self.model!.exerciseTimer / 3600
-        let m = (self.model!.exerciseTimer - h * 3600) / 60
-        let s = self.model!.exerciseTimer - h * 3600 - m * 60
-        
-        self.button.setTitle("\(h):\(m):\(s)", for: .normal)
-        self.button.addTarget(self, action: "", for: .touchUpInside)
+        //self.button.addTarget(self, action: "", for: .touchUpInside)
         self.view.insertSubview(self.button, aboveSubview: self.collectionView!)
         
+        timer = DispatchSource.makeTimerSource(flags: [], queue: DispatchQueue.global(qos: .default))
+        timer?.scheduleRepeating(deadline: .now(), interval: 1.0)
+        
+        weak var weakSelf = self
+        
+        timer?.setEventHandler(handler: { 
+            
+            let h = self.model!.exerciseTimer / 3600
+            let m = (self.model!.exerciseTimer - h * 3600) / 60
+            let s = self.model!.exerciseTimer - h * 3600 - m * 60
+            
+            let title = "\(h):\(m):\(s)"
+
+            weakSelf?.button.setTitle(title, for: .normal)
+            weakSelf?.model?.exerciseTimer -= 1
+
+            
+        })
+        
+        timer?.resume()
         
     }
     
     func setupNetwork() {
-        
         
         let param = ["groupId": model?.groupId! ?? "", "exerciseRecordId": model?.exerciseRecordId! ?? "", "getExercise": true, "getAnswer": true] as [String : Any]
         
