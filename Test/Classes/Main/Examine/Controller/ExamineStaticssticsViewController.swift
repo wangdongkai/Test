@@ -10,22 +10,8 @@ import UIKit
 
 class ExamineStaticssticsViewController: UIViewController {
 
-    var submitModel: ExamineSubmitModel? {
-        
-        didSet {
-            
-            guard let m = submitModel else {
-                
-                return
-            }
-            
-            totalLabel.text = "\(m.doCount)/\(m.allCount)"
-            doLabel.text = "已做 \(m.doCount)"
-            undoLabel.text = "未做 \(m.allCount - m.doCount)"
-            
-        }
-    }
-
+    var submitModel: ExamineSubmitModel = ExamineSubmitModel()
+    
     @IBOutlet weak var listCollection: UICollectionView!
     @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var doLabel: UILabel!
@@ -37,7 +23,10 @@ class ExamineStaticssticsViewController: UIViewController {
         title = "答题卡"
         setupCollection()
         
-        
+        totalLabel.text = "\(self.submitModel.currTitleNum)/\(self.submitModel.allCount)"
+        doLabel.text = "已做 \(self.submitModel.doCount)"
+        undoLabel.text = "未做 \(self.submitModel.allCount - self.submitModel.doCount)"
+
         // Do any additional setup after loading the view.
     }
 

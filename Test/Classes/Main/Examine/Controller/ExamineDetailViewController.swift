@@ -289,8 +289,19 @@ private extension ExamineDetailViewController {
     // 计时
     @objc func staticstisClick() {
         
+        self.submitModel.allCount = self.model!.allCount
+        self.submitModel.doCount = self.submitModel.items.count
+        for i in 0..<self.submitModel.items.count {
+            
+            let item = self.submitModel.items[i]
+            if item.correct == 1 {
+                
+                self.submitModel.correctCount += 1
+            }
+        }
+
         let vc = ExamineStaticssticsViewController.init(nibName: "ExamineStaticssticsViewController", bundle: Bundle.main)
-        //vc.submitModel = self.submitModel
+        vc.submitModel = self.submitModel
         self.navigationController?.pushViewController(vc, animated: true)
         
         
