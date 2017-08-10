@@ -145,10 +145,10 @@ private extension ExamineDetailViewController {
         self.button.layer.cornerRadius = 25.0
         self.button.layer.masksToBounds = false
         self.button.setTitleColor(UIColor.white, for: .normal)
-        self.button.backgroundColor = UIColor.colorWithHex(color: "bfbfbf", alpha: 1.0)
+        self.button.backgroundColor = UIColor.colorWithHex(color: "2196F3", alpha: 1.0)
         self.button.titleLabel?.font = UIFont.systemFont(ofSize: 10.0)
         
-        //self.button.addTarget(self, action: "", for: .touchUpInside)
+        self.button.addTarget(self, action: "staticstisClick", for: .touchUpInside)
         self.view.insertSubview(self.button, aboveSubview: self.collectionView!)
         
         timer = DispatchSource.makeTimerSource(flags: [], queue: DispatchQueue.global(qos: .default))
@@ -204,15 +204,16 @@ private extension ExamineDetailViewController {
 
 private extension ExamineDetailViewController {
     
+    // 收藏
     @objc func collectClick() {
         
         
     }
     
+    // 返回
     @objc func backClick() {
         
-        
-        let alertVC = UIAlertController(title: "提示", message: "您已经回答了\(self.submitModel.doCount)道题(共\(self.model?.allCount)题)，您打算？", preferredStyle: .alert)
+        let alertVC = UIAlertController(title: "提示", message: "您已经回答了\(self.submitModel.doCount)道题(共\(self.model!.allCount)题)，您打算？", preferredStyle: .alert)
         
         weak var weakSelf = self
         
@@ -233,6 +234,7 @@ private extension ExamineDetailViewController {
         self.present(alertVC, animated: true, completion: nil)
     }
     
+    // 提交
     @objc func submitClick() {
     
         self.submitModel.allCount = self.model!.allCount
@@ -281,6 +283,16 @@ private extension ExamineDetailViewController {
             
         }
        
+        
+    }
+    
+    // 计时
+    @objc func staticstisClick() {
+        
+        let vc = ExamineStaticssticsViewController.init(nibName: "ExamineStaticssticsViewController", bundle: Bundle.main)
+        //vc.submitModel = self.submitModel
+        self.navigationController?.pushViewController(vc, animated: true)
+        
         
     }
 }
