@@ -21,7 +21,19 @@ class ExamineMainModel: NSObject {
     // 总数
     var allCount: Int64 = 0
     // 考试时间
-    var exerciseTime: NSNumber?
+    var exerciseTime: NSNumber? {
+        
+        didSet {
+            
+            guard let time = exerciseTime else {
+                
+                return
+            }
+            
+            exerciseTimer = time.intValue * 60
+        }
+    }
+    var exerciseTimer: Int = 0
     // 答题更新时间
     var updateTime: NSNumber? {
         didSet {

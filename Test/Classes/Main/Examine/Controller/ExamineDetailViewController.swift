@@ -19,10 +19,14 @@ class ExamineDetailViewController: UICollectionViewController {
     
     var dataArray: [ExamineItemModel] = [ExamineItemModel]()
     
+    fileprivate let button: UIButton = UIButton(type: .custom)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setup()
+        
+        setupButton()
         
         setupNetwork()
         
@@ -60,6 +64,18 @@ class ExamineDetailViewController: UICollectionViewController {
         let point = self.view.convert(self.collectionView!.center, to: self.collectionView)
         let index = self.collectionView?.indexPathForItem(at: point)
         let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
+
+        if cell.submitModel.answer.characters.count > 0 {
+            
+            self.submitModel.currTitleNum = index!.item
+            
+            if self.submitModel.items.contains(cell.submitModel) == false{
+                
+                self.submitModel.items.append(cell.submitModel)
+                
+            }
+            
+        }
 
         self.submitModel.currTitleNum = index!.item
         
@@ -103,7 +119,7 @@ private extension ExamineDetailViewController {
             UIBarButtonItem.barButtonItemWith(image: "submit", target: self, action: #selector(ExamineDetailViewController.submitClick)),
             UIBarButtonItem.barButtonItemWith(image: "star", target: self, action: #selector(ExamineDetailViewController.collectClick))
         ]
-        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem.barButtonItemWith(image: "back", target: self, action: #selector(ExamineDetailViewController.backClick))
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0.0
@@ -115,6 +131,27 @@ private extension ExamineDetailViewController {
         self.collectionView?.register(UINib.init(nibName: "ExamineDetailsViewCell", bundle: nil), forCellWithReuseIdentifier: identifier)
 
         self.collectionView?.isPagingEnabled = true
+        
+        
+    }
+    
+    func setupButton() {
+        
+        self.button.frame = CGRect(x: self.view.frame.width - 50 - 15, y: self.view.frame.height - 100, width: 50, height: 50)
+        self.button.layer.cornerRadius = 25.0
+        self.button.layer.masksToBounds = false
+        self.button.setTitleColor(UIColor.white, for: .normal)
+        self.button.backgroundColor = UIColor.colorWithHex(color: "bfbfbf", alpha: 1.0)
+        self.button.titleLabel?.font = UIFont.systemFont(ofSize: 10.0)
+        
+        let h = self.model!.exerciseTimer / 3600
+        let m = (self.model!.exerciseTimer - h * 3600) / 60
+        let s = self.model!.exerciseTimer - h * 3600 - m * 60
+        
+        self.button.setTitle("\(h):\(m):\(s)", for: .normal)
+        self.button.addTarget(self, action: "", for: .touchUpInside)
+        self.view.insertSubview(self.button, aboveSubview: self.collectionView!)
+        
         
     }
     
@@ -152,6 +189,30 @@ private extension ExamineDetailViewController {
     @objc func collectClick() {
         
         
+    }
+    
+    @objc func backClick() {
+        
+        
+        let alertVC = UIAlertController(title: "提示", message: "您已经回答了\(self.submitModel.doCount)道题(共\(self.model?.allCount)题)，您打算？", preferredStyle: .alert)
+        
+        weak var weakSelf = self
+        
+        let actionNext = UIAlertAction(title: "下次继续", style: .default) { (_) in
+            
+            weakSelf?.navigationController?.popViewController(animated: true)
+            
+        }
+        
+        let actionSubmit = UIAlertAction(title: "提交", style: .destructive) { (_) in
+            
+            
+        }
+        
+        alertVC.addAction(actionNext)
+        alertVC.addAction(actionSubmit)
+        
+        self.present(alertVC, animated: true, completion: nil)
     }
     
     @objc func submitClick() {

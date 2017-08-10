@@ -34,7 +34,7 @@ class ExamineMainViewCell: UITableViewCell {
                 
                 statusButton.layer.borderColor = UIColor.orange.cgColor
                 statusButton.setTitleColor(UIColor.orange, for: .normal)
-                statusButton.setTitle("未提交", for: .normal)
+                statusButton.setTitle("未开始", for: .normal)
 
             } else if m.buttonStatus == 1 { // 已提交
                 
