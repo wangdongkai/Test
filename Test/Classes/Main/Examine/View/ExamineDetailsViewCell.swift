@@ -120,7 +120,7 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
                 
                 tableView.reloadRows(at: [indexPath], with: .none)
            
-            } else {
+            } else {  //单选
                 
                 let cell = tableView.cellForRow(at: indexPath) as! ExamineOptionViewCell
                 cell.answerButton.isSelected = true
@@ -128,6 +128,7 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
                 option?.optionState = true
 
                 self.submitModel.answer = (option?.optionOrder)!
+                
                 
             }
            

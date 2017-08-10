@@ -23,6 +23,14 @@ class ExamineDetailViewController: UICollectionViewController {
     
     fileprivate var timer: DispatchSourceTimer?
     
+    var index: Int = 0 {
+        didSet {
+            
+            let indexPath = IndexPath(item: index, section: 0)
+            self.collectionView?.scrollToItem(at: indexPath, at: .right, animated: true)
+            
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 

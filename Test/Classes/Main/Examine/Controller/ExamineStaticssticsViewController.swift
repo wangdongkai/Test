@@ -38,7 +38,7 @@ extension ExamineStaticssticsViewController: UICollectionViewDelegate, UICollect
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return 1000
+        return Int(self.submitModel.allCount)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -72,7 +72,7 @@ extension ExamineStaticssticsViewController: UICollectionViewDelegate, UICollect
             label.textColor = UIColor.black
             label.font = UIFont.systemFont(ofSize: 10.0)
             label.textAlignment = .center
-            label.text = "\(indexPath.row)"
+            label.text = "\(indexPath.row + 1)"
             cell.contentView.addSubview(label)
 
         }
@@ -83,6 +83,10 @@ extension ExamineStaticssticsViewController: UICollectionViewDelegate, UICollect
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        let vc = self.navigationController?.childViewControllers[2] as! ExamineDetailViewController
+        vc.index = indexPath.row
+        
+        self.navigationController?.popViewController(animated: true)
         
     }
 }
