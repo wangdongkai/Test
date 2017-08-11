@@ -11,6 +11,8 @@ import UIKit
 class ExamineStaticssticsViewController: UIViewController {
 
     var submitModel: ExamineSubmitModel = ExamineSubmitModel()
+    var submitDataArray: [ExamineItemModel] = [ExamineItemModel]()
+    var groupId: String?
     
     @IBOutlet weak var listCollection: UICollectionView!
     @IBOutlet weak var totalLabel: UILabel!
@@ -30,9 +32,7 @@ class ExamineStaticssticsViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-   
-    
-}
+   }
 
 extension ExamineStaticssticsViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -106,4 +106,48 @@ private extension ExamineStaticssticsViewController {
         layout.minimumLineSpacing = 10
 
     }
+}
+
+private extension ExamineStaticssticsViewController {
+    
+    // 重做
+    @IBAction func redoClick(_ sender: UIButton) {
+        
+        guard let groupId = self.groupId else {
+            
+            return
+        }
+        
+        let url = "http://www.qxueyou.com/qxueyou/exercise/Exercise/updateNewExerRecordNew"
+
+        NetworkTool.shareInstance.request(method: .GET, url: url, param: ["groupId": groupId]) { (_, success: Any?, error: Error?) in
+            
+            print(success)
+            print(error)
+            
+            guard let data = success as? [String: Any] else {
+                
+                return
+            }
+            
+            let isSuccess = data["success"] as! Bool
+            let msg = data["msg"] as! String
+            
+            if isSuccess == true {
+                
+                print("成功, \(msg)")
+            }
+            
+        }
+
+    }
+    
+    // 提交
+    @IBAction func submitClick(_ sender: UIButton) {
+        
+       let vc = self.navigationController?.childViewControllers[2]
+        
+    }
+    
+
 }

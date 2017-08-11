@@ -47,10 +47,22 @@ class ExamineMainViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let detailVC = ExamineDetailViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        //detailVC.model = self.modelArray[indexPath.row]
-        detailVC.model = self.modelArray[indexPath.row]
-        navigationController!.pushViewController(detailVC, animated: true)
+        let model = self.modelArray[indexPath.row]
+        
+        if model.buttonStatus == 1 { //已提交
+            let detailVC = ExamineDetailViewController(collectionViewLayout: UICollectionViewFlowLayout())
+            detailVC.model = self.modelArray[indexPath.row]
+            navigationController!.pushViewController(detailVC, animated: true)
+            
+        } else {
+            
+            let detailVC = ExamineDetailViewController(collectionViewLayout: UICollectionViewFlowLayout())
+            detailVC.model = self.modelArray[indexPath.row]
+            navigationController!.pushViewController(detailVC, animated: true)
+        }
+        
+        
+        
     }
 }
 private extension ExamineMainViewController {
@@ -75,7 +87,6 @@ private extension ExamineMainViewController {
         header?.setTitle("加载中", for: .refreshing)
         tableView.mj_header = header
         header?.beginRefreshing()
-        
         
     }
     

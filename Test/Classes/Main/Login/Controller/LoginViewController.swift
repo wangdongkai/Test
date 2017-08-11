@@ -66,6 +66,7 @@ class LoginViewController: UIViewController {
             
             SVProgressHUD.dismiss()
             
+            
             if let _ = error {
                 
                 SVProgressHUD.showError(withStatus: error?.localizedDescription)
@@ -78,6 +79,22 @@ class LoginViewController: UIViewController {
                 
                 return
             }
+            
+            print(dict)
+            
+             let resultMsg = dict["resultMsg"] as? String
+            
+            if resultMsg != nil {
+                
+                let alertVC = UIAlertController(title: "提示", message: "\(resultMsg!)", preferredStyle: .alert)
+                let action = UIAlertAction(title: "确定", style: .default, handler: nil)
+                alertVC.addAction(action)
+                
+                self.present(alertVC, animated: true, completion: nil)
+                
+                return
+            }
+            
             guard let cookies = HTTPCookieStorage.shared.cookies(for: URL(string: url)!) else {
                 
                 return
