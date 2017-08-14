@@ -11,7 +11,7 @@ import UIKit
 class ExamineStaticssticsViewController: UIViewController {
 
     var submitModel: ExamineSubmitModel = ExamineSubmitModel()
-    var submitDataArray: [ExamineItemModel] = [ExamineItemModel]()
+    var dataArray: [ExamineItemModel] = [ExamineItemModel]()
     var groupId: String?
     
     @IBOutlet weak var listCollection: UICollectionView!
@@ -25,9 +25,9 @@ class ExamineStaticssticsViewController: UIViewController {
         title = "答题卡"
         setupCollection()
         
-        totalLabel.text = "\(self.submitModel.currTitleNum)/\(self.submitModel.allCount)"
-        doLabel.text = "已做 \(self.submitModel.doCount)"
-        undoLabel.text = "未做 \(self.submitModel.allCount - self.submitModel.doCount)"
+        totalLabel.text = "\(self.submitModel.currTitleNum)/\(self.dataArray.count)"
+        doLabel.text = "已做 \(self.submitModel.items.count)"
+        undoLabel.text = "未做 \(self.dataArray.count - self.submitModel.items.count)"
 
         // Do any additional setup after loading the view.
     }
@@ -38,14 +38,14 @@ extension ExamineStaticssticsViewController: UICollectionViewDelegate, UICollect
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return Int(self.submitModel.allCount)
+        return self.dataArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
         
-        var itemModel: ExamineSubmitItemModel = ExamineSubmitItemModel()
+        let itemModel = self.dataArray[indexPath.row]
         
         for view in cell.contentView.subviews {
             
@@ -58,10 +58,12 @@ extension ExamineStaticssticsViewController: UICollectionViewDelegate, UICollect
         let button = UIButton(type: .custom)
         button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         button.center = cell.contentView.center
-        let image = itemModel.ans == nil ? UIImage(named: "circle") : UIImage(named: "circle_selected")
+        let image = itemModel.ans == nil ? UIImage(named: "circle") : UIImage(named: "circle_select")
         button.setImage(image, for: .normal)
-
-        if indexPath.row == 100 {
+        cell.contentView.addSubview(button)
+        
+        
+        if indexPath.row == self.submitModel.currTitleNum {
             
             let image = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
             image.center = button.center
@@ -79,7 +81,7 @@ extension ExamineStaticssticsViewController: UICollectionViewDelegate, UICollect
             cell.contentView.addSubview(label)
 
         }
-        cell.contentView.addSubview(button)
+        
         
         return cell
     }
@@ -122,9 +124,6 @@ private extension ExamineStaticssticsViewController {
 
         NetworkTool.shareInstance.request(method: .GET, url: url, param: ["groupId": groupId]) { (_, success: Any?, error: Error?) in
             
-            print(success)
-            print(error)
-            
             guard let data = success as? [String: Any] else {
                 
                 return
@@ -135,7 +134,12 @@ private extension ExamineStaticssticsViewController {
             
             if isSuccess == true {
                 
-                print("成功, \(msg)")
+                let alertVC = UIAlertController(title: "提示", message: "\(msg)", preferredStyle: .alert)
+                let action = UIAlertAction(title: "确定", style: .default, handler: nil)
+                alertVC.addAction(action)
+                
+                self.present(alertVC, animated: true, completion: nil)
+
             }
             
         }
@@ -145,7 +149,7 @@ private extension ExamineStaticssticsViewController {
     // 提交
     @IBAction func submitClick(_ sender: UIButton) {
         
-       let vc = self.navigationController?.childViewControllers[2]
+        let vc = self.navigationController?.childViewControllers[2]
         
     }
     

@@ -18,7 +18,7 @@ class ExamineDetailViewController: UICollectionViewController {
     var submitModel: ExamineSubmitModel = ExamineSubmitModel()
     
     var dataArray: [ExamineItemModel] = [ExamineItemModel]()
-    var submitDataArray: [ExamineItemModel] = [ExamineItemModel]()
+    var submitDataArray: [[String: ExamineItemModel]] = [[String: ExamineItemModel]]()
     
     fileprivate let button: UIButton = UIButton(type: .custom)
     
@@ -66,7 +66,6 @@ class ExamineDetailViewController: UICollectionViewController {
         model.currentCount = indexPath.row
 
         cell.model = model
-        self.submitDataArray.append(cell.model!)
         
         return cell
     }
@@ -76,7 +75,7 @@ class ExamineDetailViewController: UICollectionViewController {
         let point = self.view.convert(self.collectionView!.center, to: self.collectionView)
         let index = self.collectionView?.indexPathForItem(at: point)
         let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
-
+        
         if cell.submitModel.answer.characters.count > 0 {
             
             self.submitModel.currTitleNum = index!.item
@@ -295,12 +294,10 @@ private extension ExamineDetailViewController {
     
     // 计时
     @objc func staticstisClick() {
-        
-        let model = self.dataArray[0]
-        
+                
         let vc = ExamineStaticssticsViewController.init(nibName: "ExamineStaticssticsViewController", bundle: Bundle.main)
+        vc.dataArray = self.dataArray
         vc.submitModel = self.submitModel
-        vc.groupId = model.exerciseGroupId
         self.navigationController?.pushViewController(vc, animated: true)
         
         
