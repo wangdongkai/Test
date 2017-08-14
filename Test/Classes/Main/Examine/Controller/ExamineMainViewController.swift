@@ -50,9 +50,8 @@ class ExamineMainViewController: UITableViewController {
         let model = self.modelArray[indexPath.row]
         
         if model.buttonStatus == 1 { //已提交
-            let detailVC = ExamineDetailViewController(collectionViewLayout: UICollectionViewFlowLayout())
-            detailVC.model = self.modelArray[indexPath.row]
-            navigationController!.pushViewController(detailVC, animated: true)
+           
+            
             
         } else {
             

@@ -14,6 +14,8 @@
 		5472C5941F31AFA300BDFB7E /* ExamineDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5472C5931F31AFA300BDFB7E /* ExamineDetailModel.swift */; };
 		5472C5961F31B18000BDFB7E /* ExamineItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5472C5951F31B18000BDFB7E /* ExamineItemModel.swift */; };
 		5472C5981F31B19600BDFB7E /* ExamineAnswerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5472C5971F31B19600BDFB7E /* ExamineAnswerModel.swift */; };
+		549793821F41567900D8C05A /* ExamineReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549793801F41567900D8C05A /* ExamineReportViewController.swift */; };
+		549793831F41567900D8C05A /* ExamineReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 549793811F41567900D8C05A /* ExamineReportViewController.xib */; };
 		54A860D61F341A310033C854 /* ExamineOptionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A860D41F341A310033C854 /* ExamineOptionViewCell.swift */; };
 		54A860D71F341A310033C854 /* ExamineOptionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 54A860D51F341A310033C854 /* ExamineOptionViewCell.xib */; };
 		54AC20B61F3948FE0055E28D /* ExamineDetailsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54AC20B41F3948FE0055E28D /* ExamineDetailsViewCell.swift */; };
@@ -129,6 +131,8 @@
 		5472C5931F31AFA300BDFB7E /* ExamineDetailModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamineDetailModel.swift; sourceTree = "<group>"; };
 		5472C5951F31B18000BDFB7E /* ExamineItemModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamineItemModel.swift; sourceTree = "<group>"; };
 		5472C5971F31B19600BDFB7E /* ExamineAnswerModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamineAnswerModel.swift; sourceTree = "<group>"; };
+		549793801F41567900D8C05A /* ExamineReportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamineReportViewController.swift; sourceTree = "<group>"; };
+		549793811F41567900D8C05A /* ExamineReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExamineReportViewController.xib; sourceTree = "<group>"; };
 		54A860D41F341A310033C854 /* ExamineOptionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamineOptionViewCell.swift; sourceTree = "<group>"; };
 		54A860D51F341A310033C854 /* ExamineOptionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExamineOptionViewCell.xib; sourceTree = "<group>"; };
 		54AC20B41F3948FE0055E28D /* ExamineDetailsViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamineDetailsViewCell.swift; sourceTree = "<group>"; };
@@ -509,6 +513,8 @@
 				54BEAEB01F3054570033F68C /* ExamineDetailViewController.swift */,
 				543321D91F3C3DA200028CCB /* ExamineStaticssticsViewController.swift */,
 				543321DA1F3C3DA200028CCB /* ExamineStaticssticsViewController.xib */,
+				549793801F41567900D8C05A /* ExamineReportViewController.swift */,
+				549793811F41567900D8C05A /* ExamineReportViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -742,6 +748,7 @@
 				54AC21171F3B26F20055E28D /* loading14.png in Resources */,
 				54AC210E1F3B26F20055E28D /* criticleControl_6.png in Resources */,
 				54BEAEA61F302CCB0033F68C /* ExamineMainViewCell.xib in Resources */,
+				549793831F41567900D8C05A /* ExamineReportViewController.xib in Resources */,
 				54AC21461F3B26F20055E28D /* refreshControl_4.png in Resources */,
 				54AC213C1F3B26F20055E28D /* refreshControl_21.png in Resources */,
 				54AC21451F3B26F20055E28D /* refreshControl_3.png in Resources */,
@@ -846,6 +853,7 @@
 				54BEAEB11F3054570033F68C /* ExamineDetailViewController.swift in Sources */,
 				54AC20C11F39B9EC0055E28D /* ExamineSubmitModel.swift in Sources */,
 				54A860D61F341A310033C854 /* ExamineOptionViewCell.swift in Sources */,
+				549793821F41567900D8C05A /* ExamineReportViewController.swift in Sources */,
 				5472C5921F316C2000BDFB7E /* ExamineMainModel.swift in Sources */,
 				54BEAEBC1F3094D00033F68C /* UserModel.swift in Sources */,
 				54AC20B61F3948FE0055E28D /* ExamineDetailsViewCell.swift in Sources */,

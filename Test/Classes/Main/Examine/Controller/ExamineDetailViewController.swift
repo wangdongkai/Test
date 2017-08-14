@@ -261,6 +261,12 @@ private extension ExamineDetailViewController {
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         self.submitModel.submitTime = formatter.string(from: Date())
         
+        let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
+        vc.submitModel = self.submitModel
+        vc.dataArray = self.dataArray
+        self.navigationController?.pushViewController(vc, animated: true)
+        
+        /*
         let dict = self.submitModel.mj_keyValues()
     
         guard let jsonData = try? JSONSerialization.data(withJSONObject: dict!, options: .prettyPrinted) else {
@@ -285,11 +291,14 @@ private extension ExamineDetailViewController {
             if isSuccess == true {
                 
                 print("成功, \(msg)")
+                
+                
+                
             }
             
         }
        
-        
+        */
     }
     
     // 计时
