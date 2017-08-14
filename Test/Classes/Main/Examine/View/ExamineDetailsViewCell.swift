@@ -96,6 +96,8 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        let model = self.model?.options?[indexPath.row]
+    
         if indexPath.section == 1 {
             
             if self.model!.type == 2 { //多选
@@ -108,12 +110,15 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
                     if self.submitModel.answer.contains(option!.optionOrder!) == false {
                         
                         self.submitModel.answer.append(option!.optionOrder!)
+                        self.model?.chooseAnswer?.append(option!.optionOrder!)
                     }
                 } else {
                     
                     if self.submitModel.answer.contains(option!.optionOrder!) {
                         
                         self.submitModel.answer = self.submitModel.answer.replacingOccurrences(of: option!.optionOrder!, with: "")
+                        self.model?.chooseAnswer = self.submitModel.answer.replacingOccurrences(of: option!.optionOrder!, with: "")
+                        
                     }
                     
                 }
@@ -128,8 +133,7 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
                 option?.optionState = true
 
                 self.submitModel.answer = (option?.optionOrder)!
-                
-                print(self.next?.next)
+                self.model?.chooseAnswer = (option?.optionOrder)!
                 
                 if self.next!.next!.next!.isKind(of: ExamineDetailViewController.self) {
                     

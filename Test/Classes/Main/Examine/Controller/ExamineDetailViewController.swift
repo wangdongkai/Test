@@ -303,3 +303,12 @@ private extension ExamineDetailViewController {
         
     }
 }
+
+extension ExamineDetailViewController {
+    
+    func submit() {
+        
+        submitClick()
+        
+    }
+}

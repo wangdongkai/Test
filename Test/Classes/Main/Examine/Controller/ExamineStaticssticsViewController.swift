@@ -58,7 +58,7 @@ extension ExamineStaticssticsViewController: UICollectionViewDelegate, UICollect
         let button = UIButton(type: .custom)
         button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         button.center = cell.contentView.center
-        let image = itemModel.ans == nil ? UIImage(named: "circle") : UIImage(named: "circle_select")
+        let image = itemModel.chooseAnswer == nil ? UIImage(named: "circle") : UIImage(named: "circle_select")
         button.setImage(image, for: .normal)
         cell.contentView.addSubview(button)
         
@@ -67,14 +67,14 @@ extension ExamineStaticssticsViewController: UICollectionViewDelegate, UICollect
             
             let image = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
             image.center = button.center
-            image.image = itemModel.ans == nil ? UIImage(named: "pen") : UIImage(named: "pen_white")
+            image.image = itemModel.chooseAnswer == nil ? UIImage(named: "pen") : UIImage(named: "pen_white")
             cell.contentView.addSubview(image)
 
         } else {
             
             let label = UILabel(frame: button.bounds)
             label.center = button.center
-            label.textColor = itemModel.ans == nil ? UIColor.black : UIColor.white
+            label.textColor = itemModel.chooseAnswer == nil ? UIColor.black : UIColor.white
             label.font = UIFont.systemFont(ofSize: 10.0)
             label.textAlignment = .center
             label.text = "\(indexPath.row + 1)"
@@ -149,7 +149,8 @@ private extension ExamineStaticssticsViewController {
     // 提交
     @IBAction func submitClick(_ sender: UIButton) {
         
-        let vc = self.navigationController?.childViewControllers[2]
+        let vc = self.navigationController?.childViewControllers[2] as! ExamineDetailViewController
+        vc.submit()
         
     }
     

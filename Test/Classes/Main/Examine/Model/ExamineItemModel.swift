@@ -37,6 +37,7 @@ class ExamineItemModel: NSObject {
         }
     }
     var ans: String?
+    var chooseAnswer: String?
     
     var options: [ExamineOptionModel]?
     var imgs: [ExamineImgModel]?
