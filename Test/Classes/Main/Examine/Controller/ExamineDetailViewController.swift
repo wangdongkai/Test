@@ -219,7 +219,7 @@ private extension ExamineDetailViewController {
     // 返回
     @objc func backClick() {
         
-        let alertVC = UIAlertController(title: "提示", message: "您已经回答了\(self.submitModel.doCount)道题(共\(self.model!.allCount)题)，您打算？", preferredStyle: .alert)
+        let alertVC = UIAlertController(title: "提示", message: "您已经回答了\(self.submitModel.items.count)道题(共\(self.model!.allCount)题)，您打算？", preferredStyle: .alert)
         
         weak var weakSelf = self
         
@@ -261,12 +261,6 @@ private extension ExamineDetailViewController {
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         self.submitModel.submitTime = formatter.string(from: Date())
         
-        let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
-        vc.submitModel = self.submitModel
-        vc.dataArray = self.dataArray
-        self.navigationController?.pushViewController(vc, animated: true)
-        
-        /*
         let dict = self.submitModel.mj_keyValues()
     
         guard let jsonData = try? JSONSerialization.data(withJSONObject: dict!, options: .prettyPrinted) else {
@@ -292,13 +286,16 @@ private extension ExamineDetailViewController {
                 
                 print("成功, \(msg)")
                 
-                
+                let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
+                vc.submitModel = self.submitModel
+                vc.dataArray = self.dataArray
+                self.navigationController?.pushViewController(vc, animated: true)
                 
             }
             
         }
        
-        */
+        
     }
     
     // 计时
@@ -318,6 +315,12 @@ extension ExamineDetailViewController {
     func submit() {
         
         submitClick()
+        
+    }
+    
+    func network() {
+        
+        setupNetwork()
         
     }
 }

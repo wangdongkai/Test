@@ -56,6 +56,11 @@ class ExamineMainViewController: UITableViewController {
         } else {
             
             let detailVC = ExamineDetailViewController(collectionViewLayout: UICollectionViewFlowLayout())
+            
+            if self.modelArray.count == 0 {
+                return
+            }
+            
             detailVC.model = self.modelArray[indexPath.row]
             navigationController!.pushViewController(detailVC, animated: true)
         }

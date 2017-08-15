@@ -50,7 +50,17 @@ class ExamineReportViewController: UIViewController {
     // 重做一次
     @IBAction func redoClick() {
         
+        let vc = self.navigationController?.childViewControllers[2] as! ExamineDetailViewController
         
+        vc.network()
+        vc.submitModel = ExamineSubmitModel()
+        
+        vc.collectionView?.reloadData()
+        
+        vc.index = 0
+        
+        self.navigationController?.popViewController(animated: true)
+
     }
     
     

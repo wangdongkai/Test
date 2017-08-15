@@ -62,7 +62,6 @@ extension ExamineStaticssticsViewController: UICollectionViewDelegate, UICollect
         button.setImage(image, for: .normal)
         cell.contentView.addSubview(button)
         
-        
         if indexPath.row == self.submitModel.currTitleNum {
             
             let image = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
@@ -115,13 +114,15 @@ private extension ExamineStaticssticsViewController {
     // 重做
     @IBAction func redoClick(_ sender: UIButton) {
         
-        guard let groupId = self.groupId else {
+        guard let groupId = self.dataArray[0].exerciseGroupId else {
             
             return
         }
         
         let url = "http://www.qxueyou.com/qxueyou/exercise/Exercise/updateNewExerRecordNew"
 
+        weak var weakSelf = self
+        
         NetworkTool.shareInstance.request(method: .GET, url: url, param: ["groupId": groupId]) { (_, success: Any?, error: Error?) in
             
             guard let data = success as? [String: Any] else {
@@ -134,12 +135,24 @@ private extension ExamineStaticssticsViewController {
             
             if isSuccess == true {
                 
+                /*
                 let alertVC = UIAlertController(title: "提示", message: "\(msg)", preferredStyle: .alert)
                 let action = UIAlertAction(title: "确定", style: .default, handler: nil)
                 alertVC.addAction(action)
                 
                 self.present(alertVC, animated: true, completion: nil)
+                */
+                
+                let vc = self.navigationController?.childViewControllers[2] as! ExamineDetailViewController
+                
+                vc.network()
+                vc.submitModel = ExamineSubmitModel()
 
+                vc.collectionView?.reloadData()
+                
+                vc.index = 0
+                
+                weakSelf?.navigationController?.popViewController(animated: true)
             }
             
         }
