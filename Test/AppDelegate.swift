@@ -21,6 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let loginVC = LoginViewController(nibName: "LoginViewController", bundle: nil)
         let navigationVC = CustomNavigationController(rootViewController: loginVC)
+        
+        UINavigationBar.appearance().backgroundColor = UIColor.white
+        
         window?.rootViewController = navigationVC
                 
         // Override point for customization after application launch.
