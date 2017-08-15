@@ -95,9 +95,7 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let model = self.model?.options?[indexPath.row]
-        
+                
         if indexPath.section == 1 {
             
             if self.model!.type == 2 { //多选

@@ -154,7 +154,7 @@ private extension ExamineDetailViewController {
         self.button.backgroundColor = UIColor.colorWithHex(color: "2196F3", alpha: 1.0)
         self.button.titleLabel?.font = UIFont.systemFont(ofSize: 10.0)
         
-        self.button.addTarget(self, action: "staticstisClick", for: .touchUpInside)
+        self.button.addTarget(self, action: #selector(ExamineDetailViewController.staticstisClick), for: .touchUpInside)
         self.view.insertSubview(self.button, aboveSubview: self.collectionView!)
         
         timer = DispatchSource.makeTimerSource(flags: [], queue: DispatchQueue.global(qos: .default))

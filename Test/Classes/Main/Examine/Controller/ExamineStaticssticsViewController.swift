@@ -131,7 +131,6 @@ private extension ExamineStaticssticsViewController {
             }
             
             let isSuccess = data["success"] as! Bool
-            let msg = data["msg"] as! String
             
             if isSuccess == true {
                 

@@ -94,7 +94,7 @@ private extension ExamineMainViewController {
     
     func setupHeader() {
         
-        let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: "setupNetwork")
+        let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(ExamineMainViewController.setupNetwork))
         header?.setTitle("下拉刷新", for: .idle)
         header?.setTitle("释放以更新", for: .pulling)
         header?.setTitle("加载中", for: .refreshing)
