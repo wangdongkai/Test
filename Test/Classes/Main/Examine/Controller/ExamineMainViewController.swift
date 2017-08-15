@@ -52,6 +52,13 @@ class ExamineMainViewController: UITableViewController {
         if model.buttonStatus == 1 { //已提交
            
             let vc = ExamineAnaysisViewController(collectionViewLayout: UICollectionViewFlowLayout())
+            
+            if self.modelArray.count == 0 {
+                return
+            }
+            
+            vc.model = self.modelArray[indexPath.row]
+
             navigationController!.pushViewController(vc, animated: true)
 
             
