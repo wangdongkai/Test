@@ -84,12 +84,24 @@ extension ExamineAnalysisCollectionCell: UITableViewDataSource, UITableViewDeleg
             
             cell.correct = self.model?.answer ?? ""
             cell.answer = self.model?.chooseAnswer ?? ""
-            cell.analysis = self.model?.analisisResult?["analysis"] as! String ?? ""
+            if let dict = self.model?.analisisResult {
+                
+                cell.analysis = dict["analysis"] as? String
+
+            }
+
             return cell
 
         } else if indexPath.section == 3 {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineStatisticsViewCell", for: indexPath) as! ExamineStatisticsViewCell
+            
+            if let dict = self.model?.analisisResult {
+                cell.person = "个人统计：作答本题\(dict["submitNumber"]!)次，做错\(dict["submitErrorNumber"]!)次，正确率为\(dict["accuracy"]!)%"
+                
+                cell.all = "全站统计：作答本题\(dict["submitAllNumber"]!)次，正确率为\(dict["allAccuracy"]!)%"
+
+            }
             
             return cell
 

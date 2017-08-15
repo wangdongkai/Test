@@ -10,6 +10,33 @@ import UIKit
 
 class ExamineStatisticsViewCell: UITableViewCell {
 
+    @IBOutlet weak var personStatisticsLabel: UILabel!
+    @IBOutlet weak var allStatisticsLabel: UILabel!
+    
+    var person: String? {
+        didSet {
+            
+            guard let p = person else {
+                
+                return
+            }
+            
+            self.personStatisticsLabel.text = p
+        }
+    }
+    
+    var all: String? {
+        didSet {
+            
+            guard let p = all else {
+                
+                return
+            }
+            
+            self.allStatisticsLabel.text = p
+        }
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

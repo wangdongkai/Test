@@ -41,6 +41,10 @@
                     <constraint firstItem="ZF3-PZ-hWc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="z2W-IY-Jsq"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="allStatisticsLabel" destination="ZF3-PZ-hWc" id="iaf-YY-1cM"/>
+                <outlet property="personStatisticsLabel" destination="cm6-9N-8cF" id="ntZ-Er-pFb"/>
+            </connections>
             <point key="canvasLocation" x="34" y="84"/>
         </tableViewCell>
     </objects>
