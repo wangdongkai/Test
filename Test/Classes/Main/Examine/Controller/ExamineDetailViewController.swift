@@ -245,6 +245,17 @@ private extension ExamineDetailViewController {
     
         self.submitModel.allCount = self.model!.allCount
         self.submitModel.doCount = self.submitModel.items.count
+        
+        if self.submitModel.items.count == 0 {
+            
+            let alertVC = UIAlertController(title: "提示", message: "您已经回答了\(self.submitModel.items.count)道题(共\(self.model!.allCount)题)，您打算？", preferredStyle: .alert)
+            let action = UIAlertAction(title: "确定", style: .default, handler: nil)
+            
+            alertVC.addAction(action)
+            
+            self.present(alertVC, animated: true, completion: nil)
+            return
+        }
         for i in 0..<self.submitModel.items.count {
             
             let item = self.submitModel.items[i]

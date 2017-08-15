@@ -51,7 +51,9 @@ class ExamineMainViewController: UITableViewController {
         
         if model.buttonStatus == 1 { //已提交
            
-            
+            let vc = ExamineAnaysisViewController(collectionViewLayout: UICollectionViewFlowLayout())
+            navigationController!.pushViewController(vc, animated: true)
+
             
         } else {
             
