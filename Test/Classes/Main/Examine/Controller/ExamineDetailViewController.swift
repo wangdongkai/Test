@@ -267,7 +267,7 @@ private extension ExamineDetailViewController {
         self.submitModel.exerciseGroupId = self.dataArray[0].exerciseGroupId
         self.submitModel.exerciseRecordId = self.dataArray[0].exerciseRecordId
         self.submitModel.exerciseExtendId = self.dataArray[0].exerciseExtendId
-
+        
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         self.submitModel.submitTime = formatter.string(from: Date())

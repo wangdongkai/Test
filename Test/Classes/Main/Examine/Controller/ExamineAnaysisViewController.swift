@@ -24,10 +24,14 @@ class ExamineAnaysisViewController: UICollectionViewController {
         }
     }
 
+    fileprivate let button: UIButton = UIButton(type: .custom)
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setup()
+        
+        setupButton()
         
         setupNetwork()
         
@@ -77,7 +81,7 @@ private extension ExamineAnaysisViewController {
         self.collectionView?.collectionViewLayout = layout
         
         self.collectionView?.isPagingEnabled = true
-
+        
         self.collectionView?.register(UINib.init(nibName: "ExamineAnalysisCollectionCell", bundle: nil), forCellWithReuseIdentifier: reuseIdentifier)
         
     }
@@ -109,4 +113,26 @@ private extension ExamineAnaysisViewController {
         }
     }
 
+    func setupButton() {
+        
+        self.button.frame = CGRect(x: self.view.frame.width - 50 - 15, y: self.view.frame.height - 100, width: 50, height: 50)
+        self.button.layer.cornerRadius = 25.0
+        self.button.layer.masksToBounds = false
+        self.button.setTitleColor(UIColor.white, for: .normal)
+        self.button.backgroundColor = UIColor.colorWithHex(color: "2196F3", alpha: 1.0)
+        self.button.titleLabel?.font = UIFont.systemFont(ofSize: 15.0)
+        self.button.setTitle("菜单", for: .normal)
+        self.button.addTarget(self, action: #selector(ExamineAnaysisViewController.menuClick), for: .touchUpInside)
+        self.view.insertSubview(self.button, aboveSubview: self.collectionView!)
+        
+    }
+
+}
+
+private extension ExamineAnaysisViewController {
+    
+    @objc func menuClick() {
+        
+        
+    }
 }

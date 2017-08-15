@@ -78,18 +78,12 @@ extension ExamineAnalysisCollectionCell: UITableViewDataSource, UITableViewDeleg
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if section == 0 {
+        if section == 0 || section == 2 || section == 3 {
             
             return 1
         } else if section == 1 {
             
             return self.model?.options?.count ?? 0
-        } else if section == 2 {
-            
-            return 1
-        } else if section == 3 {
-            
-            return 1
         } else {
             
             return 10
