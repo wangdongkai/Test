@@ -39,7 +39,41 @@ extension ExamineAnalysisCollectionCell: UITableViewDataSource, UITableViewDeleg
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        return 5
+        return 4
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
+        if section == 0 {
+            
+            return CGFloat.leastNormalMagnitude
+        } else if section == 1 {
+            
+            return CGFloat.leastNormalMagnitude
+        } else {
+            
+            return 30
+        }
+        
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        
+        return CGFloat.leastNormalMagnitude
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        if section == 2 {
+            
+            return "解析"
+        } else if section == 3 {
+            
+            return "统计"
+        } else {
+            
+            return ""
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
