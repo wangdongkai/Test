@@ -143,22 +143,18 @@ private extension ExamineMainViewController {
                 weakSelf!.modelArray.append(ExamineMainModel(dict: dict))
                 queue.inDatabase({ (db: FMDatabase) in
                     
-                   
-                    for key in dict.keys {
+                    print(dict.keys.count)
+                    
+                    do {
+                        try db.executeUpdate("INSERT INTO t_test (answerUpdateTime, exerciseRecordId, completionRate, exerciseMode, subjectId, classAccuracy, faultUpdateTime, type, exerciseTime, classRank, groupId, submitNumber, orderNum, faultCount, allCount, updateTime, currTitleNumber, exerciseStrategy, exerciseSource, name, doCount, score, extendAllCount, classId, correctCount, collegeCourseId, accuracy, favorUpdateTime, orgId, status, repeatFlag, favorCount) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", values: [dict["answerUpdateTime"], dict["exerciseRecordId"], dict["completionRate"], dict["exerciseMode"], dict["subjectId"], dict["classAccuracy"], dict["faultUpdateTime"], dict["type"], dict["exerciseTime"], dict["classRank"], dict["groupId"], dict["submitNumber"], dict["orderNum"], dict["faultCount"], dict["allCount"], dict["updateTime"], dict["currTitleNumber"], dict["exerciseStrategy"], dict["exerciseSource"], dict["name"], dict["doCount"], dict["score"], dict["extendAllCount"], dict["classId"], dict["correctCount"], dict["collegeCourseId"], dict["accuracy"], dict["favorUpdateTime"], dict["orgId"], dict["status"], dict["repeatFlag"], dict["favorCount"]])
                         
-                        do {
-                            let value = dict[key]!
-                            print("\(key) = \(value)")
-                            try db.executeUpdate("INSERT INTO t_test (\(key)) VALUES(?)", values: [value])
-                        } catch {
-                            
-                            print("failed: \(error.localizedDescription)")
-                        }
-
+                    } catch {
+                        
+                        print("failed: \(error.localizedDescription)")
                     }
 
                     db.close()
-                                        
+                    
                 })
             }
             
