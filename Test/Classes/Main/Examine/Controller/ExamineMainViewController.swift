@@ -122,6 +122,7 @@ private extension ExamineMainViewController {
             
         }
         weak var weakSelf = self
+        
         NetworkTool.shareInstance.get("http://www.qxueyou.com/qxueyou/exercise/Exercise/examsListNew", parameters: ["page": "1", "limit": "10"], progress: nil, success: { (_, data: Any?) in
             
             guard let result = data as? [Dictionary<String, Any>] else {
@@ -136,26 +137,64 @@ private extension ExamineMainViewController {
             
             let sqlPath = path.appendingPathComponent("\(name).sqlite")
             let queue = FMDatabaseQueue.init(path: sqlPath)
+            let db = FMDatabase(path: sqlPath)
             
             
             for dict in result {
                 
                 weakSelf!.modelArray.append(ExamineMainModel(dict: dict))
-                queue.inDatabase({ (db: FMDatabase) in
-                    
-                    print(dict.keys.count)
-                    
+                
+                if db.open() {
+                   
                     do {
-                        try db.executeUpdate("INSERT INTO t_test (answerUpdateTime, exerciseRecordId, completionRate, exerciseMode, subjectId, classAccuracy, faultUpdateTime, type, exerciseTime, classRank, groupId, submitNumber, orderNum, faultCount, allCount, updateTime, currTitleNumber, exerciseStrategy, exerciseSource, name, doCount, score, extendAllCount, classId, correctCount, collegeCourseId, accuracy, favorUpdateTime, orgId, status, repeatFlag, favorCount) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", values: [dict["answerUpdateTime"], dict["exerciseRecordId"], dict["completionRate"], dict["exerciseMode"], dict["subjectId"], dict["classAccuracy"], dict["faultUpdateTime"], dict["type"], dict["exerciseTime"], dict["classRank"], dict["groupId"], dict["submitNumber"], dict["orderNum"], dict["faultCount"], dict["allCount"], dict["updateTime"], dict["currTitleNumber"], dict["exerciseStrategy"], dict["exerciseSource"], dict["name"], dict["doCount"], dict["score"], dict["extendAllCount"], dict["classId"], dict["correctCount"], dict["collegeCourseId"], dict["accuracy"], dict["favorUpdateTime"], dict["orgId"], dict["status"], dict["repeatFlag"], dict["favorCount"]])
+                        let res = try db.executeQuery("SELECT * FROM t_test", values: nil)
+                        print(res)
                         
+                        let r = res.next()
+                        
+                        if r == false {
+                            
+                            do {
+                                try db.executeUpdate("INSERT INTO t_test (answerUpdateTime, exerciseRecordId, completionRate, exerciseMode, subjectId, classAccuracy, faultUpdateTime, type, exerciseTime, classRank, groupId, submitNumber, orderNum, faultCount, allCount, updateTime, currTitleNumber, exerciseStrategy, exerciseSource, name, doCount, score, extendAllCount, classId, correctCount, collegeCourseId, accuracy, favorUpdateTime, orgId, status, repeatFlag, favorCount) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", values: [dict["answerUpdateTime"], dict["exerciseRecordId"], dict["completionRate"], dict["exerciseMode"], dict["subjectId"], dict["classAccuracy"], dict["faultUpdateTime"], dict["type"], dict["exerciseTime"], dict["classRank"], dict["groupId"], dict["submitNumber"], dict["orderNum"], dict["faultCount"], dict["allCount"], dict["updateTime"], dict["currTitleNumber"], dict["exerciseStrategy"], dict["exerciseSource"], dict["name"], dict["doCount"], dict["score"], dict["extendAllCount"], dict["classId"], dict["correctCount"], dict["collegeCourseId"], dict["accuracy"], dict["favorUpdateTime"], dict["orgId"], dict["status"], dict["repeatFlag"], dict["favorCount"]])
+                                
+                            } catch {
+                                
+                                print("failed: \(error.localizedDescription)")
+                            }
+
+                        } else {
+                            
+                            while res.next() {
+                                
+                                if let groupId = res.string(forColumn: "groupId") {
+                                    
+                                    let group = dict["groupId"] as! String
+                                    if group != groupId {
+                                        
+                                        do {
+                                            try db.executeUpdate("INSERT INTO t_test (answerUpdateTime, exerciseRecordId, completionRate, exerciseMode, subjectId, classAccuracy, faultUpdateTime, type, exerciseTime, classRank, groupId, submitNumber, orderNum, faultCount, allCount, updateTime, currTitleNumber, exerciseStrategy, exerciseSource, name, doCount, score, extendAllCount, classId, correctCount, collegeCourseId, accuracy, favorUpdateTime, orgId, status, repeatFlag, favorCount) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", values: [dict["answerUpdateTime"], dict["exerciseRecordId"], dict["completionRate"], dict["exerciseMode"], dict["subjectId"], dict["classAccuracy"], dict["faultUpdateTime"], dict["type"], dict["exerciseTime"], dict["classRank"], dict["groupId"], dict["submitNumber"], dict["orderNum"], dict["faultCount"], dict["allCount"], dict["updateTime"], dict["currTitleNumber"], dict["exerciseStrategy"], dict["exerciseSource"], dict["name"], dict["doCount"], dict["score"], dict["extendAllCount"], dict["classId"], dict["correctCount"], dict["collegeCourseId"], dict["accuracy"], dict["favorUpdateTime"], dict["orgId"], dict["status"], dict["repeatFlag"], dict["favorCount"]])
+                                            
+                                        } catch {
+                                            
+                                            print("failed: \(error.localizedDescription)")
+                                        }
+                                        
+                                        
+                                    }
+                                }
+
+                            }
+                        }
+                                    
                     } catch {
                         
-                        print("failed: \(error.localizedDescription)")
+                        print(error)
                     }
-
-                    db.close()
                     
-                })
+                    db.close()
+
+                }
+            
             }
             
             weakSelf?.tableView.reloadData()
@@ -168,6 +207,7 @@ private extension ExamineMainViewController {
             print(error)
             
         }
+        
         
     }
 
