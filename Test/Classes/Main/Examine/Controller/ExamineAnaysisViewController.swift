@@ -71,7 +71,7 @@ private extension ExamineAnaysisViewController {
         
         title = "测试题目"
         self.view.backgroundColor = UIColor.white
-
+        self.collectionView?.backgroundColor = UIColor.clear
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0.0

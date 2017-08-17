@@ -16,6 +16,7 @@
 		5472C5981F31B19600BDFB7E /* ExamineAnswerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5472C5971F31B19600BDFB7E /* ExamineAnswerModel.swift */; };
 		548DDFE21F42A111005880C1 /* ExamineAnalysisCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548DDFE01F42A111005880C1 /* ExamineAnalysisCollectionCell.swift */; };
 		548DDFE31F42A111005880C1 /* ExamineAnalysisCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 548DDFE11F42A111005880C1 /* ExamineAnalysisCollectionCell.xib */; };
+		548DDFE51F45256B005880C1 /* DataBaseTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548DDFE41F45256B005880C1 /* DataBaseTool.swift */; };
 		549793821F41567900D8C05A /* ExamineReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549793801F41567900D8C05A /* ExamineReportViewController.swift */; };
 		549793831F41567900D8C05A /* ExamineReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 549793811F41567900D8C05A /* ExamineReportViewController.xib */; };
 		549793851F4284F500D8C05A /* ExamineAnaysisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549793841F4284F500D8C05A /* ExamineAnaysisViewController.swift */; };
@@ -142,6 +143,7 @@
 		5472C5971F31B19600BDFB7E /* ExamineAnswerModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamineAnswerModel.swift; sourceTree = "<group>"; };
 		548DDFE01F42A111005880C1 /* ExamineAnalysisCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamineAnalysisCollectionCell.swift; sourceTree = "<group>"; };
 		548DDFE11F42A111005880C1 /* ExamineAnalysisCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExamineAnalysisCollectionCell.xib; sourceTree = "<group>"; };
+		548DDFE41F45256B005880C1 /* DataBaseTool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataBaseTool.swift; sourceTree = "<group>"; };
 		549793801F41567900D8C05A /* ExamineReportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamineReportViewController.swift; sourceTree = "<group>"; };
 		549793811F41567900D8C05A /* ExamineReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExamineReportViewController.xib; sourceTree = "<group>"; };
 		549793841F4284F500D8C05A /* ExamineAnaysisViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamineAnaysisViewController.swift; sourceTree = "<group>"; };
@@ -585,6 +587,7 @@
 			isa = PBXGroup;
 			children = (
 				54BEAEB91F3089C00033F68C /* NetworkTool.swift */,
+				548DDFE41F45256B005880C1 /* DataBaseTool.swift */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -871,6 +874,7 @@
 			files = (
 				5472C5961F31B18000BDFB7E /* ExamineItemModel.swift in Sources */,
 				54BEAE9A1F3024A10033F68C /* CustomNavigationController.swift in Sources */,
+				548DDFE51F45256B005880C1 /* DataBaseTool.swift in Sources */,
 				54BEAEA51F302CCB0033F68C /* ExamineMainViewCell.swift in Sources */,
 				54BEAEA21F302C440033F68C /* ExamineMainViewController.swift in Sources */,
 				54BEAEBA1F3089C00033F68C /* NetworkTool.swift in Sources */,

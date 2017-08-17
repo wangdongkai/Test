@@ -28,7 +28,7 @@ class ExamineStaticssticsViewController: UIViewController {
         totalLabel.text = "\(self.submitModel.currTitleNum)/\(self.dataArray.count)"
         doLabel.text = "已做 \(self.submitModel.items.count)"
         undoLabel.text = "未做 \(self.dataArray.count - self.submitModel.items.count)"
-
+        
         // Do any additional setup after loading the view.
     }
 

@@ -9,6 +9,7 @@
 import UIKit
 import AFNetworking
 import MJRefresh
+import FMDB
 
 private let identifier = "ExamineMainViewCell"
 
@@ -59,6 +60,8 @@ class ExamineMainViewController: UITableViewController {
             
             vc.model = self.modelArray[indexPath.row]
 
+            
+            
             navigationController!.pushViewController(vc, animated: true)
 
             
@@ -103,11 +106,20 @@ private extension ExamineMainViewController {
         
     }
     
-   @objc func setupNetwork() {
+    
+    func setupDataBase() {
+        
+        
+    }
+}
+
+private extension ExamineMainViewController {
+    
+    @objc func setupNetwork() {
         
         if self.modelArray.count != 0 {
             self.modelArray.removeAll()
-   
+            
         }
         weak var weakSelf = self
         NetworkTool.shareInstance.get("http://www.qxueyou.com/qxueyou/exercise/Exercise/examsListNew", parameters: ["page": "1", "limit": "10"], progress: nil, success: { (_, data: Any?) in
@@ -117,23 +129,50 @@ private extension ExamineMainViewController {
                 return
             }
             
+            // 插入数据
+            let name = UserDefaults.standard.object(forKey: "username") as! String
+            
+            let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
+            
+            let sqlPath = path.appendingPathComponent("\(name).sqlite")
+            let queue = FMDatabaseQueue.init(path: sqlPath)
+            
+            
             for dict in result {
                 
                 weakSelf!.modelArray.append(ExamineMainModel(dict: dict))
+                queue.inDatabase({ (db: FMDatabase) in
+                    
+                   
+                    for key in dict.keys {
+                        
+                        do {
+                            let value = dict[key]!
+                            print("\(key) = \(value)")
+                            try db.executeUpdate("INSERT INTO t_test (\(key)) VALUES(?)", values: [value])
+                        } catch {
+                            
+                            print("failed: \(error.localizedDescription)")
+                        }
+
+                    }
+
+                    db.close()
+                                        
+                })
             }
             
             weakSelf?.tableView.reloadData()
             weakSelf?.tableView.mj_header.endRefreshing()
-
+            
         }) { (_, error: Error) in
             
             weakSelf?.tableView.mj_header.endRefreshing()
-
+            
             print(error)
-
+            
         }
-                
+        
     }
-    
-    
+
 }

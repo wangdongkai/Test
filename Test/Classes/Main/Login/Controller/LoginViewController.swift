@@ -153,8 +153,20 @@ private extension LoginViewController {
         let db = FMDatabase(path: sqlPath)
         
         if db.open() {
-            print("open success")
+            
+            let sql = "CREATE TABLE if not exists t_test (Id integer primary key autoincrement, groupId text, classId text, collegeCourseId text, orgId text, subjectId text, name text, type integer, exerciseTime text, exerciseStrategy text, exerciseSource text, exerciseMode text, allCount integer, orderNum integer, updateTime integer, answerUpdateTime double, faultUpdateTime double, favorUpdateTime double, faultCount integer, favorCount integer, exerciseRecordId text, status text, currTitleNumber text, doCount integer, correctCount integer, submitNumber integer, completionRate text, accuracy text, score text, extendAllCount text, classAccuracy text, classRank text, repeatFlag boolean)"
+            
+            do {
+            
+                try db.executeUpdate(sql, values: nil)
+            } catch {
+                
+                print("error = \(error)")
+            }
+            
+            db.close()
         }
+        
     }
 
     }
