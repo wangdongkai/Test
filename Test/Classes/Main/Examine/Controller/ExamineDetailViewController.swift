@@ -221,7 +221,7 @@ private extension ExamineDetailViewController {
                         
                         if r == false {
                             
-                            do { 
+                            do {
                                 
                                 try db.executeUpdate("INSERT INTO t_topic (currentNum, correctAnswer, chooseAnswer, exerciseId, groupId) VALUES(?, ?, ?, ?, ?)", withArgumentsIn: [i, item?.answer, "", item?.exerciseId, item?.exerciseGroupId])
                                 
