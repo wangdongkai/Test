@@ -70,3 +70,22 @@ extension UIColor {
         return UIColor(red: CGFloat(r)/256.0, green: CGFloat(g)/256.0, blue: CGFloat(b)/256.0, alpha: alpha)
     }
 }
+
+extension String {
+    
+    static func separate(str: String) -> String{
+        
+        var s: String = ""
+        
+        for char in str.characters {
+            
+            s.append("\(char),")
+        }
+        
+        var a = s as NSString
+        a = a.substring(to: a.length - 1) as NSString
+        
+        return a as String
+    }
+}
+

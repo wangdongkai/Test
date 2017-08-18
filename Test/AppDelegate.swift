@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        
+                
         let loginVC = LoginViewController(nibName: "LoginViewController", bundle: nil)
         let navigationVC = CustomNavigationController(rootViewController: loginVC)
         

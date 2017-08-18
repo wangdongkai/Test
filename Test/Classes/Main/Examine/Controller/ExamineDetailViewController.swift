@@ -75,8 +75,46 @@ class ExamineDetailViewController: UICollectionViewController {
         
         let point = self.view.convert(self.collectionView!.center, to: self.collectionView)
         let index = self.collectionView?.indexPathForItem(at: point)
+        print("scrollViewDidEndDecelerating----index: \(index?.row)")
+
         let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
         
+        let name = UserDefaults.standard.object(forKey: "username") as! String
+        
+        let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
+        
+        let sqlPath = path.appendingPathComponent("\(name).sqlite")
+        let db = FMDatabase(path: sqlPath)
+        
+        if db.open() {
+            
+            do {
+                
+                let sql = "SELECT * FROM t_topic where exerciseId = '\((cell.model?.exerciseId)!)'"
+                
+                let res = try db.executeQuery(sql, values: nil)
+                
+                while res.next() {
+                                        
+                    do {
+                        
+                        try db.executeUpdate("UPDATE t_topic SET chooseAnswer = '\(cell.submitModel.answer)' WHERE exerciseId = '\((cell.model?.exerciseId)!)'", values: nil)
+                        
+                    } catch {
+                        
+                        print("failed: \(error.localizedDescription)")
+                    }
+                    
+                }
+                
+            } catch {
+                
+                print(error)
+            }
+            
+            db.close()
+        }
+
         if cell.submitModel.answer.characters.count > 0 {
             
             self.submitModel.currTitleNum = index!.item
@@ -97,7 +135,7 @@ class ExamineDetailViewController: UICollectionViewController {
         
         let point = self.view.convert(self.collectionView!.center, to: self.collectionView)
         let index = self.collectionView?.indexPathForItem(at: point)
-        
+        print("scrollViewWillBeginDragging----index: \(index?.row)")
         let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
         
         print(cell.submitModel)
@@ -237,8 +275,6 @@ private extension ExamineDetailViewController {
                         print(error)
                     }
                     
-                    
-
                 }
 
                 db.close()
@@ -266,25 +302,33 @@ private extension ExamineDetailViewController {
     // 返回
     @objc func backClick() {
         
-        let alertVC = UIAlertController(title: "提示", message: "您已经回答了\(self.submitModel.items.count)道题(共\(self.model!.allCount)题)，您打算？", preferredStyle: .alert)
-        
-        weak var weakSelf = self
-        
-        let actionNext = UIAlertAction(title: "下次继续", style: .default) { (_) in
+        if self.submitModel.items.count > 0 {
             
-            weakSelf?.navigationController?.popViewController(animated: true)
+            let alertVC = UIAlertController(title: "提示", message: "您已经回答了\(self.submitModel.items.count)道题(共\(self.model!.allCount)题)，您打算？", preferredStyle: .alert)
             
+            weak var weakSelf = self
+            
+            let actionNext = UIAlertAction(title: "下次继续", style: .default) { (_) in
+                
+                weakSelf?.navigationController?.popViewController(animated: true)
+                
+            }
+            
+            let actionSubmit = UIAlertAction(title: "提交", style: .destructive) { (_) in
+                
+                weakSelf?.submitClick()
+            }
+            
+            alertVC.addAction(actionNext)
+            alertVC.addAction(actionSubmit)
+            
+            self.present(alertVC, animated: true, completion: nil)
+
+        } else {
+            
+            navigationController?.popViewController(animated: true)
         }
         
-        let actionSubmit = UIAlertAction(title: "提交", style: .destructive) { (_) in
-            
-            
-        }
-        
-        alertVC.addAction(actionNext)
-        alertVC.addAction(actionSubmit)
-        
-        self.present(alertVC, animated: true, completion: nil)
     }
     
     // 提交
@@ -295,7 +339,7 @@ private extension ExamineDetailViewController {
         
         if self.submitModel.items.count == 0 {
             
-            let alertVC = UIAlertController(title: "提示", message: "您已经回答了\(self.submitModel.items.count)道题(共\(self.model!.allCount)题)，您打算？", preferredStyle: .alert)
+            let alertVC = UIAlertController(title: "提示", message: "请回答一道题之后在提交", preferredStyle: .alert)
             let action = UIAlertAction(title: "确定", style: .default, handler: nil)
             
             alertVC.addAction(action)
@@ -353,7 +397,6 @@ private extension ExamineDetailViewController {
             
         }
        
-        
     }
     
     // 计时
