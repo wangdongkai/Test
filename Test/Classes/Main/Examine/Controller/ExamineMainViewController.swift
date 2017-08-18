@@ -144,8 +144,10 @@ private extension ExamineMainViewController {
                 
                 weakSelf!.modelArray.append(ExamineMainModel(dict: dict))
                 
+                
                 if db.open() {
                    
+                    
                     do {
                         let res = try db.executeQuery("SELECT * FROM t_test", values: nil)
                         print(res)
@@ -191,10 +193,10 @@ private extension ExamineMainViewController {
                         print(error)
                     }
                     
-                    db.close()
 
                 }
             
+                db.close()
             }
             
             weakSelf?.tableView.reloadData()

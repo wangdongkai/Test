@@ -9,6 +9,7 @@
 import UIKit
 import MJExtension
 import MJRefresh
+import FMDB
 
 private let identifier = "ExamineDetailsViewCell"
 
@@ -192,18 +193,64 @@ private extension ExamineDetailViewController {
                 
                 return
             }
-
+            
             let detailModel: ExamineDetailModel = ExamineDetailModel.mj_object(withKeyValues: dict)
-                        
+            
             weakSelf?.dataArray = detailModel.items!
             
+            let name = UserDefaults.standard.object(forKey: "username") as! String
+            
+            let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
+            
+            let sqlPath = path.appendingPathComponent("\(name).sqlite")
+            let db = FMDatabase(path: sqlPath)
+
+            if db.open() {
+                
+                for i in 0..<weakSelf!.dataArray.count {
+                    
+                    let item = weakSelf?.dataArray[i]
+                    
+                    do {
+                        
+                        let sql = "SELECT * FROM t_topic where exerciseId = '\((item?.exerciseId)!)'"
+                        
+                        let res = try db.executeQuery(sql, values: nil)
+                        
+                        let r = res.next()
+                        
+                        if r == false {
+                            
+                            do { 
+                                
+                                try db.executeUpdate("INSERT INTO t_topic (currentNum, correctAnswer, chooseAnswer, exerciseId, groupId) VALUES(?, ?, ?, ?, ?)", withArgumentsIn: [i, item?.answer, "", item?.exerciseId, item?.exerciseGroupId])
+                                
+                            } catch {
+                                
+                                print("failed: \(error.localizedDescription)")
+                            }
+                            
+                        }
+                        
+                    } catch {
+                        
+                        print(error)
+                    }
+                    
+                    
+
+                }
+
+                db.close()
+            }
+
+           
             weakSelf?.collectionView?.reloadData()
             
         }) { (_, error: Error) in
             
             print(error)
             
-
         }
     }
 }

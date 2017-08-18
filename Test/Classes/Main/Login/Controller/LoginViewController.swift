@@ -154,19 +154,20 @@ private extension LoginViewController {
         
         if db.open() {
             
-            let sql = "CREATE TABLE if not exists t_test (Id integer primary key autoincrement, groupId text, classId text, collegeCourseId text, orgId text, subjectId text, name text, type integer, exerciseTime text, exerciseStrategy text, exerciseSource text, exerciseMode text, allCount integer, orderNum integer, updateTime integer, answerUpdateTime double, faultUpdateTime double, favorUpdateTime double, faultCount integer, favorCount integer, exerciseRecordId text, status text, currTitleNumber text, doCount integer, correctCount integer, submitNumber integer, completionRate text, accuracy text, score text, extendAllCount text, classAccuracy text, classRank text, repeatFlag boolean)"
+            let sqlTest = "CREATE TABLE if not exists t_test (Id integer primary key autoincrement, groupId text, classId text, collegeCourseId text, orgId text, subjectId text, name text, type integer, exerciseTime text, exerciseStrategy text, exerciseSource text, exerciseMode text, allCount integer, orderNum integer, updateTime integer, answerUpdateTime double, faultUpdateTime double, favorUpdateTime double, faultCount integer, favorCount integer, exerciseRecordId text, status text, currTitleNumber text, doCount integer, correctCount integer, submitNumber integer, completionRate text, accuracy text, score text, extendAllCount text, classAccuracy text, classRank text, repeatFlag boolean)"
             
+             let sqlTopic = "CREATE TABLE if not exists t_topic (Id integer primary key autoincrement, groupId text, currentNum integer, correctAnswer text, chooseAnswer text, exerciseId text)"
             do {
             
-                try db.executeUpdate(sql, values: nil)
+                try db.executeUpdate(sqlTest, values: nil)
+                try db.executeUpdate(sqlTopic, values: nil)
             } catch {
                 
                 print("error = \(error)")
             }
             
-            db.close()
         }
-        
+        db.close()
     }
 
     }

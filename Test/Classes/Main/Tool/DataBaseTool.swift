@@ -18,16 +18,16 @@ class DataBaseTool: NSObject {
         return tool
     }()
     
-    func setupDataBase(name: String) {
+    func setupDataBase(name: String) -> Bool {
         
         let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
         
         let sqlPath = path.appendingPathComponent("\(name).sqlite")
         let db = FMDatabase(path: sqlPath)
         
-        if db.open() {
-            print("open success")
-        }
+        return db.open()
+        
     }
 
+    
 }
