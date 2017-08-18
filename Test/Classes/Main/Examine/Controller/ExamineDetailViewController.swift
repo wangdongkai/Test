@@ -98,7 +98,7 @@ class ExamineDetailViewController: UICollectionViewController {
                                         
                     do {
                         
-                        try db.executeUpdate("UPDATE t_topic SET chooseAnswer = '\(cell.submitModel.answer)' WHERE exerciseId = '\((cell.model?.exerciseId)!)'", values: nil)
+                        try db.executeUpdate("UPDATE t_topic SET chooseAnswer = '\(String.separate(str: cell.submitModel.answer))' WHERE exerciseId = '\((cell.model?.exerciseId)!)'", values: nil)
                         
                     } catch {
                         

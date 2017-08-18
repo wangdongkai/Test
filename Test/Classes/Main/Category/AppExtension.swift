@@ -75,6 +75,11 @@ extension String {
     
     static func separate(str: String) -> String{
         
+        if str.characters.count == 0 || str == "True" || str == "False"{
+            
+            return str
+        }
+        
         var s: String = ""
         
         for char in str.characters {
