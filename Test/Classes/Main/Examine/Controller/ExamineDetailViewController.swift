@@ -75,46 +75,11 @@ class ExamineDetailViewController: UICollectionViewController {
         
         let point = self.view.convert(self.collectionView!.center, to: self.collectionView)
         let index = self.collectionView?.indexPathForItem(at: point)
-        print("scrollViewDidEndDecelerating----index: \(index?.row)")
 
         let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
         
-        let name = UserDefaults.standard.object(forKey: "username") as! String
+        setupDataBase(cell: cell)
         
-        let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
-        
-        let sqlPath = path.appendingPathComponent("\(name).sqlite")
-        let db = FMDatabase(path: sqlPath)
-        
-        if db.open() {
-            
-            do {
-                
-                let sql = "SELECT * FROM t_topic where exerciseId = '\((cell.model?.exerciseId)!)'"
-                
-                let res = try db.executeQuery(sql, values: nil)
-                
-                while res.next() {
-                                        
-                    do {
-                        
-                        try db.executeUpdate("UPDATE t_topic SET chooseAnswer = '\(String.separate(str: cell.submitModel.answer))' WHERE exerciseId = '\((cell.model?.exerciseId)!)'", values: nil)
-                        
-                    } catch {
-                        
-                        print("failed: \(error.localizedDescription)")
-                    }
-                    
-                }
-                
-            } catch {
-                
-                print(error)
-            }
-            
-            db.close()
-        }
-
         if cell.submitModel.answer.characters.count > 0 {
             
             self.submitModel.currTitleNum = index!.item
@@ -135,9 +100,11 @@ class ExamineDetailViewController: UICollectionViewController {
         
         let point = self.view.convert(self.collectionView!.center, to: self.collectionView)
         let index = self.collectionView?.indexPathForItem(at: point)
-        print("scrollViewWillBeginDragging----index: \(index?.row)")
+
         let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
         
+        setupDataBase(cell: cell)
+
         print(cell.submitModel)
         
         if cell.submitModel.answer.characters.count > 0 {
@@ -288,6 +255,47 @@ private extension ExamineDetailViewController {
             print(error)
             
         }
+    }
+    
+    
+    func setupDataBase(cell: ExamineDetailsViewCell) {
+        
+        let name = UserDefaults.standard.object(forKey: "username") as! String
+        
+        let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
+        
+        let sqlPath = path.appendingPathComponent("\(name).sqlite")
+        let db = FMDatabase(path: sqlPath)
+        
+        if db.open() {
+            
+            do {
+                
+                let sql = "SELECT * FROM t_topic where exerciseId = '\((cell.model?.exerciseId)!)'"
+                
+                let res = try db.executeQuery(sql, values: nil)
+                
+                while res.next() {
+                    
+                    do {
+                        
+                        try db.executeUpdate("UPDATE t_topic SET chooseAnswer = '\(String.separate(str: cell.submitModel.answer))' WHERE exerciseId = '\((cell.model?.exerciseId)!)'", values: nil)
+                        
+                    } catch {
+                        
+                        print("failed: \(error.localizedDescription)")
+                    }
+                    
+                }
+                
+            } catch {
+                
+                print(error)
+            }
+            
+            db.close()
+        }
+
     }
 }
 
