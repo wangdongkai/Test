@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FMDB
 
 class ExamineDetailsViewCell: UICollectionViewCell {
 
@@ -56,6 +57,8 @@ private extension ExamineDetailsViewCell {
         self.dataTableView.tableFooterView = UIView()
         
     }
+    
+   
 }
 
 extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
@@ -80,6 +83,52 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 1 {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineOptionViewCell", for: indexPath) as! ExamineOptionViewCell
+            
+            let name = UserDefaults.standard.object(forKey: "username") as! String
+            let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
+            let sqlPath = path.appendingPathComponent("\(name).sqlite")
+            let db = FMDatabase(path: sqlPath)
+            
+            if db.open() {
+                
+                do {
+                    
+                    let sql = "SELECT * FROM t_topic where exerciseId = '\(self.model!.exerciseId!)'"
+                    
+                    let res = try db.executeQuery(sql, values: nil)
+                    
+                    while res.next() {
+                        
+                        let ans = res.string(forColumn: "chooseAnswer")
+                        
+                        if self.model?.type == 1 {
+                            
+                            for option in (self.model?.options)! {
+                                
+                                if option.optionAnswer == ans {
+                                    
+                                    option.optionState = true
+                                }
+                            }
+                            
+                        } else if self.model?.type == 2 {
+                            
+                            
+                        } else {
+                            
+                            
+                        }
+                    }
+                    
+                } catch {
+                    
+                    print(error)
+                }
+                
+                db.close()
+            }
+
+            
             cell.model = self.model?.options?[indexPath.row]
             return cell
         } else {
@@ -171,3 +220,4 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
         }
     }
 }
+
