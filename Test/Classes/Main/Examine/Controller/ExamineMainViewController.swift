@@ -28,6 +28,12 @@ class ExamineMainViewController: UITableViewController {
 
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.tableView.mj_header.beginRefreshing()
+        
+    }
         // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -102,7 +108,6 @@ private extension ExamineMainViewController {
         header?.setTitle("释放以更新", for: .pulling)
         header?.setTitle("加载中", for: .refreshing)
         tableView.mj_header = header
-        header?.beginRefreshing()
         
     }
     

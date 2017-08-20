@@ -78,7 +78,7 @@ class ExamineDetailViewController: UICollectionViewController {
 
         let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
         
-        setupDataBase(cell: cell)
+        //setupDataBase(item: cell)
         
         if cell.submitModel.answer.characters.count > 0 {
             
@@ -103,7 +103,7 @@ class ExamineDetailViewController: UICollectionViewController {
 
         let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
         
-        setupDataBase(cell: cell)
+        //setupDataBase(cell: cell)
 
         print(cell.submitModel)
         
@@ -228,7 +228,10 @@ private extension ExamineDetailViewController {
                             
                             do {
                                 //  exerciseId text, title text, type integer, updateTime double, answer text, options text, exerciseGroupId text, analisisResult text, imgs text, 
-                                try db.executeUpdate("INSERT INTO t_topic (currentNum, correctAnswer, exerciseId, groupId) VALUES(?, ?, ?, ?)", withArgumentsIn: [i, item?.answer, item?.exerciseId, item?.exerciseGroupId])
+                                
+                                
+                                
+                                try db.executeUpdate("INSERT INTO t_topic (exerciseId, title, type, updateTime, answer, chooseAnswer, exerciseGroupId) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", withArgumentsIn: [item?.exerciseId, item?.title, item?.type, item?.updateTime, item?.answer, item?.chooseAnswer, item?.exerciseGroupId])
                                 
                             } catch {
                                 
@@ -258,7 +261,7 @@ private extension ExamineDetailViewController {
     }
     
     
-    func setupDataBase(cell: ExamineDetailsViewCell) {
+    func setupDataBase(item: ExamineSubmitItemModel) {
         
         let name = UserDefaults.standard.object(forKey: "username") as! String
         
@@ -271,7 +274,7 @@ private extension ExamineDetailViewController {
             
             do {
                 
-                let sql = "SELECT * FROM t_topic where exerciseId = '\((cell.model?.exerciseId)!)'"
+                let sql = "SELECT * FROM t_topic where exerciseId = '\(item.exerciseId)'"
                 
                 let res = try db.executeQuery(sql, values: nil)
                 
@@ -279,7 +282,7 @@ private extension ExamineDetailViewController {
                     
                     do {
                         
-                        try db.executeUpdate("UPDATE t_topic SET chooseAnswer = '\(String.separate(str: cell.submitModel.answer))' WHERE exerciseId = '\((cell.model?.exerciseId)!)'", values: nil)
+                        try db.executeUpdate("UPDATE t_topic SET chooseAnswer = '\(String.separate(str: item.answer))' WHERE exerciseId = '\(item.exerciseId)'", values: nil)
                         
                     } catch {
                         
@@ -362,6 +365,9 @@ private extension ExamineDetailViewController {
         for i in 0..<self.submitModel.items.count {
             
             let item = self.submitModel.items[i]
+            
+            setupDataBase(item: item)
+            
             if item.correct == 1 {
                 
                 self.submitModel.correctCount += 1

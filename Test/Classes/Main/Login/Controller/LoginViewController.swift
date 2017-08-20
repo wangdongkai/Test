@@ -157,7 +157,7 @@ private extension LoginViewController {
             let sqlTest = "CREATE TABLE if not exists t_test (Id integer primary key autoincrement, groupId text, classId text, orgId text, name text, type integer, exerciseTime text, allCount integer, orderNum integer, updateTime integer, answerUpdateTime double, faultUpdateTime double, faultCount integer, exerciseRecordId text, status text, currTitleNumber text, doCount integer, correctCount integer, submitNumber integer, classAccuracy text, classRank text)"
             
             // 9
-             let sqlTopic = "CREATE TABLE if not exists t_topic (Id integer primary key autoincrement, exerciseId text, title text, type integer, updateTime double, answer text, options text, exerciseGroupId text, analisisResult text, imgs text)"
+             let sqlTopic = "CREATE TABLE if not exists t_topic (Id integer primary key autoincrement, exerciseId text, title text, type integer, updateTime double, answer text, chooseAnswer text, exerciseGroupId text)"
             do {
             
                 try db.executeUpdate(sqlTest, values: nil)
