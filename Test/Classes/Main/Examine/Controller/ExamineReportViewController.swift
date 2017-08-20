@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FMDB
 
 class ExamineReportViewController: UIViewController {
 
@@ -52,16 +53,73 @@ class ExamineReportViewController: UIViewController {
     // 重做一次
     @IBAction func redoClick() {
         
-        let vc = self.navigationController?.childViewControllers[2] as! ExamineDetailViewController
+        guard let groupId = self.dataArray?[0].exerciseGroupId else {
+            
+            return
+        }
         
-        vc.network()
-        vc.submitModel = ExamineSubmitModel()
+        let name = UserDefaults.standard.object(forKey: "username") as! String
         
-        vc.collectionView?.reloadData()
+        let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
         
-        vc.index = 0
+        let sqlPath = path.appendingPathComponent("\(name).sqlite")
+        let db = FMDatabase(path: sqlPath)
         
-        self.navigationController?.popViewController(animated: true)
+        if db.open() {
+            
+            do {
+                
+                let sql = "SELECT * FROM t_topic"
+                
+                let res = try db.executeQuery(sql, values: nil)
+                
+                while res.next() {
+                    
+                    do {
+                        
+                        try db.executeUpdate("UPDATE t_topic SET chooseAnswer = ''", values: nil)
+                        
+                    } catch {
+                        
+                        print("failed: \(error.localizedDescription)")
+                    }
+                    
+                }
+                
+            } catch {
+                
+                print(error)
+            }
+            
+            db.close()
+        }
+        
+        UserDefaults.standard.set(0, forKey: (self.dataArray?[0].exerciseGroupId!)!)
+        UserDefaults.standard.synchronize()
+
+        
+        let url = "http://www.qxueyou.com/qxueyou/exercise/Exercise/updateNewExerRecordNew"
+        
+        weak var weakSelf = self
+        
+        NetworkTool.shareInstance.request(method: .GET, url: url, param: ["groupId": groupId]) { (_, success: Any?, error: Error?) in
+            
+            guard let data = success as? [String: Any] else {
+                
+                return
+            }
+            
+            let isSuccess = data["success"] as! Bool
+            
+            if isSuccess == true {
+                
+                let vc = weakSelf?.navigationController?.childViewControllers[1] as! ExamineMainViewController
+                
+                weakSelf?.navigationController?.popToViewController(vc, animated: true)
+            }
+            
+        }
+
 
     }
     

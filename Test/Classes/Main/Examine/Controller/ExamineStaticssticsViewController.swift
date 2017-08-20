@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FMDB
 
 class ExamineStaticssticsViewController: UIViewController {
 
@@ -119,6 +120,45 @@ private extension ExamineStaticssticsViewController {
             return
         }
         
+        let name = UserDefaults.standard.object(forKey: "username") as! String
+        
+        let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
+        
+        let sqlPath = path.appendingPathComponent("\(name).sqlite")
+        let db = FMDatabase(path: sqlPath)
+        
+        if db.open() {
+            
+            do {
+                
+                let sql = "SELECT * FROM t_topic"
+                
+                let res = try db.executeQuery(sql, values: nil)
+                
+                while res.next() {
+                    
+                    do {
+                        
+                        try db.executeUpdate("UPDATE t_topic SET chooseAnswer = ''", values: nil)
+                        
+                    } catch {
+                        
+                        print("failed: \(error.localizedDescription)")
+                    }
+                    
+                }
+                
+            } catch {
+                
+                print(error)
+            }
+            
+            db.close()
+        }
+
+        UserDefaults.standard.set(0, forKey: self.dataArray[0].exerciseGroupId!)
+        UserDefaults.standard.synchronize()
+        
         let url = "http://www.qxueyou.com/qxueyou/exercise/Exercise/updateNewExerRecordNew"
 
         weak var weakSelf = self
@@ -134,24 +174,11 @@ private extension ExamineStaticssticsViewController {
             
             if isSuccess == true {
                 
-                /*
-                let alertVC = UIAlertController(title: "提示", message: "\(msg)", preferredStyle: .alert)
-                let action = UIAlertAction(title: "确定", style: .default, handler: nil)
-                alertVC.addAction(action)
                 
-                self.present(alertVC, animated: true, completion: nil)
-                */
+                let vc = self.navigationController?.childViewControllers[1] as! ExamineMainViewController
                 
-                let vc = self.navigationController?.childViewControllers[2] as! ExamineDetailViewController
+                weakSelf?.navigationController?.popToViewController(vc, animated: true)
                 
-                vc.network()
-                vc.submitModel = ExamineSubmitModel()
-
-                vc.collectionView?.reloadData()
-                
-                vc.index = 0
-                
-                weakSelf?.navigationController?.popViewController(animated: true)
             }
             
         }
