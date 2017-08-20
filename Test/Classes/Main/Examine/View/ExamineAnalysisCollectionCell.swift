@@ -111,7 +111,7 @@ extension ExamineAnalysisCollectionCell: UITableViewDataSource, UITableViewDeleg
             let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineAnalysisViewCell", for: indexPath) as! ExamineAnalysisViewCell
             
             cell.correct = self.model?.answer ?? ""
-            cell.answer = self.model?.chooseAnswer ?? ""
+            cell.answer = self.model?.exerciseId ?? ""
             if let dict = self.model?.analisisResult {
                 
                 cell.analysis = dict["analysis"] as? String

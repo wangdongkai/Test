@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FMDB
 
 class ExamineAnalysisViewCell: UITableViewCell {
 
@@ -34,7 +35,42 @@ class ExamineAnalysisViewCell: UITableViewCell {
                 return
             }
             
-            self.answerLabel.text = c
+            let name = UserDefaults.standard.object(forKey: "username") as! String
+            
+            let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
+            
+            let sqlPath = path.appendingPathComponent("\(name).sqlite")
+            let db = FMDatabase(path: sqlPath)
+
+            if db.open() {
+                
+                    do {
+                        
+                        let sql = "SELECT * FROM t_topic where exerciseId = '\(c)'"
+                        
+                        let res = try db.executeQuery(sql, values: nil)
+                        while res.next() {
+                            
+                            let ans = res.string(forColumn: "chooseAnswer")
+                            
+                            if let _ = ans {
+                                
+                                self.answerLabel.text = ans
+                            } else {
+                                
+                                self.answerLabel.text = "无"
+ 
+                            }
+                        }
+                        
+                    } catch {
+                        
+                        print(error)
+                    }
+                
+                db.close()
+            }
+
         }
 
     }

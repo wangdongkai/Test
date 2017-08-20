@@ -227,8 +227,8 @@ private extension ExamineDetailViewController {
                         if r == false {
                             
                             do {
-                                
-                                try db.executeUpdate("INSERT INTO t_topic (currentNum, correctAnswer, chooseAnswer, exerciseId, groupId) VALUES(?, ?, ?, ?, ?)", withArgumentsIn: [i, item?.answer, "", item?.exerciseId, item?.exerciseGroupId])
+                                //  exerciseId text, title text, type integer, updateTime double, answer text, options text, exerciseGroupId text, analisisResult text, imgs text, 
+                                try db.executeUpdate("INSERT INTO t_topic (currentNum, correctAnswer, exerciseId, groupId) VALUES(?, ?, ?, ?)", withArgumentsIn: [i, item?.answer, item?.exerciseId, item?.exerciseGroupId])
                                 
                             } catch {
                                 

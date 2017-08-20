@@ -103,6 +103,15 @@ private extension ExamineAnaysisViewController {
             
             weakSelf?.dataArray = detailModel.items!
             
+            if (weakSelf?.dataArray?.count)! > 0 {
+                
+                for item in (weakSelf?.dataArray)! {
+                    
+                    
+                }
+
+            }
+            
             weakSelf?.collectionView?.reloadData()
             
         }) { (_, error: Error) in
@@ -127,6 +136,10 @@ private extension ExamineAnaysisViewController {
         
     }
 
+    func getChooseAnswer() {
+        
+        
+    }
 }
 
 private extension ExamineAnaysisViewController {
