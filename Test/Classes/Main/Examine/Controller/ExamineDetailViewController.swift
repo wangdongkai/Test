@@ -128,6 +128,8 @@ private extension ExamineDetailViewController {
         
         title = self.model?.name
 
+        self.model?.exerciseTimer = UserDefaults.standard.integer(forKey: (self.model?.groupId)!)
+        
         self.view.backgroundColor = UIColor.white
         self.collectionView?.backgroundColor = UIColor.clear
         
@@ -232,7 +234,7 @@ private extension ExamineDetailViewController {
                                 
                                 
                                 
-                                try db.executeUpdate("INSERT INTO t_topic (exerciseId, title, type, updateTime, answer, chooseAnswer, exerciseGroupId) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", withArgumentsIn: [item?.exerciseId, item?.title, item?.type, item?.updateTime, item?.answer, item?.chooseAnswer, item?.exerciseGroupId])
+                                try db.executeUpdate("INSERT INTO t_topic (exerciseId, title, type, updateTime, answer, chooseAnswer, exerciseGroupId) VALUES(?, ?, ?, ?, ?, ?, ?)", withArgumentsIn: [item?.exerciseId, item?.title, item?.type, item?.updateTime, item?.answer, item?.chooseAnswer, item?.exerciseGroupId])
                                 
                             } catch {
                                 
@@ -314,8 +316,11 @@ private extension ExamineDetailViewController {
     // 返回
     @objc func backClick() {
         
+        UserDefaults.standard.set(self.model?.exerciseTimer, forKey: (self.model?.groupId)!)
+
         if self.submitModel.items.count > 0 {
             
+
             let alertVC = UIAlertController(title: "提示", message: "您已经回答了\(self.submitModel.items.count)道题(共\(self.model!.allCount)题)，您打算？", preferredStyle: .alert)
             
             weak var weakSelf = self

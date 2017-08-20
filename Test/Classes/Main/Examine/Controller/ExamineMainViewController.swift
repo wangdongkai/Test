@@ -148,9 +148,17 @@ private extension ExamineMainViewController {
             
             for dict in result {
                 
-                weakSelf!.modelArray.append(ExamineMainModel(dict: dict))
+                let item = ExamineMainModel(dict: dict)
                 
+                weakSelf!.modelArray.append(item)
                 
+                let time = UserDefaults.standard.integer(forKey: dict["groupId"] as! String)
+                if time == 0 {
+                    
+                    UserDefaults.standard.set(item.exerciseTimer , forKey: dict["groupId"] as! String)
+                    UserDefaults.standard.synchronize()
+                    
+                }
                 if db.open() {
                    
                     
