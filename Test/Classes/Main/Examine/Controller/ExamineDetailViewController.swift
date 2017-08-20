@@ -23,7 +23,7 @@ class ExamineDetailViewController: UICollectionViewController {
     
     fileprivate let button: UIButton = UIButton(type: .custom)
     
-    fileprivate var timer: DispatchSourceTimer?
+    fileprivate var timer: Timer?
     
     var index: Int = 0 {
         didSet {
@@ -163,12 +163,12 @@ private extension ExamineDetailViewController {
         self.button.addTarget(self, action: #selector(ExamineDetailViewController.staticstisClick), for: .touchUpInside)
         self.view.insertSubview(self.button, aboveSubview: self.collectionView!)
         
-        timer = DispatchSource.makeTimerSource(flags: [], queue: DispatchQueue.global(qos: .default))
-        timer?.scheduleRepeating(deadline: .now(), interval: 1.0)
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ExamineDetailViewController.timeClick), userInfo: nil, repeats: true)
         
+        /*
+
         weak var weakSelf = self
-        
-        timer?.setEventHandler(handler: { 
+               timer?.setEventHandler(handler: {
             
             let h = self.model!.exerciseTimer / 3600
             let m = (self.model!.exerciseTimer - h * 3600) / 60
@@ -183,6 +183,7 @@ private extension ExamineDetailViewController {
         })
         
         timer?.resume()
+        */
         
     }
     
@@ -419,7 +420,6 @@ private extension ExamineDetailViewController {
        
     }
     
-    // 计时
     @objc func staticstisClick() {
                 
         let vc = ExamineStaticssticsViewController.init(nibName: "ExamineStaticssticsViewController", bundle: Bundle.main)
@@ -428,6 +428,25 @@ private extension ExamineDetailViewController {
         self.navigationController?.pushViewController(vc, animated: true)
         
         
+    }
+    
+    @objc func timeClick() {
+        
+        let h = self.model!.exerciseTimer / 3600
+        let m = (self.model!.exerciseTimer - h * 3600) / 60
+        let s = self.model!.exerciseTimer - h * 3600 - m * 60
+        
+        let title = "\(h):\(m):\(s)"
+        
+        self.button.setTitle(title, for: .normal)
+        self.model?.exerciseTimer -= 1
+
+        if self.model?.exerciseTimer == 0 {
+            
+            self.submit()
+            
+            self.timer?.invalidate()
+        }
     }
 }
 

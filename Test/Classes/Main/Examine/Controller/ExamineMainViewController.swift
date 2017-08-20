@@ -80,6 +80,7 @@ class ExamineMainViewController: UITableViewController {
             }
             
             detailVC.model = self.modelArray[indexPath.row]
+            
             navigationController!.pushViewController(detailVC, animated: true)
         }
         
