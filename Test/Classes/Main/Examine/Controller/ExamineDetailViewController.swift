@@ -132,7 +132,7 @@ private extension ExamineDetailViewController {
         self.collectionView?.backgroundColor = UIColor.clear
         
         self.navigationItem.rightBarButtonItems = [
-            UIBarButtonItem.barButtonItemWith(image: "submit", target: self, action: #selector(ExamineDetailViewController.submitClick)),
+            UIBarButtonItem.barButtonItemWith(image: "submit", target: self, action: #selector(ExamineDetailViewController.submit)),
             UIBarButtonItem.barButtonItemWith(image: "star", target: self, action: #selector(ExamineDetailViewController.collectClick))
         ]
         self.navigationItem.leftBarButtonItem = UIBarButtonItem.barButtonItemWith(image: "back", target: self, action: #selector(ExamineDetailViewController.backClick))
@@ -318,13 +318,17 @@ private extension ExamineDetailViewController {
             
             let actionNext = UIAlertAction(title: "下次继续", style: .default) { (_) in
                 
+                weakSelf?.submitClick(status: 0)
+                
                 weakSelf?.navigationController?.popViewController(animated: true)
                 
             }
             
             let actionSubmit = UIAlertAction(title: "提交", style: .destructive) { (_) in
                 
-                weakSelf?.submitClick()
+                weakSelf?.submit()
+                weakSelf?.navigationController?.popViewController(animated: true)
+
             }
             
             alertVC.addAction(actionNext)
@@ -340,7 +344,7 @@ private extension ExamineDetailViewController {
     }
     
     // 提交
-    @objc func submitClick() {
+    @objc func submitClick(status: Int) {
     
         self.submitModel.allCount = self.model!.allCount
         self.submitModel.doCount = self.submitModel.items.count
@@ -370,6 +374,8 @@ private extension ExamineDetailViewController {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         self.submitModel.submitTime = formatter.string(from: Date())
+        
+        self.submitModel.status = status
         
         let dict = self.submitModel.mj_keyValues()
     
@@ -423,7 +429,7 @@ extension ExamineDetailViewController {
     
     func submit() {
         
-        submitClick()
+        submitClick(status: 1)
         
     }
     
