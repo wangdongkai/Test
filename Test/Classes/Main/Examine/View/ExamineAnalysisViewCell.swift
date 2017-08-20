@@ -58,7 +58,7 @@ class ExamineAnalysisViewCell: UITableViewCell {
                                 self.answerLabel.text = ans
                             } else {
                                 
-                                self.answerLabel.text = "无"
+                                
  
                             }
                         }

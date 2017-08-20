@@ -59,6 +59,8 @@ class ExamineAnaysisViewController: UICollectionViewController {
     
         cell.backgroundColor = UIColor.white
         cell.model = self.dataArray?[indexPath.row] ?? nil
+        cell.model?.totalCount = (self.dataArray?.count)!
+        cell.model?.currentCount = indexPath.row
         
         return cell
     }
@@ -69,7 +71,8 @@ private extension ExamineAnaysisViewController {
     
     func setup() {
         
-        title = "测试题目"
+        title = self.model?.name ?? "测试题目"
+        
         self.view.backgroundColor = UIColor.white
         self.collectionView?.backgroundColor = UIColor.clear
         let layout = UICollectionViewFlowLayout()
@@ -146,6 +149,10 @@ private extension ExamineAnaysisViewController {
     
     @objc func menuClick() {
         
-        
+        let vc = ExamineStaticssticsViewController.init(nibName: "ExamineStaticssticsViewController", bundle: Bundle.main)
+        vc.dataArray = self.dataArray!
+        //vc.submitModel = self.submitModel
+        self.navigationController?.pushViewController(vc, animated: true)
+
     }
 }

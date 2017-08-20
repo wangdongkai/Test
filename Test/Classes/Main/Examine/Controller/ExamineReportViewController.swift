@@ -32,6 +32,8 @@ class ExamineReportViewController: UIViewController {
         
         setupCollection()
         
+
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem.barButtonItemWith(image: "back", target: self, action: #selector(ExamineReportViewController.backClick))
         // Do any additional setup after loading the view.
     }
 
@@ -145,6 +147,18 @@ extension ExamineReportViewController: UICollectionViewDataSource, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        
+    }
+}
+
+
+private extension ExamineReportViewController {
+    
+    @objc func backClick() {
+        
+        let vc = self.navigationController?.childViewControllers[1] as! ExamineMainViewController
+        
+        self.navigationController?.popToViewController(vc, animated: true)
         
     }
 }
