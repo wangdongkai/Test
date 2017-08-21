@@ -136,13 +136,14 @@ private extension ExamineMainViewController {
                 return
             }
             
+            
             // 插入数据
             let name = UserDefaults.standard.object(forKey: "username") as! String
             
             let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
             
             let sqlPath = path.appendingPathComponent("\(name).sqlite")
-            let queue = FMDatabaseQueue.init(path: sqlPath)
+           // let queue = FMDatabaseQueue.init(path: sqlPath)
             let db = FMDatabase(path: sqlPath)
             
             
@@ -152,6 +153,9 @@ private extension ExamineMainViewController {
                 
                 weakSelf!.modelArray.append(item)
                 
+                UserDefaults.standard.set(dict["classAccuracy"] as! String, forKey: "classAccuracy")
+                UserDefaults.standard.set(dict["classRank"] as! String, forKey: "classRank")
+
                 let time = UserDefaults.standard.integer(forKey: dict["groupId"] as! String)
                 if time == 0 {
                     

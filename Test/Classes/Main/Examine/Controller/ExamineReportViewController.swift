@@ -135,7 +135,7 @@ private extension ExamineReportViewController {
         self.submitLabel.text = "\(self.submitModel!.submitTime!) 提交"
         self.correctLabel.text = "\(self.submitModel!.correctCount)"
         self.totalLabel.text = "共 \(self.submitModel!.allCount)道题"
-
+        
         let accuracy = CGFloat(self.submitModel!.correctCount) / CGFloat(self.submitModel!.allCount)
         
         self.correctAccuracyLabel.text = String(format: "%.2f%%", accuracy * 100)
@@ -144,6 +144,12 @@ private extension ExamineReportViewController {
         self.answerWrongLabel.text = "错 \(self.submitModel!.doCount - self.submitModel!.correctCount)"
         self.answerUndoLabel.text = "未做 \(self.submitModel!.allCount - self.submitModel!.doCount)"
 
+        let classRank = UserDefaults.standard.object(forKey: "classRank") as! String
+        let classAccuracy = UserDefaults.standard.object(forKey: "classAccuracy") as! String
+
+        self.rankLabel.text = classRank
+        self.classCorrectAccuracyLabel.text = classAccuracy
+        
         self.answerCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         self.answerCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         let layout = UICollectionViewFlowLayout()

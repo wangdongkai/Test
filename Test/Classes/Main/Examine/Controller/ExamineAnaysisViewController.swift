@@ -150,8 +150,11 @@ private extension ExamineAnaysisViewController {
     @objc func menuClick() {
         
         let vc = ExamineStaticssticsViewController.init(nibName: "ExamineStaticssticsViewController", bundle: Bundle.main)
+        
+        // let detailVC = self.navigationController?.childViewControllers[2] as! ExamineDetailViewController
+        
         vc.dataArray = self.dataArray!
-        //vc.submitModel = self.submitModel
+        // vc.submitModel = detailVC.submitModel
         self.navigationController?.pushViewController(vc, animated: true)
 
     }

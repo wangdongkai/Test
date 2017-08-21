@@ -388,7 +388,7 @@ private extension ExamineDetailViewController {
         self.submitModel.submitTime = formatter.string(from: Date())
         
         self.submitModel.status = status
-        
+                
         let dict = self.submitModel.mj_keyValues()
     
         guard let jsonData = try? JSONSerialization.data(withJSONObject: dict!, options: .prettyPrinted) else {
