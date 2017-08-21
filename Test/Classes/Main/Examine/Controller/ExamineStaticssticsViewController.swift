@@ -57,6 +57,7 @@ extension ExamineStaticssticsViewController: UICollectionViewDelegate, UICollect
         }
         
         let button = UIButton(type: .custom)
+        button.isUserInteractionEnabled = false
         button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         button.center = cell.contentView.center
         let image = itemModel.chooseAnswer == nil ? UIImage(named: "circle") : UIImage(named: "circle_select")
@@ -249,7 +250,7 @@ private extension ExamineStaticssticsViewController {
                 print("成功, \(msg)")
                 
                 let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
-                vc.submitModel = self.submitModel
+                //vc.submitModel = self.submitModel
                 vc.dataArray = self.dataArray
                 self.navigationController?.pushViewController(vc, animated: true)
                 

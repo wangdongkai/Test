@@ -27,13 +27,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Test/Classes/Main/Examine/Controller/ExamineDetailViewController.swift"
-            timestampString = "524991001.684877"
+            filePath = "Test/Classes/Main/Examine/Controller/ExamineStaticssticsViewController.swift"
+            timestampString = "524995745.455104"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "221"
-            endingLineNumber = "221"
-            landmarkName = "setupNetwork()"
+            startingLineNumber = "225"
+            endingLineNumber = "225"
+            landmarkName = "submitClick(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -44,11 +44,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Test/Classes/Main/Examine/Controller/ExamineStaticssticsViewController.swift"
-            timestampString = "524979800.358546"
+            timestampString = "524995745.455104"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "226"
-            endingLineNumber = "226"
+            startingLineNumber = "240"
+            endingLineNumber = "240"
             landmarkName = "submitClick(_:)"
             landmarkType = "7">
          </BreakpointContent>
