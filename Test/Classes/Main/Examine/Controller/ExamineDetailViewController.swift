@@ -394,7 +394,7 @@ private extension ExamineDetailViewController {
             
             let item = self.submitModel.items[i]
             
-            setupDataBase(item: item)
+            //setupDataBase(item: item)
             
             if item.correct == 1 {
                 
@@ -402,8 +402,8 @@ private extension ExamineDetailViewController {
             }
         }
         self.submitModel.exerciseGroupId = self.items[0].exerciseGroupId
-        self.submitModel.exerciseRecordId = self.items[0].exerciseRecordId
-        self.submitModel.exerciseExtendId = self.items[0].exerciseExtendId
+        self.submitModel.exerciseRecordId = self.items[0].exerciseRecordId ?? ""
+        self.submitModel.exerciseExtendId = self.items[0].exerciseExtendId ?? ""
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -422,6 +422,8 @@ private extension ExamineDetailViewController {
         
         let url = "http://www.qxueyou.com/qxueyou/exercise/Exercise/exerAnswers?answers=\(encoding!)"
         
+        weak var weakSelf = self
+        
         NetworkTool.shareInstance.request(method: .POST, url: url, param: nil) { (_, success: Any?, error: Error?) in
             
             guard let data = success as? [String: Any] else {
@@ -436,10 +438,30 @@ private extension ExamineDetailViewController {
                 
                 print("成功, \(msg)")
                 
-                let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
-                vc.submitModel = self.submitModel
-                vc.dataArray = self.items
-                self.navigationController?.pushViewController(vc, animated: true)
+                let param = ["groupId": weakSelf?.model?.groupId! ?? "", "exerciseRecordId": weakSelf?.model?.exerciseRecordId! ?? "", "getExercise": true, "getAnswer": true] as [String : Any]
+                
+                NetworkTool.shareInstance.get("http://www.qxueyou.com/qxueyou/exercise/Exercise/examExercise", parameters: param, progress: nil, success: { (_, data: Any?) in
+                    
+                    guard let dict = data as? [String: Any] else {
+                        
+                        return
+                    }
+                    
+                    let detailModel: ExamineDetailModel = ExamineDetailModel.mj_object(withKeyValues: dict)
+                    
+                    let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
+                    vc.answers = detailModel.answers
+                    vc.dataArray = self.items
+                    self.navigationController?.pushViewController(vc, animated: true)
+                    
+                }) { (_, error: Error) in
+                    
+                    print(error)
+                    
+                    
+                }
+
+               
                 
             }
             

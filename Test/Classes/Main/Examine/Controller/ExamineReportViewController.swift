@@ -42,7 +42,10 @@ class ExamineReportViewController: UIViewController {
     // 全部解析
     @IBAction func allAnalysisClick() {
         
+        let vc = self.navigationController?.childViewControllers[2] as! ExamineAnaysisViewController
         
+        self.navigationController?.popToViewController(vc, animated: true)
+
     }
     
     // 错题解析
