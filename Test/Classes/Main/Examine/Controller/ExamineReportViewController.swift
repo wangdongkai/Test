@@ -181,9 +181,12 @@ private extension ExamineReportViewController {
         self.answerWrongLabel.text = "错 \(self.submitModel!.doCount - self.submitModel!.correctCount)"
         self.answerUndoLabel.text = "未做 \(self.submitModel!.allCount - self.submitModel!.doCount)"
 
-        let classRank = UserDefaults.standard.object(forKey: "\(self.dataArray![0].exerciseGroupId)classRank") as! String
-        let classAccuracy = UserDefaults.standard.object(forKey: "\(self.dataArray![0].exerciseGroupId)classAccuracy") as! String
-
+        
+        let classRank = UserDefaults.standard.object(forKey: "\(self.dataArray![0].exerciseGroupId!)classRank") as! String
+        let classAccuracy = UserDefaults.standard.object(forKey: "\(self.dataArray![0].exerciseGroupId!)classAccuracy") as! String
+        
+        print("\(self.dataArray![0].exerciseGroupId!)classRank")
+        
         self.rankLabel.text = classRank
         self.classCorrectAccuracyLabel.text = classAccuracy
         

@@ -221,8 +221,40 @@ private extension ExamineStaticssticsViewController {
     // 提交
     @IBAction func submitClick(_ sender: UIButton) {
         
-        let vc = self.navigationController?.childViewControllers[2] as! ExamineDetailViewController
-        vc.submit()
+        let dict = self.submitModel.mj_keyValues()
+        
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: dict!, options: .prettyPrinted) else {
+            
+            return
+        }
+        
+        let encoding = String(data: jsonData, encoding: .utf8)?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        
+        let url = "http://www.qxueyou.com/qxueyou/exercise/Exercise/exerAnswers?answers=\(encoding!)"
+        
+        NetworkTool.shareInstance.request(method: .POST, url: url, param: nil) { (_, success: Any?, error: Error?) in
+            
+            guard let data = success as? [String: Any] else {
+                
+                return
+            }
+            
+            let isSuccess = data["success"] as! Bool
+            let msg = data["msg"] as! String
+            
+            if isSuccess == true {
+                
+                print("成功, \(msg)")
+                
+                let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
+                vc.submitModel = self.submitModel
+                vc.dataArray = self.dataArray
+                self.navigationController?.pushViewController(vc, animated: true)
+                
+            }
+            
+        }
+        
         
     }
     

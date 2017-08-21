@@ -443,7 +443,31 @@ private extension ExamineDetailViewController {
     }
     
     @objc func staticstisClick() {
+        
+        self.submitModel.allCount = self.model!.allCount
+        self.submitModel.doCount = self.submitModel.items.count
+        
+        for i in 0..<self.submitModel.items.count {
+            
+            let item = self.submitModel.items[i]
+            
+            setupDataBase(item: item)
+            
+            if item.correct == 1 {
                 
+                self.submitModel.correctCount += 1
+            }
+        }
+        self.submitModel.exerciseGroupId = self.dataArray[0].exerciseGroupId
+        self.submitModel.exerciseRecordId = self.dataArray[0].exerciseRecordId
+        self.submitModel.exerciseExtendId = self.dataArray[0].exerciseExtendId
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        self.submitModel.submitTime = formatter.string(from: Date())
+        
+        self.submitModel.status = 1
+        
         let vc = ExamineStaticssticsViewController.init(nibName: "ExamineStaticssticsViewController", bundle: Bundle.main)
         vc.dataArray = self.dataArray
         vc.submitModel = self.submitModel

@@ -154,9 +154,10 @@ private extension ExamineMainViewController {
                 let item = ExamineMainModel.mj_object(withKeyValues: dict)
                 
                 weakSelf!.modelArray.append(item!)
+                print(dict["groupId"]!)
                 
-                UserDefaults.standard.set(dict["classAccuracy"] as! String, forKey: "\(String(describing: dict["groupId"]))classAccuracy")
-                UserDefaults.standard.set(dict["classRank"] as! String, forKey: "\(String(describing: dict["groupId"]))classRank")
+                UserDefaults.standard.set(dict["classAccuracy"] as! String, forKey: "\(dict["groupId"]!)classAccuracy")
+                UserDefaults.standard.set(dict["classRank"] as! String, forKey: "\(dict["groupId"]!)classRank")
 
                 let time = UserDefaults.standard.integer(forKey: dict["groupId"] as! String)
                 if time == 0 {
