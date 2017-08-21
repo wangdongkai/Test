@@ -221,6 +221,8 @@ private extension ExamineStaticssticsViewController {
     // 提交
     @IBAction func submitClick(_ sender: UIButton) {
         
+        self.submitModel.exerciseGroupId = self.dataArray[0].exerciseGroupId
+        
         let dict = self.submitModel.mj_keyValues()
         
         guard let jsonData = try? JSONSerialization.data(withJSONObject: dict!, options: .prettyPrinted) else {

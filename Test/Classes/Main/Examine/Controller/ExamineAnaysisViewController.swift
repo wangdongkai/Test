@@ -13,8 +13,9 @@ private let reuseIdentifier = "ExamineAnalysisCollectionCell"
 class ExamineAnaysisViewController: UICollectionViewController {
 
     var model: ExamineMainModel?
-    var dataArray: [ExamineItemModel]?
-
+    var items: [ExamineItemModel]?
+    var answers: [ExamineAnswerModel]?
+    
     var index: Int = 0 {
         didSet {
             
@@ -51,16 +52,17 @@ class ExamineAnaysisViewController: UICollectionViewController {
     }
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return self.dataArray?.count ?? 0
+        return self.items?.count ?? 0
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ExamineAnalysisCollectionCell
     
         cell.backgroundColor = UIColor.white
-        cell.model = self.dataArray?[indexPath.row] ?? nil
-        cell.model?.totalCount = (self.dataArray?.count)!
+        cell.model = self.items?[indexPath.row] ?? nil
+        cell.model?.totalCount = (self.items?.count)!
         cell.model?.currentCount = indexPath.row
+        cell.answer = self.answers?[indexPath.row]
         
         return cell
     }
@@ -104,17 +106,8 @@ private extension ExamineAnaysisViewController {
             
             let detailModel: ExamineDetailModel = ExamineDetailModel.mj_object(withKeyValues: dict)
             
-            weakSelf?.dataArray = detailModel.items!
-            
-            if (weakSelf?.dataArray?.count)! > 0 {
-                
-                for item in (weakSelf?.dataArray)! {
-                    
-                    
-                }
-
-            }
-            
+            weakSelf?.items = detailModel.items!
+            weakSelf?.answers = detailModel.answers
             weakSelf?.collectionView?.reloadData()
             
         }) { (_, error: Error) in
@@ -153,7 +146,7 @@ private extension ExamineAnaysisViewController {
         
         // let detailVC = self.navigationController?.childViewControllers[2] as! ExamineDetailViewController
         
-        vc.dataArray = self.dataArray!
+        vc.dataArray = self.items!
         // vc.submitModel = detailVC.submitModel
         self.navigationController?.pushViewController(vc, animated: true)
 

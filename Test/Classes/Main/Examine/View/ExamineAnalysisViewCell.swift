@@ -42,6 +42,16 @@ class ExamineAnalysisViewCell: UITableViewCell {
                 return
             }
             
+            if c == "True" {
+                self.answerLabel.text = "A，"
+            } else if c == "False" {
+                self.answerLabel.text = "B，"
+            } else {
+                self.answerLabel.text = "\(c), "
+                
+            }
+
+            /*
             let name = UserDefaults.standard.object(forKey: "username") as! String
             
             let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
@@ -77,7 +87,8 @@ class ExamineAnalysisViewCell: UITableViewCell {
                 
                 db.close()
             }
-
+*/
+            
         }
 
     }

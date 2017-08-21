@@ -18,7 +18,9 @@ class ExamineDetailViewController: UICollectionViewController {
     var model: ExamineMainModel?
     var submitModel: ExamineSubmitModel = ExamineSubmitModel()
     
-    var dataArray: [ExamineItemModel] = [ExamineItemModel]()
+    var items: [ExamineItemModel] = [ExamineItemModel]()
+    var answers: [ExamineAnswerModel] = [ExamineAnswerModel]()
+    
     var submitDataArray: [[String: ExamineItemModel]] = [[String: ExamineItemModel]]()
     
     fileprivate let button: UIButton = UIButton(type: .custom)
@@ -29,7 +31,7 @@ class ExamineDetailViewController: UICollectionViewController {
         didSet {
             
             let indexPath = IndexPath(item: index, section: 0)
-            if indexPath.row != self.dataArray.count {
+            if indexPath.row != self.items.count {
                 self.collectionView?.scrollToItem(at: indexPath, at: .right, animated: true)
 
             }
@@ -58,15 +60,15 @@ class ExamineDetailViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.dataArray.count
+        return self.items.count
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! ExamineDetailsViewCell
         
         
-        let model = self.dataArray[indexPath.row]
-        
-        model.totalCount = self.dataArray.count
+        let model = self.items[indexPath.row]
+    
+        model.totalCount = self.items.count
         model.currentCount = indexPath.row
 
         cell.model = model
@@ -217,7 +219,10 @@ private extension ExamineDetailViewController {
             
             let detailModel: ExamineDetailModel = ExamineDetailModel.mj_object(withKeyValues: dict)
             
-            weakSelf?.dataArray = detailModel.items!
+            weakSelf?.items = detailModel.items!
+            if detailModel.answers != nil {
+                weakSelf?.answers = detailModel.answers!
+            }
             
             let name = UserDefaults.standard.object(forKey: "username") as! String
             
@@ -225,12 +230,12 @@ private extension ExamineDetailViewController {
             
             let sqlPath = path.appendingPathComponent("\(name).sqlite")
             let db = FMDatabase(path: sqlPath)
-
+            
             if db.open() {
                 
-                for i in 0..<weakSelf!.dataArray.count {
+                for i in 0..<weakSelf!.items.count {
                     
-                    let item = weakSelf?.dataArray[i]
+                    let item = weakSelf?.items[i]
                     
                     do {
                         
@@ -396,9 +401,9 @@ private extension ExamineDetailViewController {
                 self.submitModel.correctCount += 1
             }
         }
-        self.submitModel.exerciseGroupId = self.dataArray[0].exerciseGroupId
-        self.submitModel.exerciseRecordId = self.dataArray[0].exerciseRecordId
-        self.submitModel.exerciseExtendId = self.dataArray[0].exerciseExtendId
+        self.submitModel.exerciseGroupId = self.items[0].exerciseGroupId
+        self.submitModel.exerciseRecordId = self.items[0].exerciseRecordId
+        self.submitModel.exerciseExtendId = self.items[0].exerciseExtendId
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -433,7 +438,7 @@ private extension ExamineDetailViewController {
                 
                 let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
                 vc.submitModel = self.submitModel
-                vc.dataArray = self.dataArray
+                vc.dataArray = self.items
                 self.navigationController?.pushViewController(vc, animated: true)
                 
             }
@@ -458,9 +463,9 @@ private extension ExamineDetailViewController {
                 self.submitModel.correctCount += 1
             }
         }
-        self.submitModel.exerciseGroupId = self.dataArray[0].exerciseGroupId
-        self.submitModel.exerciseRecordId = self.dataArray[0].exerciseRecordId
-        self.submitModel.exerciseExtendId = self.dataArray[0].exerciseExtendId
+        self.submitModel.exerciseGroupId = self.items[0].exerciseGroupId
+        self.submitModel.exerciseRecordId = self.items[0].exerciseRecordId
+        self.submitModel.exerciseExtendId = self.items[0].exerciseExtendId
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -469,7 +474,7 @@ private extension ExamineDetailViewController {
         self.submitModel.status = 1
         
         let vc = ExamineStaticssticsViewController.init(nibName: "ExamineStaticssticsViewController", bundle: Bundle.main)
-        vc.dataArray = self.dataArray
+        vc.dataArray = self.items
         vc.submitModel = self.submitModel
         self.navigationController?.pushViewController(vc, animated: true)
         

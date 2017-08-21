@@ -19,7 +19,7 @@ class ExamineDetailModel: NSObject {
         }
         
         if self.answers?.isEmpty == false{
-            self.answers = ExamineAnswerModel.mj_objectArray(withKeyValuesArray: self.items).copy() as? [ExamineAnswerModel]
+            self.answers = ExamineAnswerModel.mj_objectArray(withKeyValuesArray: self.answers).copy() as? [ExamineAnswerModel]
         }
         
     }

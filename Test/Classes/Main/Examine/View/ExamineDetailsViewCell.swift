@@ -35,6 +35,32 @@ class ExamineDetailsViewCell: UICollectionViewCell {
         }
     }
     
+    var answer: ExamineAnswerModel? {
+        didSet {
+            
+            guard let _ = answer else {
+                
+                return
+            }
+            
+            let a = answer!.answer
+            
+            if model?.type == 1 { // 单选
+                
+                for option in (model?.options)! {
+                    
+                    option.optionState = option.optionAnswer == a ? true : false
+                }
+            } else if model?.type == 2 { //多选
+                
+                
+            } else { // 判断
+                
+                
+            }
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         

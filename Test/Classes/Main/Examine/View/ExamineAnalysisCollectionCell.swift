@@ -25,6 +25,46 @@ class ExamineAnalysisCollectionCell: UICollectionViewCell {
         }
     }
 
+    var answer: ExamineAnswerModel? {
+        didSet {
+            
+            guard let _ = answer else {
+                
+                return
+            }
+            
+            let a = answer!.answer
+            
+            if model?.type == 1 { // 单选
+                
+                for option in (model?.options)! {
+                    
+                    option.optionState = option.optionAnswer == a ? true : false
+                }
+            } else if model?.type == 2 { //多选
+                
+                let answerArray = a?.components(separatedBy: ",")
+                
+                for option in (model?.options)! {
+                    
+                    for ans in answerArray! {
+                        
+                        option.optionState = option.optionAnswer == ans ? true : false
+                    }
+                }
+            } else { // 判断
+                
+                if a == "False" {
+                    
+                    model?.options?[0].optionState = true
+                } else {
+                    model?.options?[1].optionState = true
+
+                }
+            }
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -110,8 +150,8 @@ extension ExamineAnalysisCollectionCell: UITableViewDataSource, UITableViewDeleg
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineAnalysisViewCell", for: indexPath) as! ExamineAnalysisViewCell
             
+            cell.answer = self.answer?.answer ?? ""
             cell.correct = self.model?.answer ?? ""
-            cell.answer = self.model?.exerciseId ?? ""
             if let dict = self.model?.analisisResult {
                 
                 cell.analysis = dict["analysis"] as? String

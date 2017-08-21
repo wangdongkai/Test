@@ -27,13 +27,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Test/Classes/Main/Examine/Controller/ExamineReportViewController.swift"
-            timestampString = "524977249.677826"
+            filePath = "Test/Classes/Main/Examine/Controller/ExamineDetailViewController.swift"
+            timestampString = "524991001.684877"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "57"
-            endingLineNumber = "57"
-            landmarkName = "redoClick()"
+            startingLineNumber = "221"
+            endingLineNumber = "221"
+            landmarkName = "setupNetwork()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Test/Classes/Main/Examine/Controller/ExamineStaticssticsViewController.swift"
+            timestampString = "524979800.358546"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
+            landmarkName = "submitClick(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
