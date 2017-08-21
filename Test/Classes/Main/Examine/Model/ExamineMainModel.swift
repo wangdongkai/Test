@@ -135,13 +135,5 @@ class ExamineMainModel: NSObject {
     // 是否可以重做
     var repeatFlag: Bool?
     
-    init(dict: [String: Any]) {
-        super.init()
-        
-        setValuesForKeys(dict)
-    }
     
-    override func setValue(_ value: Any?, forUndefinedKey key: String) {
-        
-    }
 }

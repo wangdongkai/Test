@@ -151,17 +151,17 @@ private extension ExamineMainViewController {
             
             for dict in result {
                 
-                let item = ExamineMainModel(dict: dict)
+                let item = ExamineMainModel.mj_object(withKeyValues: dict)
                 
-                weakSelf!.modelArray.append(item)
+                weakSelf!.modelArray.append(item!)
                 
-                UserDefaults.standard.set(dict["classAccuracy"] as! String, forKey: "classAccuracy")
-                UserDefaults.standard.set(dict["classRank"] as! String, forKey: "classRank")
+                UserDefaults.standard.set(dict["classAccuracy"] as! String, forKey: "\(String(describing: dict["groupId"]))classAccuracy")
+                UserDefaults.standard.set(dict["classRank"] as! String, forKey: "\(String(describing: dict["groupId"]))classRank")
 
                 let time = UserDefaults.standard.integer(forKey: dict["groupId"] as! String)
                 if time == 0 {
                     
-                    UserDefaults.standard.set(item.exerciseTimer , forKey: dict["groupId"] as! String)
+                    UserDefaults.standard.set(item?.exerciseTimer , forKey: dict["groupId"] as! String)
                     UserDefaults.standard.synchronize()
                     
                 }

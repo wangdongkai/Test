@@ -29,7 +29,10 @@ class ExamineDetailViewController: UICollectionViewController {
         didSet {
             
             let indexPath = IndexPath(item: index, section: 0)
-            self.collectionView?.scrollToItem(at: indexPath, at: .right, animated: true)
+            if indexPath.row != self.dataArray.count {
+                self.collectionView?.scrollToItem(at: indexPath, at: .right, animated: true)
+
+            }
             
         }
     }
@@ -201,7 +204,7 @@ private extension ExamineDetailViewController {
     
     @objc func setupNetwork() {
         
-        let param = ["groupId": model?.groupId! ?? "", "exerciseRecordId": model?.exerciseRecordId! ?? "", "getExercise": true, "getAnswer": true] as [String : Any]
+        let param = ["groupId": model?.groupId! ?? "", "exerciseRecordId": model?.exerciseRecordId ?? "", "getExercise": true, "getAnswer": true] as [String : Any]
         
         weak var weakSelf = self
         
