@@ -28,13 +28,13 @@ class ExamineReportViewController: UIViewController {
     
     var submitModel: ExamineSubmitModel?
     var dataArray: [ExamineItemModel]?
+    var answers: [ExamineAnswerModel]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupCollection()
         
-
         self.navigationItem.leftBarButtonItem = UIBarButtonItem.barButtonItemWith(image: "back", target: self, action: #selector(ExamineReportViewController.backClick))
         // Do any additional setup after loading the view.
     }
@@ -54,13 +54,13 @@ class ExamineReportViewController: UIViewController {
     // 重做一次
     @IBAction func redoClick() {
         
-        SVProgressHUD.show(withStatus: "正在发送请求请稍等。。。")
-
+        SVProgressHUD.show()
+        
         guard let groupId = self.dataArray?[0].exerciseGroupId else {
             
             return
         }
-        
+        /*
         let name = UserDefaults.standard.object(forKey: "username") as! String
         
         let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
@@ -94,7 +94,7 @@ class ExamineReportViewController: UIViewController {
             }
         }
         
-        
+        */
         
         /*
         let db = FMDatabase(path: sqlPath)
@@ -169,17 +169,30 @@ private extension ExamineReportViewController {
         
         title = "答题报告"
         
-        self.submitLabel.text = "\(self.submitModel!.submitTime!) 提交"
-        self.correctLabel.text = "\(self.submitModel!.correctCount)"
-        self.totalLabel.text = "共 \(self.submitModel!.allCount)道题"
+        var correct = 0
+        for answer in self.answers! {
+            
+            if answer.correct == 1 {
+                
+                correct += 1
+            }
+        }
         
-        let accuracy = CGFloat(self.submitModel!.correctCount) / CGFloat(self.submitModel!.allCount)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let date = Date.init(timeIntervalSince1970: (self.answers![0].createTime?.doubleValue)! / 1000.0)
+        
+        self.submitLabel.text = "\(formatter.string(from: date)) 提交"
+        self.correctLabel.text = "\(correct)"
+        self.totalLabel.text = "共 \(self.dataArray!.count)道题"
+        
+        let accuracy = CGFloat(correct) / CGFloat(self.dataArray!.count)
         
         self.correctAccuracyLabel.text = String(format: "%.2f%%", accuracy * 100)
         
-        self.answerCorrectLabel.text = "对 \(self.submitModel!.correctCount)"
-        self.answerWrongLabel.text = "错 \(self.submitModel!.doCount - self.submitModel!.correctCount)"
-        self.answerUndoLabel.text = "未做 \(self.submitModel!.allCount - self.submitModel!.doCount)"
+        self.answerCorrectLabel.text = "对 \(correct)"
+        self.answerWrongLabel.text = "错 \(self.answers!.count - correct)"
+        self.answerUndoLabel.text = "未做 \(self.dataArray!.count - self.answers!.count)"
 
         
         let classRank = UserDefaults.standard.object(forKey: "\(self.dataArray![0].exerciseGroupId!)classRank") as! String
@@ -212,7 +225,8 @@ extension ExamineReportViewController: UICollectionViewDataSource, UICollectionV
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
         
-        let itemModel = self.dataArray![indexPath.row]
+                //let itemModel = self.answers![indexPath.row]
+        
         
         for view in cell.contentView.subviews {
             
@@ -226,16 +240,8 @@ extension ExamineReportViewController: UICollectionViewDataSource, UICollectionV
         button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         button.center = cell.contentView.center
         
-        if itemModel.chooseAnswer == nil {
-            
-            button.setImage(UIImage(named: "circle"), for: .normal)
+        button.setImage(UIImage(named: "circle"), for: .normal)
 
-        } else {
-            
-            let image = itemModel.chooseAnswer == itemModel.ans ? UIImage(named: "circle_green") : UIImage(named: "circle_red")
-            button.setImage(image, for: .normal)
-
-        }
         cell.contentView.addSubview(button)
         
         let label = UILabel(frame: button.bounds)
@@ -245,6 +251,26 @@ extension ExamineReportViewController: UICollectionViewDataSource, UICollectionV
         label.textAlignment = .center
         label.text = "\(indexPath.row + 1)"
         cell.contentView.addSubview(label)
+
+        let item = self.dataArray![indexPath.row]
+        
+        for answer in self.answers! {
+            
+            if item.exerciseId == answer.exerciseItemId {
+                
+                if answer.answer == nil {
+                    
+                    button.setImage(UIImage(named: "circle"), for: .normal)
+                    
+                } else {
+                    
+                    let image = answer.correct?.intValue == 1 ? UIImage(named: "circle_green") : UIImage(named: "circle_red")
+                    button.setImage(image, for: .normal)
+                    
+                }
+                
+            }
+        }
 
         return cell
     }
