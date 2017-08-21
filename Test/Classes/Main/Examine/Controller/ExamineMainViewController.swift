@@ -138,6 +138,7 @@ private extension ExamineMainViewController {
             
             
             // 插入数据
+            /*
             let name = UserDefaults.standard.object(forKey: "username") as! String
             
             let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
@@ -146,6 +147,7 @@ private extension ExamineMainViewController {
            // let queue = FMDatabaseQueue.init(path: sqlPath)
             let db = FMDatabase(path: sqlPath)
             
+            */
             
             for dict in result {
                 
@@ -163,6 +165,8 @@ private extension ExamineMainViewController {
                     UserDefaults.standard.synchronize()
                     
                 }
+                
+                /*
                 if db.open() {
                    
                     
@@ -218,8 +222,11 @@ private extension ExamineMainViewController {
                 }
             
                 db.close()
+  */
             }
             
+
+                
             weakSelf?.tableView.reloadData()
             weakSelf?.tableView.mj_header.endRefreshing()
             
