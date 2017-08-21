@@ -18,6 +18,8 @@ class ExamineMainViewCell: UITableViewCell {
     
     @IBOutlet weak var progressLabel: UILabel!
     
+    @IBOutlet weak var dateLabel: UILabel!
+    
     var model: ExamineMainModel? {
         didSet {
             
@@ -27,8 +29,10 @@ class ExamineMainViewCell: UITableViewCell {
             }
             
             titleLabel.text = m.name
+            
             progressLabel.text = "完成：\(m.doCount)/\(m.allCount)"
-            timeLabel.text = "共\(m.exerciseTime!)分钟，\(m.update!)"
+            timeLabel.text = "\(m.exerciseTime!)"
+            dateLabel.text = "\(m.update!)"
             
             if m.buttonStatus == 0 { //未做未提交
                 
