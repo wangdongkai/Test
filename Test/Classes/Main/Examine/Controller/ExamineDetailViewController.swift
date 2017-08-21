@@ -40,8 +40,8 @@ class ExamineDetailViewController: UICollectionViewController {
         
         setupButton()
         
-        setupNetwork()
-        
+        //setupNetwork()
+        setupHeader()
         collectionView?.showsVerticalScrollIndicator = false
         collectionView?.showsVerticalScrollIndicator = false
         
@@ -153,6 +153,16 @@ private extension ExamineDetailViewController {
         
     }
     
+    func setupHeader() {
+        
+        let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(ExamineDetailViewController.setupNetwork))
+        header?.setTitle("下拉刷新", for: .idle)
+        header?.setTitle("释放以更新", for: .pulling)
+        header?.setTitle("加载中", for: .refreshing)
+        collectionView!.mj_header = header
+        collectionView?.mj_header.beginRefreshing()
+        
+    }
     func setupButton() {
         
         self.button.frame = CGRect(x: self.view.frame.width - 50 - 15, y: self.view.frame.height - 100, width: 50, height: 50)
@@ -189,7 +199,7 @@ private extension ExamineDetailViewController {
         
     }
     
-    func setupNetwork() {
+    @objc func setupNetwork() {
         
         let param = ["groupId": model?.groupId! ?? "", "exerciseRecordId": model?.exerciseRecordId! ?? "", "getExercise": true, "getAnswer": true] as [String : Any]
         
@@ -253,13 +263,17 @@ private extension ExamineDetailViewController {
                 db.close()
             }
 
-           
+            weakSelf?.collectionView!.mj_header.endRefreshing()
+            weakSelf?.collectionView!.mj_header = nil
+            
             weakSelf?.collectionView?.reloadData()
             
         }) { (_, error: Error) in
             
             print(error)
-            
+            weakSelf?.collectionView!.mj_header.endRefreshing()
+            weakSelf?.collectionView!.mj_header = nil
+
         }
     }
     
