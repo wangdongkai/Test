@@ -19,6 +19,8 @@ class ExamineMainViewController: UITableViewController {
     
     var modelArray: Array<ExamineMainModel>  = [ExamineMainModel]()
     
+    fileprivate var page: Int = 2
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,6 +28,8 @@ class ExamineMainViewController: UITableViewController {
         
         setupHeader()
 
+        setupFooter()
+        
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -111,8 +115,14 @@ private extension ExamineMainViewController {
     }
     
     
-    func setupDataBase() {
+    func setupFooter() {
         
+        let footer = MJRefreshAutoNormalFooter(refreshingTarget: self, refreshingAction: #selector(ExamineMainViewController.setupMoreData))
+        footer?.setTitle("点击加载更多", for: .idle)
+        footer?.setTitle("加载更多中...", for: .refreshing)
+        footer?.setTitle("无更多数据", for: .noMoreData)
+        
+        self.tableView.mj_footer = footer
         
     }
 }
@@ -135,25 +145,13 @@ private extension ExamineMainViewController {
             }
             
             
-            // 插入数据
-            /*
-            let name = UserDefaults.standard.object(forKey: "username") as! String
-            
-            let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
-            
-            let sqlPath = path.appendingPathComponent("\(name).sqlite")
-           // let queue = FMDatabaseQueue.init(path: sqlPath)
-            let db = FMDatabase(path: sqlPath)
-            
-            */
-            
             for dict in result {
                 
                 let item = ExamineMainModel.mj_object(withKeyValues: dict)
                 
                 weakSelf!.modelArray.append(item!)
                 print(dict["groupId"]!)
-                
+                /*
                 UserDefaults.standard.set(dict["classAccuracy"] as! String, forKey: "\(dict["groupId"]!)classAccuracy")
                 UserDefaults.standard.set(dict["classRank"] as! String, forKey: "\(dict["groupId"]!)classRank")
 
@@ -164,68 +162,9 @@ private extension ExamineMainViewController {
                     UserDefaults.standard.synchronize()
                     
                 }
-                
-                /*
-                if db.open() {
-                   
-                    
-                    do {
-                        let res = try db.executeQuery("SELECT * FROM t_test", values: nil)
-                        print(res)
-                        
-                        let r = res.next()
-                        
-                        if r == false {
-                            
-                            // groupId text, classId text, orgId text, name text, type integer, exerciseTime text, allCount integer, orderNum integer, updateTime integer, answerUpdateTime double, faultUpdateTime double, faultCount integer, exerciseRecordId text, status text, currTitleNumber text, doCount integer, correctCount integer, submitNumber integer, classAccuracy text, classRank text 20
-                            
-                            do {
-                                try db.executeUpdate("INSERT INTO t_test (answerUpdateTime, exerciseRecordId, classAccuracy, faultUpdateTime, type, exerciseTime, classRank, groupId, submitNumber, orderNum, faultCount, allCount, updateTime, currTitleNumber, name, doCount, classId, correctCount, orgId, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", values: [dict["answerUpdateTime"], dict["exerciseRecordId"], dict["classAccuracy"], dict["faultUpdateTime"], dict["type"], dict["exerciseTime"], dict["classRank"], dict["groupId"], dict["submitNumber"], dict["orderNum"], dict["faultCount"],dict["allCount"], dict["updateTime"], dict["currTitleNumber"], dict["name"], dict["doCount"], dict["classId"], dict["correctCount"], dict["orgId"], dict["status"]])
-                                
-                            } catch {
-                                
-                                print("failed: \(error.localizedDescription)")
-                            }
-
-                        } else {
-                            
-                            while res.next() {
-                                
-                                if let groupId = res.string(forColumn: "groupId") {
-                                    
-                                    let group = dict["groupId"] as! String
-                                    if group != groupId {
-                                        
-                                        do {
-                                            try db.executeUpdate("INSERT INTO t_test (answerUpdateTime, exerciseRecordId, classAccuracy, faultUpdateTime, type, exerciseTime, classRank, groupId, submitNumber, orderNum, faultCount, allCount, updateTime, currTitleNumber, name, doCount, classId, correctCount, orgId, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", values: [dict["answerUpdateTime"], dict["exerciseRecordId"], dict["classAccuracy"], dict["faultUpdateTime"], dict["type"], dict["exerciseTime"], dict["classRank"], dict["groupId"], dict["submitNumber"], dict["orderNum"], dict["faultCount"],dict["allCount"], dict["updateTime"], dict["currTitleNumber"], dict["name"], dict["doCount"], dict["classId"], dict["correctCount"], dict["orgId"], dict["status"]])
-
-                                            
-                                        } catch {
-                                            
-                                            print("failed: \(error.localizedDescription)")
-                                        }
-                                        
-                                        
-                                    }
-                                }
-
-                            }
-                        }
-                                    
-                    } catch {
-                        
-                        print(error)
-                    }
-                    
-
-                }
-            
-                db.close()
-  */
+                */
             }
             
-
-                
             weakSelf?.tableView.reloadData()
             weakSelf?.tableView.mj_header.endRefreshing()
             
@@ -237,7 +176,45 @@ private extension ExamineMainViewController {
             
         }
         
-        
     }
 
+    @objc func setupMoreData() {
+        
+        weak var weakSelf = self
+        
+        NetworkTool.shareInstance.get("http://www.qxueyou.com/qxueyou/exercise/Exercise/examsListNew", parameters: ["page": "\(page)", "limit": "10"], progress: nil, success: { (_, data: Any?) in
+            
+            guard let result = data as? [Dictionary<String, Any>] else {
+                
+                weakSelf!.tableView.mj_footer.endRefreshingWithNoMoreData()
+
+                return
+            }
+            
+            if result.count == 0 {// 无更多数据
+                
+                weakSelf!.tableView.mj_footer.endRefreshingWithNoMoreData()
+
+                return
+            }
+            
+            for dict in result {
+                
+                let item = ExamineMainModel.mj_object(withKeyValues: dict)
+                weakSelf!.modelArray.append(item!)
+                
+            }
+            
+            weakSelf?.tableView.reloadData()
+            weakSelf?.tableView.mj_footer.endRefreshing()
+            weakSelf?.page += 1
+        }) { (_, error: Error) in
+            
+            weakSelf?.tableView.mj_footer.endRefreshing()
+            
+            print(error)
+            
+        }
+
+    }
 }

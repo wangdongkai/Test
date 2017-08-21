@@ -66,7 +66,6 @@ class LoginViewController: UIViewController {
             
             SVProgressHUD.dismiss()
             
-            
             if let _ = error {
                 
                 SVProgressHUD.showError(withStatus: error?.localizedDescription)
