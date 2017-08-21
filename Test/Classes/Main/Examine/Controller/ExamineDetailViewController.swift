@@ -436,31 +436,14 @@ private extension ExamineDetailViewController {
             
             if isSuccess == true {
                 
+                let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
+                //vc.answers = detailModel.answers
+                vc.dataArray = self.items
+                self.navigationController?.pushViewController(vc, animated: true)
+
                 print("成功, \(msg)")
                 
-                let param = ["groupId": weakSelf?.model?.groupId! ?? "", "exerciseRecordId": weakSelf?.model?.exerciseRecordId! ?? "", "getExercise": true, "getAnswer": true] as [String : Any]
                 
-                NetworkTool.shareInstance.get("http://www.qxueyou.com/qxueyou/exercise/Exercise/examExercise", parameters: param, progress: nil, success: { (_, data: Any?) in
-                    
-                    guard let dict = data as? [String: Any] else {
-                        
-                        return
-                    }
-                    
-                    let detailModel: ExamineDetailModel = ExamineDetailModel.mj_object(withKeyValues: dict)
-                    
-                    let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
-                    vc.answers = detailModel.answers
-                    vc.dataArray = self.items
-                    self.navigationController?.pushViewController(vc, animated: true)
-                    
-                }) { (_, error: Error) in
-                    
-                    print(error)
-                    
-                    
-                }
-
                
                 
             }

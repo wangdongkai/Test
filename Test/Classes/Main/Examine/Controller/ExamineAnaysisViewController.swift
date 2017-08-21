@@ -16,6 +16,8 @@ class ExamineAnaysisViewController: UICollectionViewController {
     var items: [ExamineItemModel]?
     var answers: [ExamineAnswerModel]?
     
+    var errorItems: [ExamineItemModel]?
+
     var index: Int = 0 {
         didSet {
             
@@ -62,7 +64,20 @@ class ExamineAnaysisViewController: UICollectionViewController {
         cell.model = self.items?[indexPath.row] ?? nil
         cell.model?.totalCount = (self.items?.count)!
         cell.model?.currentCount = indexPath.row
-        cell.answer = self.answers?[indexPath.row]
+        
+        cell.answer = nil
+        
+        if self.answers != nil {
+            
+            for answer in self.answers! {
+                
+                if model?.exerciseRecordId == answer.exerciseRecordId {
+                    cell.answer = answer
+                }
+                
+            }
+
+        }
         
         return cell
     }
@@ -132,11 +147,7 @@ private extension ExamineAnaysisViewController {
         
     }
 
-    func getChooseAnswer() {
-        
-        
     }
-}
 
 private extension ExamineAnaysisViewController {
     
@@ -145,9 +156,10 @@ private extension ExamineAnaysisViewController {
         let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: Bundle.main)
         
         vc.dataArray = self.items!
-        vc.answers = self.answers
+        vc.answers = self.answers!
         
         self.navigationController?.pushViewController(vc, animated: true)
 
     }
 }
+

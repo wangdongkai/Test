@@ -56,9 +56,9 @@ class ExamineAnalysisCollectionCell: UICollectionViewCell {
                 
                 if a == "False" {
                     
-                    model?.options?[0].optionState = true
-                } else {
                     model?.options?[1].optionState = true
+                } else {
+                    model?.options?[0].optionState = true
 
                 }
             }

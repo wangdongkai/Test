@@ -66,8 +66,6 @@ class ExamineMainViewController: UITableViewController {
             
             vc.model = self.modelArray[indexPath.row]
 
-            
-            
             navigationController!.pushViewController(vc, animated: true)
 
             
