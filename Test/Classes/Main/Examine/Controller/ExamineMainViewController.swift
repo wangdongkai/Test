@@ -98,7 +98,8 @@ private extension ExamineMainViewController {
         
         self.view.backgroundColor = UIColor.white
 
-        self.tableView.rowHeight = 72
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 72
         self.tableView.register(UINib.init(nibName: "ExamineMainViewCell", bundle: nil), forCellReuseIdentifier: identifier)
         self.tableView.tableFooterView = UIView()
 
