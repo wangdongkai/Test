@@ -8,7 +8,7 @@
 
 import UIKit
 import FMDB
-
+import SVProgressHUD
 class ExamineStaticssticsViewController: UIViewController {
 
     var submitModel: ExamineSubmitModel = ExamineSubmitModel()
@@ -115,6 +115,8 @@ private extension ExamineStaticssticsViewController {
     // 重做
     @IBAction func redoClick(_ sender: UIButton) {
         
+        SVProgressHUD.show(withStatus: "正在发送请求请稍等。。。")
+
         guard let groupId = self.dataArray[0].exerciseGroupId else {
             
             return
@@ -125,6 +127,36 @@ private extension ExamineStaticssticsViewController {
         let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
         
         let sqlPath = path.appendingPathComponent("\(name).sqlite")
+        
+        let queue = FMDatabaseQueue.init(path: sqlPath)
+        queue.inDeferredTransaction { (db, rollBack) in
+            
+            do {
+                
+                let sql = "SELECT * FROM t_topic"
+                
+                let res = try db.executeQuery(sql, values: nil)
+                
+                while res.next() {
+                    
+                    do {
+                        
+                        try db.executeUpdate("UPDATE t_topic SET chooseAnswer = ''", values: nil)
+                        
+                    } catch {
+                        
+                        print("failed: \(error.localizedDescription)")
+                    }
+                    
+                }
+                
+            } catch {
+                
+                print(error)
+            }
+        }
+        
+        /*
         let db = FMDatabase(path: sqlPath)
         
         if db.open() {
@@ -155,7 +187,8 @@ private extension ExamineStaticssticsViewController {
             
             db.close()
         }
-
+*/
+        
         UserDefaults.standard.set(0, forKey: self.dataArray[0].exerciseGroupId!)
         UserDefaults.standard.synchronize()
         
@@ -174,7 +207,7 @@ private extension ExamineStaticssticsViewController {
             
             if isSuccess == true {
                 
-                
+                SVProgressHUD.dismiss()
                 let vc = self.navigationController?.childViewControllers[1] as! ExamineMainViewController
                 
                 weakSelf?.navigationController?.popToViewController(vc, animated: true)

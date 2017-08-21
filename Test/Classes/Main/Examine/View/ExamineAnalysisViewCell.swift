@@ -23,7 +23,14 @@ class ExamineAnalysisViewCell: UITableViewCell {
                 return
             }
             
-            self.correctLabel.text = "\(c), "
+            if c == "True" {
+                self.correctLabel.text = "A，"
+            } else if c == "False" {
+                self.correctLabel.text = "B，"
+            } else {
+                self.correctLabel.text = "\(c), "
+
+            }
         }
     }
     

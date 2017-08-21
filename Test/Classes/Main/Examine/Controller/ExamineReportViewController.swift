@@ -8,6 +8,7 @@
 
 import UIKit
 import FMDB
+import SVProgressHUD
 
 class ExamineReportViewController: UIViewController {
 
@@ -53,6 +54,8 @@ class ExamineReportViewController: UIViewController {
     // 重做一次
     @IBAction func redoClick() {
         
+        SVProgressHUD.show(withStatus: "正在发送请求请稍等。。。")
+
         guard let groupId = self.dataArray?[0].exerciseGroupId else {
             
             return
@@ -63,6 +66,37 @@ class ExamineReportViewController: UIViewController {
         let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
         
         let sqlPath = path.appendingPathComponent("\(name).sqlite")
+        let queue = FMDatabaseQueue.init(path: sqlPath)
+        queue.inDeferredTransaction { (db, rollBack) in
+            
+            do {
+                
+                let sql = "SELECT * FROM t_topic"
+                
+                let res = try db.executeQuery(sql, values: nil)
+                
+                while res.next() {
+                    
+                    do {
+                        
+                        try db.executeUpdate("UPDATE t_topic SET chooseAnswer = ''", values: nil)
+                        
+                    } catch {
+                        
+                        print("failed: \(error.localizedDescription)")
+                    }
+                    
+                }
+                
+            } catch {
+                
+                print(error)
+            }
+        }
+        
+        
+        
+        /*
         let db = FMDatabase(path: sqlPath)
         
         if db.open() {
@@ -93,6 +127,8 @@ class ExamineReportViewController: UIViewController {
             
             db.close()
         }
+ 
+ */
         
         UserDefaults.standard.set(0, forKey: (self.dataArray?[0].exerciseGroupId!)!)
         UserDefaults.standard.synchronize()
@@ -114,6 +150,7 @@ class ExamineReportViewController: UIViewController {
             if isSuccess == true {
                 
                 let vc = weakSelf?.navigationController?.childViewControllers[1] as! ExamineMainViewController
+                SVProgressHUD.dismiss()
                 
                 weakSelf?.navigationController?.popToViewController(vc, animated: true)
             }
@@ -144,8 +181,8 @@ private extension ExamineReportViewController {
         self.answerWrongLabel.text = "错 \(self.submitModel!.doCount - self.submitModel!.correctCount)"
         self.answerUndoLabel.text = "未做 \(self.submitModel!.allCount - self.submitModel!.doCount)"
 
-        let classRank = UserDefaults.standard.object(forKey: "classRank") as! String
-        let classAccuracy = UserDefaults.standard.object(forKey: "classAccuracy") as! String
+        let classRank = UserDefaults.standard.object(forKey: "\(self.dataArray![0].exerciseGroupId)classRank") as! String
+        let classAccuracy = UserDefaults.standard.object(forKey: "\(self.dataArray![0].exerciseGroupId)classAccuracy") as! String
 
         self.rankLabel.text = classRank
         self.classCorrectAccuracyLabel.text = classAccuracy
