@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '467DB0C9EFF4FCA7EB3EA36ADBE17CB4'
+               BlueprintIdentifier = 'F888442A3436DE435FB7598D23A81857'
                BlueprintName = 'TYAttributedLabel'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'TYAttributedLabel.framework'>

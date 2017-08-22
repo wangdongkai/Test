@@ -12,4 +12,5 @@ target 'Test' do
   pod 'FMDB'
   pod 'MJRefresh'
   pod 'YYText'
+  pod 'RealmSwift'
 end

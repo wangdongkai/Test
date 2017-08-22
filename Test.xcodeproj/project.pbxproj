@@ -115,6 +115,7 @@
 		54BEAEB11F3054570033F68C /* ExamineDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAEB01F3054570033F68C /* ExamineDetailViewController.swift */; };
 		54BEAEBA1F3089C00033F68C /* NetworkTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAEB91F3089C00033F68C /* NetworkTool.swift */; };
 		54BEAEBC1F3094D00033F68C /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54BEAEBB1F3094D00033F68C /* UserModel.swift */; };
+		54C7C20E1F4BBDCC00682C80 /* TopicList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C7C20D1F4BBDCC00682C80 /* TopicList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -248,6 +249,7 @@
 		54BEAEB01F3054570033F68C /* ExamineDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamineDetailViewController.swift; sourceTree = "<group>"; };
 		54BEAEB91F3089C00033F68C /* NetworkTool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkTool.swift; sourceTree = "<group>"; };
 		54BEAEBB1F3094D00033F68C /* UserModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		54C7C20D1F4BBDCC00682C80 /* TopicList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicList.swift; sourceTree = "<group>"; };
 		68C115F8E48BD42489C6902A /* Pods-Test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test.release.xcconfig"; path = "Pods/Target Support Files/Pods-Test/Pods-Test.release.xcconfig"; sourceTree = "<group>"; };
 		867D61C161DB93F2EE07647C /* Pods-Test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Test/Pods-Test.debug.xcconfig"; sourceTree = "<group>"; };
 		F190B96B51B1444F3394FB64 /* Pods_Test.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Test.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -519,6 +521,7 @@
 		54BEAE9B1F3029F20033F68C /* Examine */ = {
 			isa = PBXGroup;
 			children = (
+				54C7C20C1F4BBDA300682C80 /* RealmModel */,
 				54BEAE9C1F3029F20033F68C /* Controller */,
 				54BEAE9D1F3029F20033F68C /* Model */,
 				54BEAE9E1F3029F20033F68C /* View */,
@@ -590,6 +593,14 @@
 				548DDFE41F45256B005880C1 /* DataBaseTool.swift */,
 			);
 			path = Tool;
+			sourceTree = "<group>";
+		};
+		54C7C20C1F4BBDA300682C80 /* RealmModel */ = {
+			isa = PBXGroup;
+			children = (
+				54C7C20D1F4BBDCC00682C80 /* TopicList.swift */,
+			);
+			path = RealmModel;
 			sourceTree = "<group>";
 		};
 		B894F666CB5AE04EA87FD1F3 /* Frameworks */ = {
@@ -873,6 +884,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5472C5961F31B18000BDFB7E /* ExamineItemModel.swift in Sources */,
+				54C7C20E1F4BBDCC00682C80 /* TopicList.swift in Sources */,
 				54BEAE9A1F3024A10033F68C /* CustomNavigationController.swift in Sources */,
 				548DDFE51F45256B005880C1 /* DataBaseTool.swift in Sources */,
 				54BEAEA51F302CCB0033F68C /* ExamineMainViewCell.swift in Sources */,
