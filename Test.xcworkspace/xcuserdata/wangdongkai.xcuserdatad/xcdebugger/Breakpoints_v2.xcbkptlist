@@ -60,12 +60,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Test/Classes/Main/Examine/Controller/ExamineDetailViewController.swift"
-            timestampString = "525078130.973137"
+            timestampString = "525083679.707581"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "537"
-            endingLineNumber = "537"
-            landmarkName = "setupRealm(result:)"
+            startingLineNumber = "540"
+            endingLineNumber = "540"
+            landmarkName = "setupRealm(itemModels:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -76,45 +76,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Test/Classes/Main/Examine/Controller/ExamineDetailViewController.swift"
-            timestampString = "525079810.23696"
+            timestampString = "525083679.707581"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "596"
-            endingLineNumber = "596"
-            landmarkName = "setupRealm(result:)"
+            startingLineNumber = "599"
+            endingLineNumber = "599"
+            landmarkName = "setupRealm(itemModels:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Test.ExamineDetailViewController.((setupRealm in _2931D2DC094468EBC89E78E8D9091515) (result : Swift.Array&lt;Test.ExamineItemModel&gt;) -&gt; ()).(closure #1).(closure #1)"
-                  moduleName = "Test"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/wangdongkai/wdk/Test/Test/Classes/Main/Examine/Controller/ExamineDetailViewController.swift"
-                  timestampString = "525079216.937221"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "597"
-                  endingLineNumber = "597"
-                  offsetFromSymbolStart = "11657">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Test.ExamineDetailViewController.((setupRealm in _2931D2DC094468EBC89E78E8D9091515) (result : Swift.Array&lt;Test.ExamineItemModel&gt;) -&gt; ()).(closure #1).(closure #1).(closure #1)"
-                  moduleName = "Test"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/wangdongkai/wdk/Test/Test/Classes/Main/Examine/Controller/ExamineDetailViewController.swift"
-                  timestampString = "525079216.939646"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "598"
-                  endingLineNumber = "598"
-                  offsetFromSymbolStart = "16">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -124,12 +92,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Test/Classes/Main/Examine/Controller/ExamineDetailViewController.swift"
-            timestampString = "525078130.973137"
+            timestampString = "525083679.707581"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "545"
-            endingLineNumber = "545"
-            landmarkName = "setupRealm(result:)"
+            startingLineNumber = "548"
+            endingLineNumber = "548"
+            landmarkName = "setupRealm(itemModels:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

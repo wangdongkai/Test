@@ -219,6 +219,11 @@ private extension ExamineDetailViewController {
             
             let detailModel: ExamineDetailModel = ExamineDetailModel.mj_object(withKeyValues: dict)
             //weakSelf?.setupRealm(result: detailModel.items!)
+            if detailModel.answers != nil{
+                weakSelf?.setupRealm(answerItems: detailModel.answers!)
+
+            }
+            
             weakSelf?.items = detailModel.items!
             if detailModel.answers != nil {
                 weakSelf?.answers = detailModel.answers!
@@ -524,9 +529,9 @@ extension ExamineDetailViewController {
 private extension ExamineDetailViewController {
     
     /// 数据库添加文件
-    func setupRealm(result: [ExamineItemModel]) {
+    func setupRealm(itemModels: [ExamineItemModel]) {
         
-        DispatchQueue(label: "background").async {
+        DispatchQueue(label: "ExamineItemModel").async {
             
             autoreleasepool{
                 
@@ -534,7 +539,7 @@ private extension ExamineDetailViewController {
                 
                 realm.beginWrite()
                 
-                for item in result {
+                for item in itemModels {
                     
                     let tanTopic = realm.objects(TopicDetail.self).filter("exerciseId = '\(item.exerciseId!)'")
                     
@@ -608,6 +613,51 @@ private extension ExamineDetailViewController {
                 try! realm.commitWrite()
             }
             
+        }
+    }
+    
+    func setupRealm(answerItems: [ExamineAnswerModel]) {
+        
+        DispatchQueue(label: "ExamineAnswerModel").async {
+            
+            autoreleasepool{
+                
+                let realm = try! Realm()
+                
+                realm.beginWrite()
+                
+                for item in answerItems {
+                    
+                    /*
+                     dynamic var answerUId: String? = nil
+                     dynamic var answer: bool?
+                     dynamic var correct: Int = 0
+                     dynamic var createTime: Float = 0
+                     dynamic var creator: String? = nil
+                     dynamic var exerciseItemId: String? = nil
+                     dynamic var exerciseRecordId: String? = nil
+                     dynamic var userId: String? = nil
+                     dynamic var lastAnswer: String? = nil
+                     dynamic var answerValue: String? = nil
+                     dynamic var updateStatus: Int = 0
+                    */
+                    
+                    let tanTopic = realm.objects(TopicAnswer.self).filter("answerUId = '\(item.answerUId!)'")
+                    
+                    let value: [String: Any] = ["answerUId": item.answerUId, "answer": item.answer, "correct": item.correct?.intValue,"createTime": item.createTime, "creator": item.creator, "exerciseItemId": item.exerciseItemId, "exerciseRecordId": item.exerciseRecordId, "userId": item.userId, "lastAnswer": item.lastAnswer, "answerValue": item.answerValue, "updateStatus": item.updateStatus]
+                    
+                    if tanTopic.count == 0 {
+                        realm.create(TopicAnswer.self, value: value, update: false)
+                    } else {
+                        
+                        realm.create(TopicAnswer.self, value: value, update: true)
+                    }
+                    
+                }
+                
+                try! realm.commitWrite()
+            }
+
         }
     }
 }
