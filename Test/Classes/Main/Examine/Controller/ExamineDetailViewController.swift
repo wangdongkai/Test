@@ -27,17 +27,8 @@ class ExamineDetailViewController: UICollectionViewController {
     
     fileprivate var timer: Timer?
     
-    var index: Int = 0 {
-        didSet {
-            
-            let indexPath = IndexPath(item: index, section: 0)
-            if indexPath.row != self.items.count {
-                self.collectionView?.scrollToItem(at: indexPath, at: .right, animated: true)
+    var index: Int = 0
 
-            }
-            
-        }
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -46,7 +37,7 @@ class ExamineDetailViewController: UICollectionViewController {
         setupButton()
         
         setupNetwork()
-        //setupHeader()
+
         collectionView?.showsVerticalScrollIndicator = false
         collectionView?.showsVerticalScrollIndicator = false
         
@@ -82,8 +73,6 @@ class ExamineDetailViewController: UICollectionViewController {
         let index = self.collectionView?.indexPathForItem(at: point)
 
         let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
-        
-        //setupDataBase(item: cell)
         
         if cell.submitModel.answer.characters.count > 0 {
             
@@ -158,16 +147,7 @@ private extension ExamineDetailViewController {
         
     }
     
-    func setupHeader() {
-        
-        let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(ExamineDetailViewController.setupNetwork))
-        header?.setTitle("下拉刷新", for: .idle)
-        header?.setTitle("释放以更新", for: .pulling)
-        header?.setTitle("加载中", for: .refreshing)
-        collectionView!.mj_header = header
-        collectionView?.mj_header.beginRefreshing()
-        
-    }
+   
     func setupButton() {
         
         self.button.frame = CGRect(x: self.view.frame.width - 50 - 15, y: self.view.frame.height - 100, width: 50, height: 50)
@@ -182,26 +162,7 @@ private extension ExamineDetailViewController {
         
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ExamineDetailViewController.timeClick), userInfo: nil, repeats: true)
         
-        /*
-
-        weak var weakSelf = self
-               timer?.setEventHandler(handler: {
-            
-            let h = self.model!.exerciseTimer / 3600
-            let m = (self.model!.exerciseTimer - h * 3600) / 60
-            let s = self.model!.exerciseTimer - h * 3600 - m * 60
-            
-            let title = "\(h):\(m):\(s)"
-
-            weakSelf?.button.setTitle(title, for: .normal)
-            weakSelf?.model?.exerciseTimer -= 1
-
-            
-        })
-        
-        timer?.resume()
-        */
-        
+       
     }
     
     @objc func setupNetwork() {
@@ -228,111 +189,25 @@ private extension ExamineDetailViewController {
             if detailModel.answers != nil {
                 weakSelf?.answers = detailModel.answers!
             }
-            /*
-            let name = UserDefaults.standard.object(forKey: "username") as! String
             
-            let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
+            weakSelf?.collectionView?.reloadData()
             
-            let sqlPath = path.appendingPathComponent("\(name).sqlite")
-            let db = FMDatabase(path: sqlPath)
-            
-            if db.open() {
-                
-                for i in 0..<weakSelf!.items.count {
-                    
-                    let item = weakSelf?.items[i]
-                    
-                    do {
-                        
-                        let sql = "SELECT * FROM t_topic where exerciseId = '\((item?.exerciseId)!)'"
-                        
-                        let res = try db.executeQuery(sql, values: nil)
-                        
-                        let r = res.next()
-                        
-                        if r == false {
-                            
-                            do {
-                                //  exerciseId text, title text, type integer, updateTime double, answer text, options text, exerciseGroupId text, analisisResult text, imgs text, 
-                                
-                                
-                                
-                                try db.executeUpdate("INSERT INTO t_topic (exerciseId, title, type, updateTime, answer, chooseAnswer, exerciseGroupId) VALUES(?, ?, ?, ?, ?, ?, ?)", withArgumentsIn: [item?.exerciseId, item?.title, item?.type, item?.updateTime, item?.answer, item?.chooseAnswer, item?.exerciseGroupId])
-                                
-                            } catch {
-                                
-                                print("failed: \(error.localizedDescription)")
-                            }
-                            
-                        }
-                        
-                    } catch {
-                        
-                        print(error)
-                    }
+            if weakSelf!.index > 0 {
+                let indexPath = IndexPath(item: weakSelf!.index - 1, section: 0)
+                if indexPath.row != weakSelf!.items.count {
+                    weakSelf!.collectionView?.scrollToItem(at: indexPath, at: .right, animated: true)
                     
                 }
 
-                db.close()
-
             }
-
-            weakSelf?.collectionView!.mj_header.endRefreshing()
-            weakSelf?.collectionView!.mj_header = nil
-             */
-            weakSelf?.collectionView?.reloadData()
+            
             
         }) { (_, error: Error) in
             
             print(error)
-            //weakSelf?.collectionView!.mj_header.endRefreshing()
-            //weakSelf?.collectionView!.mj_header = nil
 
         }
     }
-    
-    
-    func setupDataBase(item: ExamineSubmitItemModel) {
-        
-        /*
-        let name = UserDefaults.standard.object(forKey: "username") as! String
-        
-        let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
-        
-        let sqlPath = path.appendingPathComponent("\(name).sqlite")
-        let db = FMDatabase(path: sqlPath)
-        
-        if db.open() {
-            
-            do {
-                
-                let sql = "SELECT * FROM t_topic where exerciseId = '\(item.exerciseId)'"
-                
-                let res = try db.executeQuery(sql, values: nil)
-                
-                while res.next() {
-                    
-                    do {
-                        
-                        try db.executeUpdate("UPDATE t_topic SET chooseAnswer = '\(String.separate(str: item.answer))' WHERE exerciseId = '\(item.exerciseId)'", values: nil)
-                        
-                    } catch {
-                        
-                        print("failed: \(error.localizedDescription)")
-                    }
-                    
-                }
-                
-            } catch {
-                
-                print(error)
-            }
-            
-            db.close()
-        }
-*/
-    }
-        
 }
 
 private extension ExamineDetailViewController {
@@ -402,8 +277,6 @@ private extension ExamineDetailViewController {
             
             let item = self.submitModel.items[i]
             
-            //setupDataBase(item: item)
-            
             if item.correct == 1 {
                 
                 self.submitModel.correctCount += 1
@@ -429,8 +302,6 @@ private extension ExamineDetailViewController {
         let encoding = String(data: jsonData, encoding: .utf8)?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         
         let url = "http://www.qxueyou.com/qxueyou/exercise/Exercise/exerAnswers?answers=\(encoding!)"
-        
-        weak var weakSelf = self
         
         NetworkTool.shareInstance.request(method: .POST, url: url, param: nil) { (_, success: Any?, error: Error?) in
             
@@ -465,9 +336,7 @@ private extension ExamineDetailViewController {
         for i in 0..<self.submitModel.items.count {
             
             let item = self.submitModel.items[i]
-            
-            setupDataBase(item: item)
-            
+                        
             if item.correct == 1 {
                 
                 self.submitModel.correctCount += 1
@@ -628,20 +497,6 @@ private extension ExamineDetailViewController {
                 
                 for item in answerItems {
                     
-                    /*
-                     dynamic var answerUId: String? = nil
-                     dynamic var answer: bool?
-                     dynamic var correct: Int = 0
-                     dynamic var createTime: Float = 0
-                     dynamic var creator: String? = nil
-                     dynamic var exerciseItemId: String? = nil
-                     dynamic var exerciseRecordId: String? = nil
-                     dynamic var userId: String? = nil
-                     dynamic var lastAnswer: String? = nil
-                     dynamic var answerValue: String? = nil
-                     dynamic var updateStatus: Int = 0
-                    */
-                    
                     let tanTopic = realm.objects(TopicAnswer.self).filter("answerUId = '\(item.answerUId!)'")
                     
                     let value: [String: Any] = ["answerUId": item.answerUId, "answer": item.answer, "correct": item.correct?.intValue,"createTime": item.createTime, "creator": item.creator, "exerciseItemId": item.exerciseItemId, "exerciseRecordId": item.exerciseRecordId, "userId": item.userId, "lastAnswer": item.lastAnswer, "answerValue": item.answerValue, "updateStatus": item.updateStatus]
@@ -659,5 +514,22 @@ private extension ExamineDetailViewController {
             }
 
         }
+    }
+}
+
+
+extension ExamineDetailViewController {
+    
+    func scrollCollection(index: Int) {
+        
+        if index > 0 {
+            let indexPath = IndexPath(item: index - 1, section: 0)
+            if indexPath.row != self.items.count {
+                self.collectionView?.scrollToItem(at: indexPath, at: .right, animated: true)
+                
+            }
+            
+        }
+
     }
 }

@@ -83,7 +83,7 @@ class ExamineMainViewController: UITableViewController {
             }
             
             detailVC.model = self.modelArray[indexPath.row]
-            
+            detailVC.index = Int(model.currTitleNumber)
             navigationController!.pushViewController(detailVC, animated: true)
         }
         

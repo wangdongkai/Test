@@ -90,7 +90,7 @@ extension ExamineStaticssticsViewController: UICollectionViewDelegate, UICollect
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let vc = self.navigationController?.childViewControllers[2] as! ExamineDetailViewController
-        vc.index = indexPath.row
+        vc.scrollCollection(index: indexPath.row + 1)
         
         self.navigationController?.popViewController(animated: true)
         
@@ -157,38 +157,6 @@ private extension ExamineStaticssticsViewController {
             }
         }
         
-        /*
-        let db = FMDatabase(path: sqlPath)
-        
-        if db.open() {
-            
-            do {
-                
-                let sql = "SELECT * FROM t_topic"
-                
-                let res = try db.executeQuery(sql, values: nil)
-                
-                while res.next() {
-                    
-                    do {
-                        
-                        try db.executeUpdate("UPDATE t_topic SET chooseAnswer = ''", values: nil)
-                        
-                    } catch {
-                        
-                        print("failed: \(error.localizedDescription)")
-                    }
-                    
-                }
-                
-            } catch {
-                
-                print(error)
-            }
-            
-            db.close()
-        }
-*/
         
         UserDefaults.standard.set(0, forKey: self.dataArray[0].exerciseGroupId!)
         UserDefaults.standard.synchronize()
