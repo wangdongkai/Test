@@ -77,7 +77,7 @@ private extension ExamineOptionViewCell {
         self.answerButton.setBackgroundImage(UIImage(named: "circle"), for: .normal)
         self.answerButton.setBackgroundImage(UIImage(named: "circle_select"), for: .selected)
 
-        self.model?.optionState = self.answerButton.isSelected
+        self.answerButton.isSelected = self.model?.optionState ?? false
         
         
     }

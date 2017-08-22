@@ -17,9 +17,9 @@ class TopicDetail: Object {
     dynamic var type: Int = 0
     dynamic var updateTime: Float = 0
     dynamic var answer: String? = nil
-    let options = List<TopicOptions>()
+    var options = List<TopicOptions>()
     dynamic var analisisResult:TopicAnalisis?
-    let imgs = List<TopicImgs>()
+    var imgs = List<TopicImgs>()
     dynamic var maxScore: Float = 0
     dynamic var avarageScore: Float = 0
     
@@ -36,12 +36,25 @@ class TopicOptions: Object {
     dynamic var content: String? = nil
     dynamic var optionOrder: String? = nil
     dynamic var exerciseId: String? = nil
-    let imgs = List<TopicImgs>()
+    var imgs = List<TopicImgs>()
+    
+    override static func primaryKey() -> String {
+        
+        return "optionId"
+    }
+
 }
 
 class TopicImgs: Object {
     
+    dynamic var imgId: String? = nil
+    dynamic var exerciseObjectId: String? = nil
     dynamic var imgPath: String? = nil
+    
+    override static func primaryKey() -> String {
+        
+        return "imgId"
+    }
 }
 
 class TopicAnalisis: Object {

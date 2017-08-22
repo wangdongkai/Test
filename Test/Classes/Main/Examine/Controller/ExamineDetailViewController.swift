@@ -179,17 +179,18 @@ private extension ExamineDetailViewController {
             }
             
             let detailModel: ExamineDetailModel = ExamineDetailModel.mj_object(withKeyValues: dict)
-            //weakSelf?.setupRealm(result: detailModel.items!)
+            weakSelf?.setupRealm(itemModels: detailModel.items!)
             if detailModel.answers != nil{
                 weakSelf?.setupRealm(answerItems: detailModel.answers!)
 
             }
             
             weakSelf?.items = detailModel.items!
+            /*
             if detailModel.answers != nil {
                 weakSelf?.answers = detailModel.answers!
             }
-            
+            */
             weakSelf?.collectionView?.reloadData()
             
             if weakSelf!.index > 0 {
@@ -260,6 +261,8 @@ private extension ExamineDetailViewController {
     // 提交
     @objc func submitClick(status: Int) {
     
+        UserDefaults.standard.set(self.model?.exerciseTimer, forKey: (self.model?.groupId)!)
+        
         self.submitModel.allCount = self.model!.allCount
         self.submitModel.doCount = self.submitModel.items.count
         
@@ -406,14 +409,11 @@ private extension ExamineDetailViewController {
                 
                 let realm = try! Realm()
                 
-                realm.beginWrite()
-                
                 for item in itemModels {
                     
                     let tanTopic = realm.objects(TopicDetail.self).filter("exerciseId = '\(item.exerciseId!)'")
                     
                     if tanTopic.count == 0 {
-                        //realm.create(TopicDetail.self, value: value, update: false)
                         
                         let analisis = TopicAnalisis(value: ["allAccuracy": item.analisisResult!["allAccuracy"],
                                                              "analysis": item.analisisResult!["analysis"],
@@ -424,47 +424,36 @@ private extension ExamineDetailViewController {
                         
                         let options = List<TopicOptions>()
                         for option in item.options! {
-                            /*
-                            dynamic var optionId: String? = nil
-                            dynamic var content: String? = nil
-                            dynamic var optionOrder: String? = nil
-                            dynamic var exerciseId: String? = nil
-                            */
+                           
+                            let o = TopicOptions(value: [option.optionId!, option.content!, option.optionOrder!, option.exerciseItemId])
                             
-                            options.append(TopicOptions(value: [option.optionId!, option.content!, option.optionOrder!, option.exerciseItemId]))
+                            let imgs = List<TopicImgs>()
+                            if option.imgs != nil && option.imgs!.count > 0 {
+                                
+                                for img in option.imgs! {
+                                    
+                                    imgs.append(TopicImgs(value: [img.imgId, img.exerciseObjectId, img.imgURL]))
+                                }
+                                
+                            }
+                           o.imgs = imgs
+                            options.append(o)
                         }
                         
                         let imgs = List<TopicImgs>()
                         
-                        if item.imgs != nil && item.imgs?.count == 0 {
+                        if item.imgs != nil && item.imgs!.count > 0 {
                             for img in item.imgs! {
                                 
-                                imgs.append(TopicImgs(value: img.imgURL))
+                                imgs.append(TopicImgs(value: [img.imgURL]))
                             }
 
                         }
                         
-                        /*
-                         dynamic var exerciseId: String? = nil
-                         dynamic var title: String? = nil
-                         dynamic var type: Int = 0
-                         dynamic var updateTime: Float = 0
-                         dynamic var answer: String? = nil
-                         let options = List<TopicOptions>()
-                         dynamic var analisisResult:TopicAnalisis?
-                         let imgs = List<TopicImgs>()
-                         dynamic var maxScore: Float = 0
-                         dynamic var avarageScore: Float = 0
-                         */
-
-                        //detail.analisisResult = analisis
-                        
-                        let detail = TopicDetail(value: [
-                                                        
-                            
-                            
-                            
-                                                        ])
+                        let detail = TopicDetail(value: [item.exerciseId, item.title, item.type, item.updateTime, item.answer])
+                        detail.options = options
+                        detail.imgs = imgs
+                        detail.analisisResult = analisis
                         print("detail = \(detail)")
                         
                         try! realm.write({ 
@@ -474,12 +463,12 @@ private extension ExamineDetailViewController {
                     } else {
                         
                         let result = tanTopic[0]
-                        //realm.create(TopicDetail.self, value: value, update: true)
+                        print(result)
+                        
                     }
                     
                 }
                 
-                try! realm.commitWrite()
             }
             
         }

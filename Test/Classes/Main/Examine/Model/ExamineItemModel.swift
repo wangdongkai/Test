@@ -28,7 +28,7 @@ class ExamineItemModel: NSObject {
         }
     }
     var typeString: String?
-    var updateTime: Int64?
+    var updateTime: Int64 = 0
     var answer: String? {
         
         didSet {

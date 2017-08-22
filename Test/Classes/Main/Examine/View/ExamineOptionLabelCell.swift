@@ -55,7 +55,6 @@ class ExamineOptionLabelCell: UITableViewCell {
         super.awakeFromNib()
         
         
-        // Initialization code
     }
 
     
