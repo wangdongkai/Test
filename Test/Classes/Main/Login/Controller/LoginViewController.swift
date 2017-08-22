@@ -111,12 +111,13 @@ class LoginViewController: UIViewController {
                 
                 cookieValue.append("\(key.key)=\(key.value);")
             }
-            
+            /*
             UserDefaults.standard.set(cookieValue, forKey: "Cookie")
             UserDefaults.standard.set(self.userTextField.text!, forKey: "username")
             UserDefaults.standard.synchronize()
-            
-            self.setupDataBase(name: self.userTextField.text!)
+            */
+            print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last!)
+            //self.setupDataBase(name: self.userTextField.text!)
             
             let examineVC = ExamineMainViewController()
             examineVC.model = UserModel(dict: dict)
@@ -126,9 +127,6 @@ class LoginViewController: UIViewController {
             SVProgressHUD.dismiss()
             
         }
-        
-        
-        
         
     }
     
@@ -143,7 +141,7 @@ private extension LoginViewController {
         loginButton.layer.masksToBounds = false
         
     }
-    
+    /*
     func setupDataBase(name: String) {
         
         let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
@@ -170,5 +168,7 @@ private extension LoginViewController {
         db.close()
     }
 
+ */
+    
     }
 

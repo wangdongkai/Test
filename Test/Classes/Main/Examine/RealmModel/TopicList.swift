@@ -7,19 +7,26 @@
 //
 
 import UIKit
+import Foundation
+
 import RealmSwift
 
-class TopicList: NSObject {
+class TopicList: Object {
 
     dynamic var groupId: String? = nil
     dynamic var name: String? = nil
     dynamic var exerciseTime: Float = 0
     dynamic var allCount: Float = 0
     dynamic var status: String? = nil
-    dynamic var currTitleNum: Float = 0
+    dynamic var currTitleNumber: Float = 0
     dynamic var completionRate: Float = 0
     dynamic var accuracy: Float = 0
     dynamic var score: Float = 0
     dynamic var classAccuracy: String = ""
     dynamic var classRank: String = ""
+
+    override static func primaryKey() -> String {
+        
+        return "groupId"
+    }
 }

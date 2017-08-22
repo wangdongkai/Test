@@ -9,7 +9,7 @@
 import UIKit
 import AFNetworking
 import MJRefresh
-import FMDB
+import RealmSwift
 
 private let identifier = "ExamineMainViewCell"
 
@@ -155,13 +155,13 @@ private extension ExamineMainViewController {
                 return
             }
             
-            
+            weakSelf?.setupRealm(result: result)
             for dict in result {
                 
                 let item = ExamineMainModel.mj_object(withKeyValues: dict)
                 weakSelf?.isLoading = false
                 weakSelf!.modelArray.append(item!)
-               
+                
             }
             
             weakSelf?.tableView.reloadData()
@@ -204,6 +204,7 @@ private extension ExamineMainViewController {
                 return
             }
             
+            weakSelf?.setupRealm(result: result)
             for dict in result {
                 
                 let item = ExamineMainModel.mj_object(withKeyValues: dict)
@@ -224,5 +225,40 @@ private extension ExamineMainViewController {
             
         }
 
+    }
+}
+
+private extension ExamineMainViewController {
+    
+    /// 数据库添加文件
+        func setupRealm(result: [Dictionary<String, Any>]) {
+        
+        DispatchQueue(label: "background").async {
+            
+            autoreleasepool{
+                
+                let realm = try! Realm()
+                
+                realm.beginWrite()
+                
+                for dict in result {
+                    
+                    let item = ExamineMainModel.mj_object(withKeyValues: dict)
+                    let value: [String: Any] = ["groupId": item!.groupId, "name": item!.name, "exerciseTime": item!.exerciseTimer,"allCount": Float(item!.allCount), "status": item!.status, "currTitleNumber": item!.currTitleNumber, "completionRate": item!.completionRate?.floatValue ?? 0, "accuracy": item!.accuracy?.floatValue ?? 0, "score": item!.score?.floatValue ?? 0, "classAccuracy": item!.classAccuracy, "classRank": item!.classRank]
+                    let tanTopic = realm.objects(TopicList.self).filter("groupId = '\(item!.groupId!)'")
+                    
+                    if tanTopic.count == 0 {
+                        realm.create(TopicList.self, value: value, update: false)
+                    } else {
+                        
+                        realm.create(TopicList.self, value: value, update: true)
+                    }
+                    
+                }
+                
+                try! realm.commitWrite()
+            }
+        
+        }
     }
 }
