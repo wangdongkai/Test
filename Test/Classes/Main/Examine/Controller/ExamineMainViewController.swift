@@ -133,6 +133,11 @@ private extension ExamineMainViewController {
     
     @objc func setupNetwork() {
         
+        if isLoading == true {
+            
+            tableView.mj_header.endRefreshing()
+            return
+        }
         if self.modelArray.count != 0 {
             self.modelArray.removeAll()
             self.tableView.mj_footer.resetNoMoreData()
@@ -140,7 +145,7 @@ private extension ExamineMainViewController {
             
         }
         
-        
+        isLoading = true
         weak var weakSelf = self
         
         NetworkTool.shareInstance.get("http://www.qxueyou.com/qxueyou/exercise/Exercise/examsListNew", parameters: ["page": "1", "limit": "10"], progress: nil, success: { (_, data: Any?) in
@@ -154,7 +159,7 @@ private extension ExamineMainViewController {
             for dict in result {
                 
                 let item = ExamineMainModel.mj_object(withKeyValues: dict)
-                
+                weakSelf?.isLoading = false
                 weakSelf!.modelArray.append(item!)
                
             }
@@ -164,6 +169,7 @@ private extension ExamineMainViewController {
             
         }) { (_, error: Error) in
             
+            weakSelf?.isLoading = false
             weakSelf?.tableView.mj_header.endRefreshing()
             
             print(error)
@@ -174,7 +180,13 @@ private extension ExamineMainViewController {
 
     @objc func setupMoreData() {
         
+        if isLoading == true {
+            
+            tableView.mj_footer.endRefreshingWithNoMoreData()
+            return
+        }
         weak var weakSelf = self
+        isLoading = true
         
         NetworkTool.shareInstance.get("http://www.qxueyou.com/qxueyou/exercise/Exercise/examsListNew", parameters: ["page": "\(page)", "limit": "10"], progress: nil, success: { (_, data: Any?) in
             
@@ -188,7 +200,7 @@ private extension ExamineMainViewController {
             if result.count == 0 {// 无更多数据
                 
                 weakSelf!.tableView.mj_footer.endRefreshingWithNoMoreData()
-
+                weakSelf?.isLoading = false
                 return
             }
             
@@ -198,14 +210,16 @@ private extension ExamineMainViewController {
                 weakSelf!.modelArray.append(item!)
                 
             }
-            
+            weakSelf?.isLoading = false
+
             weakSelf?.tableView.reloadData()
             weakSelf?.tableView.mj_footer.endRefreshing()
             weakSelf?.page += 1
         }) { (_, error: Error) in
             
             weakSelf?.tableView.mj_footer.endRefreshing()
-            
+            weakSelf?.isLoading = false
+
             print(error)
             
         }
