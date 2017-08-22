@@ -9,7 +9,7 @@
 import UIKit
 import MJExtension
 import MJRefresh
-import FMDB
+import RealmSwift
 
 private let identifier = "ExamineDetailsViewCell"
 
@@ -45,8 +45,8 @@ class ExamineDetailViewController: UICollectionViewController {
         
         setupButton()
         
-        //setupNetwork()
-        setupHeader()
+        setupNetwork()
+        //setupHeader()
         collectionView?.showsVerticalScrollIndicator = false
         collectionView?.showsVerticalScrollIndicator = false
         
@@ -218,12 +218,12 @@ private extension ExamineDetailViewController {
             }
             
             let detailModel: ExamineDetailModel = ExamineDetailModel.mj_object(withKeyValues: dict)
-            
+            //weakSelf?.setupRealm(result: detailModel.items!)
             weakSelf?.items = detailModel.items!
             if detailModel.answers != nil {
                 weakSelf?.answers = detailModel.answers!
             }
-            
+            /*
             let name = UserDefaults.standard.object(forKey: "username") as! String
             
             let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
@@ -269,18 +269,19 @@ private extension ExamineDetailViewController {
                 }
 
                 db.close()
+
             }
 
             weakSelf?.collectionView!.mj_header.endRefreshing()
             weakSelf?.collectionView!.mj_header = nil
-            
+             */
             weakSelf?.collectionView?.reloadData()
             
         }) { (_, error: Error) in
             
             print(error)
-            weakSelf?.collectionView!.mj_header.endRefreshing()
-            weakSelf?.collectionView!.mj_header = nil
+            //weakSelf?.collectionView!.mj_header.endRefreshing()
+            //weakSelf?.collectionView!.mj_header = nil
 
         }
     }
@@ -288,6 +289,7 @@ private extension ExamineDetailViewController {
     
     func setupDataBase(item: ExamineSubmitItemModel) {
         
+        /*
         let name = UserDefaults.standard.object(forKey: "username") as! String
         
         let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
@@ -323,8 +325,9 @@ private extension ExamineDetailViewController {
             
             db.close()
         }
-
+*/
     }
+        
 }
 
 private extension ExamineDetailViewController {
@@ -443,9 +446,6 @@ private extension ExamineDetailViewController {
 
                 print("成功, \(msg)")
                 
-                
-               
-                
             }
             
         }
@@ -518,5 +518,96 @@ extension ExamineDetailViewController {
         
         setupNetwork()
         
+    }
+}
+
+private extension ExamineDetailViewController {
+    
+    /// 数据库添加文件
+    func setupRealm(result: [ExamineItemModel]) {
+        
+        DispatchQueue(label: "background").async {
+            
+            autoreleasepool{
+                
+                let realm = try! Realm()
+                
+                realm.beginWrite()
+                
+                for item in result {
+                    
+                    let tanTopic = realm.objects(TopicDetail.self).filter("exerciseId = '\(item.exerciseId!)'")
+                    
+                    if tanTopic.count == 0 {
+                        //realm.create(TopicDetail.self, value: value, update: false)
+                        
+                        let analisis = TopicAnalisis(value: ["allAccuracy": item.analisisResult!["allAccuracy"],
+                                                             "analysis": item.analisisResult!["analysis"],
+                                                             "submitAllNumber": item.analisisResult!["submitAllNumber"],
+                                                             "accuracy": item.analisisResult!["accuracy"],
+                                                             "submitNumber": item.analisisResult!["submitNumber"],
+                                                             "submitErrorNumber": item.analisisResult!["submitErrorNumber"]])
+                        
+                        let options = List<TopicOptions>()
+                        for option in item.options! {
+                            /*
+                            dynamic var optionId: String? = nil
+                            dynamic var content: String? = nil
+                            dynamic var optionOrder: String? = nil
+                            dynamic var exerciseId: String? = nil
+                            */
+                            
+                            options.append(TopicOptions(value: [option.optionId!, option.content!, option.optionOrder!, option.exerciseItemId]))
+                        }
+                        
+                        let imgs = List<TopicImgs>()
+                        
+                        if item.imgs != nil && item.imgs?.count == 0 {
+                            for img in item.imgs! {
+                                
+                                imgs.append(TopicImgs(value: img.imgURL))
+                            }
+
+                        }
+                        
+                        /*
+                         dynamic var exerciseId: String? = nil
+                         dynamic var title: String? = nil
+                         dynamic var type: Int = 0
+                         dynamic var updateTime: Float = 0
+                         dynamic var answer: String? = nil
+                         let options = List<TopicOptions>()
+                         dynamic var analisisResult:TopicAnalisis?
+                         let imgs = List<TopicImgs>()
+                         dynamic var maxScore: Float = 0
+                         dynamic var avarageScore: Float = 0
+                         */
+
+                        //detail.analisisResult = analisis
+                        
+                        let detail = TopicDetail(value: [
+                                                        
+                            
+                            
+                            
+                                                        ])
+                        print("detail = \(detail)")
+                        
+                        try! realm.write({ 
+                            realm.add(detail)
+                            
+                        })
+                    } else {
+                        
+                        let result = tanTopic[0]
+                        //realm.create(TopicDetail.self, value: value, update: true)
+                    }
+                    
+                }
+                
+                try! realm.commitWrite()
+            }
+            
+        }
     }
 }

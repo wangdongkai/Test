@@ -159,6 +159,9 @@ private extension ExamineMainViewController {
             for dict in result {
                 
                 let item = ExamineMainModel.mj_object(withKeyValues: dict)
+                UserDefaults.standard.set(item!.exerciseTimer, forKey: "\(item!.groupId!)")
+                UserDefaults.standard.synchronize()
+                
                 weakSelf?.isLoading = false
                 weakSelf!.modelArray.append(item!)
                 

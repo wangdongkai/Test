@@ -109,7 +109,7 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 1 {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineOptionViewCell", for: indexPath) as! ExamineOptionViewCell
-            
+            /*
             let name = UserDefaults.standard.object(forKey: "username") as! String
             let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
             let sqlPath = path.appendingPathComponent("\(name).sqlite")
@@ -152,8 +152,9 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
                 }
                 
                 db.close()
-            }
 
+            }
+ */
             
             cell.model = self.model?.options?[indexPath.row]
             return cell
