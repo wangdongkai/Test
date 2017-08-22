@@ -20,6 +20,7 @@ class ExamineMainViewController: UITableViewController {
     var modelArray: Array<ExamineMainModel>  = [ExamineMainModel]()
     
     fileprivate var page: Int = 2
+    fileprivate var isLoading: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -134,8 +135,12 @@ private extension ExamineMainViewController {
         
         if self.modelArray.count != 0 {
             self.modelArray.removeAll()
+            self.tableView.mj_footer.resetNoMoreData()
+            page = 2
             
         }
+        
+        
         weak var weakSelf = self
         
         NetworkTool.shareInstance.get("http://www.qxueyou.com/qxueyou/exercise/Exercise/examsListNew", parameters: ["page": "1", "limit": "10"], progress: nil, success: { (_, data: Any?) in
@@ -151,19 +156,7 @@ private extension ExamineMainViewController {
                 let item = ExamineMainModel.mj_object(withKeyValues: dict)
                 
                 weakSelf!.modelArray.append(item!)
-                print(dict["groupId"]!)
-                /*
-                UserDefaults.standard.set(dict["classAccuracy"] as! String, forKey: "\(dict["groupId"]!)classAccuracy")
-                UserDefaults.standard.set(dict["classRank"] as! String, forKey: "\(dict["groupId"]!)classRank")
-
-                let time = UserDefaults.standard.integer(forKey: dict["groupId"] as! String)
-                if time == 0 {
-                    
-                    UserDefaults.standard.set(item?.exerciseTimer , forKey: dict["groupId"] as! String)
-                    UserDefaults.standard.synchronize()
-                    
-                }
-                */
+               
             }
             
             weakSelf?.tableView.reloadData()
