@@ -68,7 +68,7 @@ class ExamineDetailViewController: UICollectionViewController {
         let item = self.topicListItems?[indexPath.row]
         print("item = \(item)")
         
-        // cell.model = model
+        cell.topicDetail = item
         
         return cell
     }

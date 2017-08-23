@@ -14,6 +14,7 @@ class ExamineDetailsViewCell: UICollectionViewCell {
     @IBOutlet weak var dataTableView: UITableView!
     var submitModel: ExamineSubmitItemModel = ExamineSubmitItemModel()
     
+    /*
     var model: ExamineItemModel? {
         
         didSet {
@@ -60,6 +61,19 @@ class ExamineDetailsViewCell: UICollectionViewCell {
             }
         }
     }
+    */
+    
+    var topicDetail: TopicDetail? {
+        didSet {
+            guard let model = topicDetail else {
+                
+                return
+            }
+            
+            self.dataTableView.reloadData()
+            
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -101,7 +115,7 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
             return 1
         }
         
-        return self.model?.options?.count ?? 0
+        return self.topicDetail?.options.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -110,13 +124,13 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineOptionViewCell", for: indexPath) as! ExamineOptionViewCell
             
-            cell.model = self.model?.options?[indexPath.row]
+            cell.topicOption = self.topicDetail?.options[indexPath.row]
             return cell
         } else {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineOptionLabelCell", for: indexPath) as! ExamineOptionLabelCell
             
-            cell.model = self.model
+            cell.topicDetail = self.topicDetail
             
             return cell
         }
@@ -125,7 +139,8 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-                
+        
+        /*
         if indexPath.section == 1 {
             
             if self.model!.type == 2 { //多选
@@ -183,10 +198,12 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
             }
 
         }
+ */
+        
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        
+        /*
         if indexPath.section == 1 {
             
             if self.model!.type != 2 {
@@ -200,6 +217,8 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
             }
             
         }
+ */
+        
     }
 }
 

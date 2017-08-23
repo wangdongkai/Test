@@ -15,6 +15,7 @@ class ExamineOptionViewCell: UITableViewCell {
     @IBOutlet weak var clickImage: UIImageView!
     @IBOutlet weak var imgHieghtCons: NSLayoutConstraint!
     
+    /*
     var model: ExamineOptionModel? {
         
         didSet {
@@ -50,6 +51,45 @@ class ExamineOptionViewCell: UITableViewCell {
             }
         }
     }
+ */
+    
+    var topicOption: TopicOptions? {
+        
+        didSet {
+            
+            guard let model = topicOption else {
+                
+                return
+            }
+            
+            self.answerButton.setTitle(model.answerOption, for: .normal)
+            self.answerButton.setTitle(model.answerOption, for: .selected)
+            
+            self.answerLabel.text = model.answerContent
+            
+            //self.answerButton.isSelected = model.optionState
+            
+            if model.imgs.count > 0 {
+                
+                guard let img = model.imgs.first?.imgPath else {
+                    
+                    return
+                }
+                
+                self.clickImage.sd_setImage(with: URL(string: img))
+                
+                self.imgHieghtCons!.constant = 70
+                
+            } else {
+                
+                self.clickImage.image = nil
+                self.imgHieghtCons!.constant = 1
+                
+            }
+
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -77,7 +117,7 @@ private extension ExamineOptionViewCell {
         self.answerButton.setBackgroundImage(UIImage(named: "circle"), for: .normal)
         self.answerButton.setBackgroundImage(UIImage(named: "circle_select"), for: .selected)
 
-        self.answerButton.isSelected = self.model?.optionState ?? false
+        //self.answerButton.isSelected = self.topicOption?.optionState ?? false
         
         
     }

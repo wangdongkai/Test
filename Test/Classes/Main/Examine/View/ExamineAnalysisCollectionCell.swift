@@ -136,14 +136,14 @@ extension ExamineAnalysisCollectionCell: UITableViewDataSource, UITableViewDeleg
         if indexPath.section == 0 {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineOptionLabelCell", for: indexPath) as! ExamineOptionLabelCell
-            cell.model = self.model ?? nil
+            //cell.model = self.model ?? nil
             
             return cell
 
         } else if indexPath.section == 1 {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineOptionViewCell", for: indexPath) as! ExamineOptionViewCell
-            cell.model = self.model?.options?[indexPath.row]
+            //cell.model = self.model?.options?[indexPath.row]
             return cell
 
         } else if indexPath.section == 2 {

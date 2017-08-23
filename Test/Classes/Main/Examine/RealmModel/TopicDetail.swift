@@ -35,7 +35,46 @@ class TopicOptions: Object {
     
     dynamic var optionId: String? = nil
     dynamic var content: String? = nil
+    var answerContent: String {
+        get {
+            if content == nil {
+                
+                return ""
+            }
+            
+            if content! == "True" {
+                
+                return "正确"
+            } else if content! == "False" {
+                
+                return "错误"
+            } else {
+                
+                return content!
+            }
+        }
+    }
     dynamic var optionOrder: String? = nil
+    
+    var answerOption: String {
+        get {
+            if optionOrder == nil {
+                
+                return ""
+            }
+            
+            if optionOrder! == "True" {
+                
+                return "B"
+            } else if optionOrder! == "False" {
+                
+                return "A"
+            } else {
+                
+                return optionOrder!
+            }
+        }
+    }
     dynamic var exerciseId: String? = nil
     var imgs = List<TopicImgs>()
     

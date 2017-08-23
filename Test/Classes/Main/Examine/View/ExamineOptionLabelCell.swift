@@ -18,6 +18,7 @@ class ExamineOptionLabelCell: UITableViewCell {
     
     @IBOutlet weak var imageHeightCons: NSLayoutConstraint!
     
+    /*
     var model: ExamineItemModel? {
         didSet {
             
@@ -48,6 +49,43 @@ class ExamineOptionLabelCell: UITableViewCell {
 
             }
                 
+        }
+    }
+    
+ */
+    
+    var topicDetail: TopicDetail? {
+        didSet {
+            
+            guard let model = topicDetail else {
+                
+                return
+            }
+            
+            //let text = "\(model.typeString!)\(model.currentCount + 1)/\(model.totalCount).\(model.title!)\n"
+            let text = "员工培训是企业的一种投资行为,和其他投资一样,也要从投入与产出的角度考虑效益的大小。( )"
+            let attrText = NSMutableAttributedString(string: text)
+            attrText.yy_setColor(UIColor.lightGray, range: NSRange.init(location: 0, length: 4))
+            self.contentLabel.attributedText = attrText
+            self.contentLabel.preferredMaxLayoutWidth = UIScreen.main.bounds.width - 30
+            
+            if model.imgs.count > 0{
+                
+                guard let img = model.imgs.first?.imgId else {
+                    
+                    return
+                }
+                
+                self.imageHeightCons.constant = 70
+                
+                self.clickImage.sd_setImage(with: URL(string: img))
+                
+            } else {
+                
+                self.imageHeightCons.constant = 1
+                
+            }
+
         }
     }
     
