@@ -54,19 +54,26 @@ class ExamineDetailViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.topicListItems?.count ?? 0
+        return self.items.count
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! ExamineDetailsViewCell
-        
+        /*
         let item = self.topicListItems?[indexPath.row]
         
         let realm = try! Realm()
         let answer = realm.object(ofType: TopicAnswer.self, forPrimaryKey: "\(item!.exerciseId!)")
+        */
+        let item = self.items[indexPath.row]
+        item.totalCount = self.items.count
+        item.currentCount = indexPath.row
         
-        cell.topicAnswer = answer
-        cell.topicDetail = item
+        let realm = try! Realm()
         
+        let answer = realm.object(ofType: TopicAnswer.self, forPrimaryKey: "\(item.exerciseId!)")
+        
+        cell.model = item
+        cell.answer = answer?.answerValue
         return cell
     }
     
@@ -179,8 +186,9 @@ private extension ExamineDetailViewController {
             
             let group = DispatchGroup()
             let detailModel: ExamineDetailModel = ExamineDetailModel.mj_object(withKeyValues: dict)
-
-            let detailQueue = DispatchQueue(label: "ExamineDetailModel")
+            weakSelf!.items = detailModel.items!
+            
+           // let detailQueue = DispatchQueue(label: "ExamineDetailModel")
             let answerQueue = DispatchQueue(label: "ExamineAnswerModel")
             let queryQueue = DispatchQueue.main
             
@@ -195,6 +203,7 @@ private extension ExamineDetailViewController {
                 
             }))
 
+            /*
             // 存储题目
             detailQueue.async(group: group, execute: DispatchWorkItem(block: { 
                 
@@ -203,15 +212,17 @@ private extension ExamineDetailViewController {
                 print("x = itemModels")
 
             }))
+            */
             
             // 获取数据
             group.notify(queue: queryQueue, execute: {
-                
+                /*
                 let realm = try! Realm()
                 
                 let resultsItem = realm.objects(TopicDetail.self).filter("groupId = '\(weakSelf!.model!.groupId!)'")
                 
                 weakSelf!.topicListItems = Array(resultsItem)
+                */
                 
                 weakSelf!.collectionView?.reloadData()
                 

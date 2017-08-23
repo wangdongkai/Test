@@ -15,7 +15,7 @@ class ExamineOptionViewCell: UITableViewCell {
     @IBOutlet weak var clickImage: UIImageView!
     @IBOutlet weak var imgHieghtCons: NSLayoutConstraint!
     
-    /*
+    
     var model: ExamineOptionModel? {
         
         didSet {
@@ -51,8 +51,8 @@ class ExamineOptionViewCell: UITableViewCell {
             }
         }
     }
- */
-    
+ 
+    /*
     var topicOption: TopicOptions? {
         
         didSet {
@@ -89,6 +89,7 @@ class ExamineOptionViewCell: UITableViewCell {
 
         }
     }
+    */
     
     override func awakeFromNib() {
         super.awakeFromNib()

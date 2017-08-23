@@ -18,7 +18,7 @@ class ExamineOptionLabelCell: UITableViewCell {
     
     @IBOutlet weak var imageHeightCons: NSLayoutConstraint!
     
-    /*
+    
     var model: ExamineItemModel? {
         didSet {
             
@@ -52,8 +52,8 @@ class ExamineOptionLabelCell: UITableViewCell {
         }
     }
     
- */
-    
+ 
+    /*
     var topicDetail: TopicDetail? {
         didSet {
             
@@ -87,7 +87,7 @@ class ExamineOptionLabelCell: UITableViewCell {
 
         }
     }
-    
+    */
     override func awakeFromNib() {
         super.awakeFromNib()
         

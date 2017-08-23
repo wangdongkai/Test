@@ -14,7 +14,7 @@ class ExamineDetailsViewCell: UICollectionViewCell {
     @IBOutlet weak var dataTableView: UITableView!
     var submitModel: ExamineSubmitItemModel = ExamineSubmitItemModel()
     
-    /*
+    
     var model: ExamineItemModel? {
         
         didSet {
@@ -36,7 +36,7 @@ class ExamineDetailsViewCell: UICollectionViewCell {
         }
     }
     
-    var answer: ExamineAnswerModel? {
+    var answer: String? {
         didSet {
             
             guard let _ = answer else {
@@ -44,16 +44,24 @@ class ExamineDetailsViewCell: UICollectionViewCell {
                 return
             }
             
-            let a = answer!.answer
-            
             if model?.type == 1 { // 单选
                 
                 for option in (model?.options)! {
                     
-                    option.optionState = option.optionAnswer == a ? true : false
+                    option.optionState = option.optionAnswer == answer! ? true : false
                 }
             } else if model?.type == 2 { //多选
                 
+                let answers = answer!.components(separatedBy: ",")
+                
+                for option in (model?.options)! {
+                    
+                    if answers.contains(option.optionAnswer!) {
+                        
+                        option.optionState = true
+                    }
+                }
+
                 
             } else { // 判断
                 
@@ -61,8 +69,8 @@ class ExamineDetailsViewCell: UICollectionViewCell {
             }
         }
     }
-    */
     
+    /*
     var topicDetail: TopicDetail? {
         didSet {
             guard let model = topicDetail else {
@@ -97,6 +105,7 @@ class ExamineDetailsViewCell: UICollectionViewCell {
             }
         }
     }
+ */
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -137,7 +146,7 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
             return 1
         }
         
-        return self.topicDetail?.options.count ?? 0
+        return self.model?.options!.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -146,13 +155,13 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineOptionViewCell", for: indexPath) as! ExamineOptionViewCell
             
-            cell.topicOption = self.topicDetail?.options[indexPath.row]
+            cell.model = self.model?.options?[indexPath.row]
             return cell
         } else {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineOptionLabelCell", for: indexPath) as! ExamineOptionLabelCell
             
-            cell.topicDetail = self.topicDetail
+            cell.model = self.model
             
             return cell
         }
