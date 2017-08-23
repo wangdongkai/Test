@@ -21,6 +21,9 @@ class ExamineDetailViewController: UICollectionViewController {
     var items: [ExamineItemModel] = [ExamineItemModel]()
     var answers: [ExamineAnswerModel] = [ExamineAnswerModel]()
     
+    var topicListItems: [TopicDetail]?
+    var topicListAnswers: [TopicAnswer]?
+    
     var submitDataArray: [[String: ExamineItemModel]] = [[String: ExamineItemModel]]()
     
     fileprivate let button: UIButton = UIButton(type: .custom)
@@ -51,18 +54,21 @@ class ExamineDetailViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.items.count
+        return self.topicListItems?.count ?? 0
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! ExamineDetailsViewCell
         
         
-        let model = self.items[indexPath.row]
+       // let model = self.items[indexPath.row]
     
-        model.totalCount = self.items.count
-        model.currentCount = indexPath.row
+       // model.totalCount = self.items.count
+        //model.currentCount = indexPath.row
 
-        cell.model = model
+        let item = self.topicListItems?[indexPath.row]
+        print("item = \(item)")
+        
+        // cell.model = model
         
         return cell
     }
@@ -187,7 +193,7 @@ private extension ExamineDetailViewController {
             
             let detailQueue = DispatchQueue(label: "ExamineDetailModel")
             let answerQueue = DispatchQueue(label: "ExamineAnswerModel")
-            let queryQueue = DispatchQueue(label: "query")
+            let queryQueue = DispatchQueue.main
             
             // 存储题目
             detailQueue.async(group: group, execute: DispatchWorkItem(block: { 
@@ -214,6 +220,11 @@ private extension ExamineDetailViewController {
                 
                 let realm = try! Realm()
                 
+                var resultsItem = realm.objects(TopicDetail).filter("groupId = '\(weakSelf!.model!.groupId!)'")
+                weakSelf!.topicListItems = Array(resultsItem)
+                weakSelf!.collectionView?.reloadData()
+                
+                //var resultsAnswer = realm.objects(TopicAnswer).filter("")
                 print("x = success")
             })
             
@@ -481,7 +492,8 @@ private extension ExamineDetailViewController {
                         
                     }
                     
-                    let detail = TopicDetail(value: [model?.groupId, item.exerciseId, item.title, item.type, item.updateTime, item.answer])
+                    
+                    let detail = TopicDetail(value: [model?.groupId, item.exerciseId, item.title, item.type, item.update, item.answer])
                     detail.options = options
                     detail.imgs = imgs
                     detail.analisisResult = analisis

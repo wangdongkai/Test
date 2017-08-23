@@ -28,7 +28,18 @@ class ExamineItemModel: NSObject {
         }
     }
     var typeString: String?
-    var updateTime: Int64 = 0
+    var updateTime: Int64 = 0 {
+        didSet {
+            let time: TimeInterval = Double(updateTime) 
+            let date = Date(timeIntervalSince1970: (time/1000.0))
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm"
+            update = formatter.string(from: date)
+            
+        }
+    }
+
+    var update: String? = nil
     var answer: String? {
         
         didSet {

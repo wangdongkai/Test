@@ -16,7 +16,7 @@ class TopicDetail: Object {
     dynamic var exerciseId: String? = nil
     dynamic var title: String? = nil
     dynamic var type: Int = 0
-    dynamic var updateTime: Float = 0
+    dynamic var updateTime: String? = nil
     dynamic var answer: String? = nil
     var options = List<TopicOptions>()
     dynamic var analisisResult:TopicAnalisis?
