@@ -12,6 +12,7 @@ import RealmSwift
 
 class TopicDetail: Object {
     
+    dynamic var groupId: String? = nil
     dynamic var exerciseId: String? = nil
     dynamic var title: String? = nil
     dynamic var type: Int = 0

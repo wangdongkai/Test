@@ -178,19 +178,51 @@ private extension ExamineDetailViewController {
                 return
             }
             
+            let group = DispatchGroup()
             let detailModel: ExamineDetailModel = ExamineDetailModel.mj_object(withKeyValues: dict)
-            weakSelf?.setupRealm(itemModels: detailModel.items!)
-            if detailModel.answers != nil{
-                weakSelf?.setupRealm(answerItems: detailModel.answers!)
 
-            }
+            let barrier = DispatchWorkItem(qos: .default, flags: .barrier, block: { 
+                
+            })
             
-            weakSelf?.items = detailModel.items!
+            let detailQueue = DispatchQueue(label: "ExamineDetailModel")
+            let answerQueue = DispatchQueue(label: "ExamineAnswerModel")
+            let queryQueue = DispatchQueue(label: "query")
+            
+            // 存储题目
+            detailQueue.async(group: group, execute: DispatchWorkItem(block: { 
+                
+                weakSelf?.setupRealm(itemModels: detailModel.items!)
+
+                print("x = itemModels")
+
+            }))
+            
+            // 存储答案
+            answerQueue.async(group: group, execute: DispatchWorkItem(block: {
+                            
+                if detailModel.answers != nil{
+                    weakSelf?.setupRealm(answerItems: detailModel.answers!)
+                    
+                    print("x = answerItems")
+                }
+
+            }))
+            
+            
+            group.notify(queue: queryQueue, execute: {
+                
+                let realm = try! Realm()
+                
+                print("x = success")
+            })
+            
+            
+            //weakSelf?.items = detailModel.items!
             /*
             if detailModel.answers != nil {
                 weakSelf?.answers = detailModel.answers!
             }
-            */
             weakSelf?.collectionView?.reloadData()
             
             if weakSelf!.index > 0 {
@@ -201,6 +233,7 @@ private extension ExamineDetailViewController {
                 }
 
             }
+             */
             
             
         }) { (_, error: Error) in
@@ -403,82 +436,87 @@ private extension ExamineDetailViewController {
     /// 数据库添加文件
     func setupRealm(itemModels: [ExamineItemModel]) {
         
-        DispatchQueue(label: "ExamineItemModel").async {
+        //DispatchQueue(label: "ExamineItemModel").async {
             
-            autoreleasepool{
+          //  autoreleasepool{
                 
                 let realm = try! Realm()
-                
+        
+        
                 for item in itemModels {
                     
                     let tanTopic = realm.objects(TopicDetail.self).filter("exerciseId = '\(item.exerciseId!)'")
+                    let analisis = TopicAnalisis(value: ["allAccuracy": item.analisisResult!["allAccuracy"],
+                                                         "analysis": item.analisisResult!["analysis"],
+                                                         "submitAllNumber": item.analisisResult!["submitAllNumber"],
+                                                         "accuracy": item.analisisResult!["accuracy"],
+                                                         "submitNumber": item.analisisResult!["submitNumber"],
+                                                         "submitErrorNumber": item.analisisResult!["submitErrorNumber"]])
                     
-                    if tanTopic.count == 0 {
+                    let options = List<TopicOptions>()
+                    for option in item.options! {
                         
-                        let analisis = TopicAnalisis(value: ["allAccuracy": item.analisisResult!["allAccuracy"],
-                                                             "analysis": item.analisisResult!["analysis"],
-                                                             "submitAllNumber": item.analisisResult!["submitAllNumber"],
-                                                             "accuracy": item.analisisResult!["accuracy"],
-                                                             "submitNumber": item.analisisResult!["submitNumber"],
-                                                             "submitErrorNumber": item.analisisResult!["submitErrorNumber"]])
-                        
-                        let options = List<TopicOptions>()
-                        for option in item.options! {
-                           
-                            let o = TopicOptions(value: [option.optionId!, option.content!, option.optionOrder!, option.exerciseItemId])
-                            
-                            let imgs = List<TopicImgs>()
-                            if option.imgs != nil && option.imgs!.count > 0 {
-                                
-                                for img in option.imgs! {
-                                    
-                                    imgs.append(TopicImgs(value: [img.imgId, img.exerciseObjectId, img.imgURL]))
-                                }
-                                
-                            }
-                           o.imgs = imgs
-                            options.append(o)
-                        }
+                        let o = TopicOptions(value: [option.optionId!, option.content!, option.optionOrder!, option.exerciseItemId])
                         
                         let imgs = List<TopicImgs>()
-                        
-                        if item.imgs != nil && item.imgs!.count > 0 {
-                            for img in item.imgs! {
+                        if option.imgs != nil && option.imgs!.count > 0 {
+                            
+                            for img in option.imgs! {
                                 
-                                imgs.append(TopicImgs(value: [img.imgURL]))
+                                imgs.append(TopicImgs(value: [img.imgId, img.exerciseObjectId, img.imgURL]))
                             }
-
+                            
+                        }
+                        o.imgs = imgs
+                        options.append(o)
+                    }
+                    
+                    let imgs = List<TopicImgs>()
+                    
+                    if item.imgs != nil && item.imgs!.count > 0 {
+                        for img in item.imgs! {
+                            
+                            imgs.append(TopicImgs(value: [img.imgURL]))
                         }
                         
-                        let detail = TopicDetail(value: [item.exerciseId, item.title, item.type, item.updateTime, item.answer])
-                        detail.options = options
-                        detail.imgs = imgs
-                        detail.analisisResult = analisis
-                        print("detail = \(detail)")
+                    }
+                    
+                    let detail = TopicDetail(value: [model?.groupId, item.exerciseId, item.title, item.type, item.updateTime, item.answer])
+                    detail.options = options
+                    detail.imgs = imgs
+                    detail.analisisResult = analisis
+                    print("detail = \(detail)")
+
+                    if tanTopic.count == 0 {
                         
-                        try! realm.write({ 
+                        
+                        try! realm.write({
                             realm.add(detail)
                             
                         })
                     } else {
                         
-                        let result = tanTopic[0]
-                        print(result)
+                        try! realm.write {
+                            realm.add(detail, update: true)
+                        }
+                        //let result = tanTopic[0]
+                        
+                        //print(result)
                         
                     }
                     
                 }
                 
-            }
+            //}
             
-        }
+        //}
     }
     
     func setupRealm(answerItems: [ExamineAnswerModel]) {
         
-        DispatchQueue(label: "ExamineAnswerModel").async {
+       // DispatchQueue(label: "ExamineAnswerModel").async {
             
-            autoreleasepool{
+        //    autoreleasepool{
                 
                 let realm = try! Realm()
                 
@@ -502,8 +540,8 @@ private extension ExamineDetailViewController {
                 try! realm.commitWrite()
             }
 
-        }
-    }
+        //}
+   // }
 }
 
 

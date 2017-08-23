@@ -17,6 +17,7 @@ class TopicList: Object {
     dynamic var name: String? = nil
     dynamic var exerciseTime: Float = 0
     dynamic var allCount: Float = 0
+    dynamic var exerciseRecordId: String? = nil
     dynamic var status: String? = nil
     dynamic var currTitleNumber: Float = 0
     dynamic var completionRate: Float = 0
