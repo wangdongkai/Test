@@ -252,7 +252,7 @@ private extension ExamineMainViewController {
                 for dict in result {
                     
                     let item = ExamineMainModel.mj_object(withKeyValues: dict)
-                    let value: [String: Any] = ["groupId": item!.groupId, "name": item!.name, "exerciseTime": item!.exerciseTimer,"allCount": Float(item!.allCount), "status": item!.status, "currTitleNumber": item!.currTitleNumber, "completionRate": item!.completionRate?.floatValue ?? 0, "accuracy": item!.accuracy?.floatValue ?? 0, "score": item!.score?.floatValue ?? 0, "classAccuracy": item!.classAccuracy, "classRank": item!.classRank]
+                    let value: [String: Any] = ["groupId": item!.groupId, "name": item!.name, "exerciseTime": item!.exerciseTimer,"allCount": Float(item!.allCount), "status": item!.status, "exerciseRecordId": item?.exerciseRecordId, "currTitleNumber": item!.currTitleNumber, "completionRate": item!.completionRate?.floatValue ?? 0, "accuracy": item!.accuracy?.floatValue ?? 0, "score": item!.score?.floatValue ?? 0, "classAccuracy": item!.classAccuracy, "classRank": item!.classRank]
                     let tanTopic = realm.objects(TopicList.self).filter("groupId = '\(item!.groupId!)'")
                     
                     if tanTopic.count == 0 {
