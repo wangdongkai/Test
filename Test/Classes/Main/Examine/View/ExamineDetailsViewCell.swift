@@ -209,6 +209,22 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
            
             } else {  //单选
                 
+               
+                for index in 0..<self.model!.options!.count {
+                    
+                    if index == indexPath.row {
+                        
+                        self.model!.options![index].optionState = true
+                    } else {
+                        
+                        self.model!.options![index].optionState = false
+                    }
+                    tableView.reloadRows(at: [indexPath], with: .none)
+
+                }
+
+                tableView.reloadData()
+                /*
                 let cell = tableView.cellForRow(at: indexPath) as! ExamineOptionViewCell
                 cell.answerButton.isSelected = true
                 let option = self.model!.options?[indexPath.row]
@@ -216,11 +232,11 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
 
                 self.submitModel.answer = (option?.optionOrder)!
                 self.model?.chooseAnswer = (option?.optionOrder)!
-                
+                */
                 if self.next!.next!.next!.isKind(of: ExamineDetailViewController.self) {
                     
                     let vc = self.next?.next?.next as! ExamineDetailViewController
-                    vc.index = (self.model?.currentCount)! + 1
+                    vc.scrollCollection(index: (self.model?.currentCount)! + 1)
                 }
 
             }
