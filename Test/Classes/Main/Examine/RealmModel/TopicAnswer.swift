@@ -25,7 +25,7 @@ class TopicAnswer: Object {
     dynamic var updateStatus: Int = 0
     override static func primaryKey() -> String {
         
-        return "answerUId"
+        return "exerciseItemId"
     }
 
 }

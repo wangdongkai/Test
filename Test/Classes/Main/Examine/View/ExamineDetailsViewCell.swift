@@ -75,6 +75,28 @@ class ExamineDetailsViewCell: UICollectionViewCell {
         }
     }
     
+    var topicAnswer: TopicAnswer? {
+        didSet {
+            
+            guard let model = topicAnswer else {
+                
+                return
+            }
+            
+            print("model.answer = \(model.answerValue)")
+            
+            if self.topicDetail?.type == 1 {
+                
+                
+            } else if self.topicDetail?.type == 2 {
+                
+                
+            } else {
+                
+                
+            }
+        }
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
         

@@ -60,6 +60,11 @@ class ExamineDetailViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! ExamineDetailsViewCell
         
         let item = self.topicListItems?[indexPath.row]
+        
+        let realm = try! Realm()
+        let answer = realm.object(ofType: TopicAnswer.self, forPrimaryKey: "\(item!.exerciseId!)")
+        
+        cell.topicAnswer = answer
         cell.topicDetail = item
         
         return cell
@@ -94,10 +99,6 @@ class ExamineDetailViewController: UICollectionViewController {
         let index = self.collectionView?.indexPathForItem(at: point)
 
         let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
-        
-        //setupDataBase(cell: cell)
-
-        print(cell.submitModel)
         
         if cell.submitModel.answer.characters.count > 0 {
             
@@ -183,6 +184,17 @@ private extension ExamineDetailViewController {
             let answerQueue = DispatchQueue(label: "ExamineAnswerModel")
             let queryQueue = DispatchQueue.main
             
+            // 存储答案
+            answerQueue.async(group: group, execute: DispatchWorkItem(block: {
+                
+                if detailModel.answers != nil{
+                    weakSelf?.setupRealm(answerItems: detailModel.answers!)
+                    
+                    print("x = answerItems")
+                }
+                
+            }))
+
             // 存储题目
             detailQueue.async(group: group, execute: DispatchWorkItem(block: { 
                 
@@ -192,24 +204,15 @@ private extension ExamineDetailViewController {
 
             }))
             
-            // 存储答案
-            answerQueue.async(group: group, execute: DispatchWorkItem(block: {
-                            
-                if detailModel.answers != nil{
-                    weakSelf?.setupRealm(answerItems: detailModel.answers!)
-                    
-                    print("x = answerItems")
-                }
-
-            }))
-            
-            
+            // 获取数据
             group.notify(queue: queryQueue, execute: {
                 
                 let realm = try! Realm()
                 
-                var resultsItem = realm.objects(TopicDetail).filter("groupId = '\(weakSelf!.model!.groupId!)'")
+                let resultsItem = realm.objects(TopicDetail.self).filter("groupId = '\(weakSelf!.model!.groupId!)'")
+                
                 weakSelf!.topicListItems = Array(resultsItem)
+                
                 weakSelf!.collectionView?.reloadData()
                 
                 if weakSelf!.index > 0 {
@@ -221,15 +224,9 @@ private extension ExamineDetailViewController {
                     
                 }
 
-                //var resultsAnswer = realm.objects(TopicAnswer).filter("")
                 print("x = success")
             })
-            
-            
-            
-            
-            
-            
+     
         }) { (_, error: Error) in
             
             print(error)
@@ -430,25 +427,21 @@ private extension ExamineDetailViewController {
     /// 数据库添加文件
     func setupRealm(itemModels: [ExamineItemModel]) {
         
-        //DispatchQueue(label: "ExamineItemModel").async {
-            
-          //  autoreleasepool{
-                
-                let realm = try! Realm()
         
+        let realm = try! Realm()
         
-                for i in 0..<itemModels.count {
+        for i in 0..<itemModels.count {
                     
-                    let item = itemModels[i]
+            let item = itemModels[i]
                     
-                    let tanTopic = realm.objects(TopicDetail.self).filter("exerciseId = '\(item.exerciseId!)'")
-                    let analisis = TopicAnalisis(value: ["allAccuracy": item.analisisResult!["allAccuracy"],
-                                                         "analysis": item.analisisResult!["analysis"],
-                                                         "submitAllNumber": item.analisisResult!["submitAllNumber"],
-                                                         "accuracy": item.analisisResult!["accuracy"],
-                                                         "submitNumber": item.analisisResult!["submitNumber"],
-                                                         "submitErrorNumber": item.analisisResult!["submitErrorNumber"],
-                                                         "analisisId": item.exerciseId])
+            let tanTopic = realm.objects(TopicDetail.self).filter("exerciseId = '\(item.exerciseId!)'")
+            let analisis = TopicAnalisis(value: ["allAccuracy": item.analisisResult!["allAccuracy"],
+                                                    "analysis": item.analisisResult!["analysis"],
+                                            "submitAllNumber": item.analisisResult!["submitAllNumber"],
+                                                   "accuracy": item.analisisResult!["accuracy"],
+                                               "submitNumber": item.analisisResult!["submitNumber"],
+                                          "submitErrorNumber": item.analisisResult!["submitErrorNumber"],
+                                                 "analisisId": item.exerciseId])
                     
                     let options = List<TopicOptions>()
                     for option in item.options! {
@@ -478,7 +471,6 @@ private extension ExamineDetailViewController {
                         
                     }
                     
-                    
                     let detail = TopicDetail(value: [model?.groupId, item.exerciseId, item.title, item.type, item.update, item.answer])
                     detail.options = options
                     detail.imgs = imgs
@@ -489,7 +481,6 @@ private extension ExamineDetailViewController {
 
                     if tanTopic.count == 0 {
                         
-                        
                         try! realm.write({
                             realm.add(detail)
                             
@@ -499,26 +490,16 @@ private extension ExamineDetailViewController {
                         try! realm.write {
                             realm.add(detail, update: true)
                         }
-                        //let result = tanTopic[0]
-                        
-                        //print(result)
-                        
+                      
                     }
                     
                 }
-                
-            //}
-            
-        //}
+
     }
     
     func setupRealm(answerItems: [ExamineAnswerModel]) {
-        
-       // DispatchQueue(label: "ExamineAnswerModel").async {
-            
-        //    autoreleasepool{
-                
-                let realm = try! Realm()
+  
+        let realm = try! Realm()
                 
                 realm.beginWrite()
                 
@@ -540,10 +521,7 @@ private extension ExamineDetailViewController {
                 try! realm.commitWrite()
             }
 
-        //}
-   // }
 }
-
 
 extension ExamineDetailViewController {
     // 页面跳转
