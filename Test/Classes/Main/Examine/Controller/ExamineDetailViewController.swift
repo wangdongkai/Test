@@ -81,9 +81,10 @@ class ExamineDetailViewController: UICollectionViewController {
         
         let point = self.view.convert(self.collectionView!.center, to: self.collectionView)
         let index = self.collectionView?.indexPathForItem(at: point)
-
-        let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
         
+        let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
+        print("scrollViewDidEndDecelerating--\(cell.submitModel.answer)")
+        /*
         if cell.submitModel.answer.characters.count > 0 {
             
             self.submitModel.currTitleNum = index!.item
@@ -94,7 +95,8 @@ class ExamineDetailViewController: UICollectionViewController {
             }
             
         }
-
+        */
+        
         self.submitModel.currTitleNum = index!.item
         
     }
@@ -107,6 +109,8 @@ class ExamineDetailViewController: UICollectionViewController {
 
         let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
         
+        print("scrollViewWillBeginDragging--\(cell.submitModel.answer)")
+        /*
         if cell.submitModel.answer.characters.count > 0 {
             
             self.submitModel.currTitleNum = index!.item
@@ -117,6 +121,7 @@ class ExamineDetailViewController: UICollectionViewController {
             }
             
         }
+       */
         
     }
  

@@ -185,28 +185,20 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
                 
                 let option = self.model!.options?[indexPath.row]
                 option?.optionState = !option!.optionState
-                
-                if option?.optionState == true {
-                    
-                    if self.submitModel.answer.contains(option!.optionOrder!) == false {
-                        
-                        self.submitModel.answer.append(option!.optionOrder!)
-                        self.model?.chooseAnswer = self.submitModel.answer
-                        
-                    }
-                } else {
-                    
-                    if self.submitModel.answer.contains(option!.optionOrder!) {
-                        
-                        self.submitModel.answer = self.submitModel.answer.replacingOccurrences(of: option!.optionOrder!, with: "")
-                        self.model?.chooseAnswer = self.submitModel.answer
-                        
-                    }
-                    
-                }
-                
                 tableView.reloadRows(at: [indexPath], with: .none)
-           
+                
+                self.submitModel.answer = ""
+
+                for index in 0..<self.model!.options!.count {
+                    
+                    let option = self.model!.options![index]
+                    
+                    if option.optionState == true {
+                        
+                        self.submitModel.answer.append(option.optionAnswer!)
+                    }
+                }
+               
             } else {  //单选
                 
                
@@ -215,24 +207,17 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
                     if index == indexPath.row {
                         
                         self.model!.options![index].optionState = true
+                        self.submitModel.answer = self.model!.options![index].optionAnswer!
                     } else {
                         
                         self.model!.options![index].optionState = false
                     }
-                    tableView.reloadRows(at: [indexPath], with: .none)
+                    //tableView.reloadRows(at: [indexPath], with: .none)
 
                 }
 
                 tableView.reloadData()
-                /*
-                let cell = tableView.cellForRow(at: indexPath) as! ExamineOptionViewCell
-                cell.answerButton.isSelected = true
-                let option = self.model!.options?[indexPath.row]
-                option?.optionState = true
-
-                self.submitModel.answer = (option?.optionOrder)!
-                self.model?.chooseAnswer = (option?.optionOrder)!
-                */
+                               
                 if self.next!.next!.next!.isKind(of: ExamineDetailViewController.self) {
                     
                     let vc = self.next?.next?.next as! ExamineDetailViewController
@@ -256,23 +241,6 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
         
     }
     
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        
-        if indexPath.section == 1 {
-            
-            if self.model!.type != 2 {
-                
-                let cell = tableView.cellForRow(at: indexPath) as! ExamineOptionViewCell
-                let option = self.model!.options?[indexPath.row]
-                option?.optionState = false
-                cell.answerButton.isSelected = false
-                tableView.reloadRows(at: [indexPath], with: .none)
-
-            }
-            
-        }
- 
-        
-    }
+    
 }
 
