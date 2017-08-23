@@ -58,12 +58,7 @@ class ExamineDetailViewController: UICollectionViewController {
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! ExamineDetailsViewCell
-        /*
-        let item = self.topicListItems?[indexPath.row]
-        
-        let realm = try! Realm()
-        let answer = realm.object(ofType: TopicAnswer.self, forPrimaryKey: "\(item!.exerciseId!)")
-        */
+       
         let item = self.items[indexPath.row]
         item.totalCount = self.items.count
         item.currentCount = indexPath.row
@@ -84,18 +79,7 @@ class ExamineDetailViewController: UICollectionViewController {
         
         let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
         print("scrollViewDidEndDecelerating--\(cell.submitModel.answer)")
-        /*
-        if cell.submitModel.answer.characters.count > 0 {
-            
-            self.submitModel.currTitleNum = index!.item
-            
-            if self.submitModel.items.contains(cell.submitModel) == false{
-                
-                self.submitModel.items.append(cell.submitModel)
-            }
-            
-        }
-        */
+       
         
         self.submitModel.currTitleNum = index!.item
         
@@ -110,18 +94,7 @@ class ExamineDetailViewController: UICollectionViewController {
         let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
         
         print("scrollViewWillBeginDragging--\(cell.submitModel.answer)")
-        /*
-        if cell.submitModel.answer.characters.count > 0 {
-            
-            self.submitModel.currTitleNum = index!.item
-            
-            if self.submitModel.items.contains(cell.submitModel) == false{
-                
-                self.submitModel.items.append(cell.submitModel)
-            }
-            
-        }
-       */
+       
         
     }
  
@@ -439,7 +412,7 @@ extension ExamineDetailViewController {
 }
 
 private extension ExamineDetailViewController {
-    
+    /*
     /// 数据库添加文件
     func setupRealm(itemModels: [ExamineItemModel]) {
         
@@ -512,6 +485,7 @@ private extension ExamineDetailViewController {
                 }
 
     }
+    */
     
     func setupRealm(answerItems: [ExamineAnswerModel]) {
   

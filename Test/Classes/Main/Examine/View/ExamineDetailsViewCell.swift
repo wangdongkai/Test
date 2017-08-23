@@ -23,11 +23,6 @@ class ExamineDetailsViewCell: UICollectionViewCell {
                 return
             }
             
-            if submitModel != nil {
-                
-                submitModel = ExamineSubmitItemModel()
-            }
-            
             submitModel.exerciseId = model!.exerciseId!
             submitModel.type = model!.type
             
@@ -77,43 +72,7 @@ class ExamineDetailsViewCell: UICollectionViewCell {
         }
     }
     
-    /*
-    var topicDetail: TopicDetail? {
-        didSet {
-            guard let model = topicDetail else {
-                
-                return
-            }
-            
-            self.dataTableView.reloadData()
-            
-        }
-    }
-    
-    var topicAnswer: TopicAnswer? {
-        didSet {
-            
-            guard let model = topicAnswer else {
-                
-                return
-            }
-            
-            print("model.answer = \(model.answerValue)")
-            
-            if self.topicDetail?.type == 1 {
-                
-                
-            } else if self.topicDetail?.type == 2 {
-                
-                
-            } else {
-                
-                
-            }
-        }
-    }
- */
-    override func awakeFromNib() {
+       override func awakeFromNib() {
         super.awakeFromNib()
         
         setupUI()
@@ -178,7 +137,6 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        
         if indexPath.section == 1 {
             
             if self.model!.type == 2 { //多选
@@ -189,13 +147,21 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
                 
                 self.submitModel.answer = ""
 
+                
                 for index in 0..<self.model!.options!.count {
                     
                     let option = self.model!.options![index]
                     
                     if option.optionState == true {
                         
-                        self.submitModel.answer.append(option.optionAnswer!)
+                        if self.submitModel.answer.characters.count > 0 &&  self.submitModel.answer.characters.count < self.model!.options!.count + 3{
+                            
+                            self.submitModel.answer.append(",\(option.optionAnswer!)")
+                        } else {
+                            
+                            self.submitModel.answer.append(option.optionAnswer!)
+                        }
+                        
                     }
                 }
                
@@ -212,7 +178,6 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
                         
                         self.model!.options![index].optionState = false
                     }
-                    //tableView.reloadRows(at: [indexPath], with: .none)
 
                 }
 

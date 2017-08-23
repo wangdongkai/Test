@@ -25,6 +25,7 @@ class ExamineSubmitModel: NSObject {
     
     var items: [ExamineSubmitItemModel] = [ExamineSubmitItemModel]()
     
+    
 }
 
 
