@@ -67,7 +67,7 @@ class ExamineOptionViewCell: UITableViewCell {
             
             self.answerLabel.text = model.answerContent
             
-            //self.answerButton.isSelected = model.optionState
+            self.answerButton.isSelected = model.optionSelected
             
             if model.imgs.count > 0 {
                 
@@ -115,10 +115,7 @@ private extension ExamineOptionViewCell {
         self.answerButton.setTitleColor(UIColor.colorWithHex(color: "bfbfbf", alpha: 1.0), for: .normal)
         
         self.answerButton.setBackgroundImage(UIImage(named: "circle"), for: .normal)
-        self.answerButton.setBackgroundImage(UIImage(named: "circle_select"), for: .selected)
-
-        //self.answerButton.isSelected = self.topicOption?.optionState ?? false
-        
+        self.answerButton.setBackgroundImage(UIImage(named: "circle_select"), for: .selected)        
         
     }
     

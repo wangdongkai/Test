@@ -462,12 +462,13 @@ private extension ExamineDetailViewController {
                                                          "submitAllNumber": item.analisisResult!["submitAllNumber"],
                                                          "accuracy": item.analisisResult!["accuracy"],
                                                          "submitNumber": item.analisisResult!["submitNumber"],
-                                                         "submitErrorNumber": item.analisisResult!["submitErrorNumber"]])
+                                                         "submitErrorNumber": item.analisisResult!["submitErrorNumber"],
+                                                         "analisisId": item.exerciseId])
                     
                     let options = List<TopicOptions>()
                     for option in item.options! {
                         
-                        let o = TopicOptions(value: [option.optionId!, option.content!, option.optionOrder!, option.exerciseItemId])
+                        let o = TopicOptions(value: [option.optionId!, option.content!, option.optionOrder!, option.exerciseItemId, true])
                         
                         let imgs = List<TopicImgs>()
                         if option.imgs != nil && option.imgs!.count > 0 {

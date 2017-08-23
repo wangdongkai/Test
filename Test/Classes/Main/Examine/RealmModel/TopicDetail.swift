@@ -76,6 +76,7 @@ class TopicOptions: Object {
         }
     }
     dynamic var exerciseId: String? = nil
+    dynamic var optionSelected: Bool = false
     var imgs = List<TopicImgs>()
     
     override static func primaryKey() -> String {
@@ -105,4 +106,10 @@ class TopicAnalisis: Object {
     dynamic var accuracy: Float = 0
     dynamic var submitNumber: Int = 0
     dynamic var submitErrorNumber: Int = 0
+    dynamic var analisisId: String? = nil
+    
+    override static func primaryKey() -> String {
+        
+        return "analisisId"
+    }
 }
