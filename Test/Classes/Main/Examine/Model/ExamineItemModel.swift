@@ -83,10 +83,10 @@ class ExamineOptionModel: NSObject {
         didSet {
             if optionOrder == "True" {
                 optionAnswer = "B"
-                optionContent = "错误"
+                optionContent = "正确"
             } else if optionOrder == "False" {
                 optionAnswer = "A"
-                optionContent = "正确"
+                optionContent = "错误"
             } else {
                 optionAnswer = optionOrder
                 optionContent = content

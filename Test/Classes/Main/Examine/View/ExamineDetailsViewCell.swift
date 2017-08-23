@@ -65,7 +65,14 @@ class ExamineDetailsViewCell: UICollectionViewCell {
                 
             } else { // 判断
                 
-                
+                if answer! == "False" {
+                    
+                    self.model?.options?[0].optionState = true
+                    self.model?.options?[1].optionState = false
+                } else {
+                    self.model?.options?[1].optionState = true
+                    self.model?.options?[0].optionState = false
+                }
             }
         }
     }
@@ -171,7 +178,7 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        /*
+        
         if indexPath.section == 1 {
             
             if self.model!.type == 2 { //多选
@@ -229,12 +236,12 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
             }
 
         }
- */
+ 
         
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        /*
+        
         if indexPath.section == 1 {
             
             if self.model!.type != 2 {
@@ -248,7 +255,7 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
             }
             
         }
- */
+ 
         
     }
 }
