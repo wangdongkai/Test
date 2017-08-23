@@ -62,8 +62,7 @@ class ExamineOptionLabelCell: UITableViewCell {
                 return
             }
             
-            //let text = "\(model.typeString!)\(model.currentCount + 1)/\(model.totalCount).\(model.title!)\n"
-            let text = "员工培训是企业的一种投资行为,和其他投资一样,也要从投入与产出的角度考虑效益的大小。( )"
+            let text = "\(model.typeString)\(model.currentCount)/\(model.totalCount).\(model.title!)\n"
             let attrText = NSMutableAttributedString(string: text)
             attrText.yy_setColor(UIColor.lightGray, range: NSRange.init(location: 0, length: 4))
             self.contentLabel.attributedText = attrText

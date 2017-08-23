@@ -16,6 +16,22 @@ class TopicDetail: Object {
     dynamic var exerciseId: String? = nil
     dynamic var title: String? = nil
     dynamic var type: Int = 0
+    var typeString: String {
+        
+        get {
+            if self.type == 1 {
+                
+                return "【单选】"
+            } else if self.type == 2 {
+                
+                return "【多选】"
+            } else {
+                
+                return "【判断】"
+            }
+
+        }
+    }
     dynamic var updateTime: String? = nil
     dynamic var answer: String? = nil
     var options = List<TopicOptions>()
@@ -23,6 +39,8 @@ class TopicDetail: Object {
     var imgs = List<TopicImgs>()
     dynamic var maxScore: Float = 0
     dynamic var avarageScore: Float = 0
+    dynamic var totalCount: Int = 0
+    dynamic var currentCount: Int = 0
     
     override static func primaryKey() -> String {
         

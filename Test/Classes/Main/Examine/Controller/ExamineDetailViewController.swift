@@ -59,15 +59,7 @@ class ExamineDetailViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! ExamineDetailsViewCell
         
-        
-       // let model = self.items[indexPath.row]
-    
-       // model.totalCount = self.items.count
-        //model.currentCount = indexPath.row
-
         let item = self.topicListItems?[indexPath.row]
-        print("item = \(item)")
-        
         cell.topicDetail = item
         
         return cell
@@ -187,10 +179,6 @@ private extension ExamineDetailViewController {
             let group = DispatchGroup()
             let detailModel: ExamineDetailModel = ExamineDetailModel.mj_object(withKeyValues: dict)
 
-            let barrier = DispatchWorkItem(qos: .default, flags: .barrier, block: { 
-                
-            })
-            
             let detailQueue = DispatchQueue(label: "ExamineDetailModel")
             let answerQueue = DispatchQueue(label: "ExamineAnswerModel")
             let queryQueue = DispatchQueue.main
@@ -224,27 +212,22 @@ private extension ExamineDetailViewController {
                 weakSelf!.topicListItems = Array(resultsItem)
                 weakSelf!.collectionView?.reloadData()
                 
+                if weakSelf!.index > 0 {
+                    let indexPath = IndexPath(item: weakSelf!.index - 1, section: 0)
+                    if indexPath.row != weakSelf!.items.count {
+                        weakSelf!.collectionView?.scrollToItem(at: indexPath, at: .right, animated: false)
+                        
+                    }
+                    
+                }
+
                 //var resultsAnswer = realm.objects(TopicAnswer).filter("")
                 print("x = success")
             })
             
             
-            //weakSelf?.items = detailModel.items!
-            /*
-            if detailModel.answers != nil {
-                weakSelf?.answers = detailModel.answers!
-            }
-            weakSelf?.collectionView?.reloadData()
             
-            if weakSelf!.index > 0 {
-                let indexPath = IndexPath(item: weakSelf!.index - 1, section: 0)
-                if indexPath.row != weakSelf!.items.count {
-                    weakSelf!.collectionView?.scrollToItem(at: indexPath, at: .right, animated: true)
-                    
-                }
-
-            }
-             */
+            
             
             
         }) { (_, error: Error) in
@@ -454,7 +437,9 @@ private extension ExamineDetailViewController {
                 let realm = try! Realm()
         
         
-                for item in itemModels {
+                for i in 0..<itemModels.count {
+                    
+                    let item = itemModels[i]
                     
                     let tanTopic = realm.objects(TopicDetail.self).filter("exerciseId = '\(item.exerciseId!)'")
                     let analisis = TopicAnalisis(value: ["allAccuracy": item.analisisResult!["allAccuracy"],
@@ -468,7 +453,7 @@ private extension ExamineDetailViewController {
                     let options = List<TopicOptions>()
                     for option in item.options! {
                         
-                        let o = TopicOptions(value: [option.optionId!, option.content!, option.optionOrder!, option.exerciseItemId, true])
+                        let o = TopicOptions(value: [option.optionId!, option.content!, option.optionOrder!, option.exerciseItemId, false])
                         
                         let imgs = List<TopicImgs>()
                         if option.imgs != nil && option.imgs!.count > 0 {
@@ -498,6 +483,8 @@ private extension ExamineDetailViewController {
                     detail.options = options
                     detail.imgs = imgs
                     detail.analisisResult = analisis
+                    detail.totalCount = itemModels.count
+                    detail.currentCount = i + 1
                     print("detail = \(detail)")
 
                     if tanTopic.count == 0 {
@@ -559,7 +546,7 @@ private extension ExamineDetailViewController {
 
 
 extension ExamineDetailViewController {
-    
+    // 页面跳转
     func scrollCollection(index: Int) {
         
         if index > 0 {
