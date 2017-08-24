@@ -14,7 +14,7 @@ class ExamineSubmitModel: NSObject {
     var subjectId: String?
     var exerciseRecordId: String?
     var exerciseExtendId: String?
-    var currTitleNum: Int = 0
+    var currTitleNum: Int = 1
     var status: Int = 0
     var type: Int = 4
     var doCount: Int = 0

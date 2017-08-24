@@ -62,13 +62,22 @@ class ExamineDetailViewController: UICollectionViewController {
         let item = self.items[indexPath.row]
         item.totalCount = self.items.count
         item.currentCount = indexPath.row
-        
+        cell.model = item
+
         let realm = try! Realm()
         
         let answer = realm.object(ofType: TopicAnswer.self, forPrimaryKey: "\(item.exerciseId!)")
         
-        cell.model = item
-        cell.answer = answer?.answerValue
+        if answer != nil {
+            
+            let submitModel = self.submitModel.items[indexPath.row]
+            submitModel.answer = answer!.answerValue ?? ""
+        }
+        cell.submitModel = self.submitModel.items[indexPath.row]
+
+        //cell.answer = answer?.answerValue
+        
+        
         return cell
     }
     
@@ -76,12 +85,28 @@ class ExamineDetailViewController: UICollectionViewController {
         
         let point = self.view.convert(self.collectionView!.center, to: self.collectionView)
         let index = self.collectionView?.indexPathForItem(at: point)
-        
+        /*
         let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
-        print("scrollViewDidEndDecelerating--\(cell.submitModel.answer)")
-       
         
-        self.submitModel.currTitleNum = index!.item
+        // 去除空答案
+        if cell.submitModel.answer.characters.count > 0 {
+            
+            self.submitModel.items.append(cell.submitModel)
+
+            for i in 0..<self.submitModel.items.count {// 去除已经存在答案
+                
+                let item = self.submitModel.items[i]
+                
+                if item.exerciseId == cell.submitModel.exerciseId {
+                    
+                    self.submitModel.items.remove(at: i)
+                    break
+                }
+            
+            }
+        }
+        */
+        self.submitModel.currTitleNum = index!.item + 1
         
     }
 
@@ -93,8 +118,22 @@ class ExamineDetailViewController: UICollectionViewController {
 
         let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
         
-        print("scrollViewWillBeginDragging--\(cell.submitModel.answer)")
-       
+        /*
+         dynamic var answerUId: String? = nil
+         dynamic var answer: String? = nil
+         dynamic var correct: Int = 0
+         dynamic var createTime: Float = 0
+         dynamic var creator: String? = nil
+         dynamic var exerciseItemId: String? = nil
+         dynamic var exerciseRecordId: String? = nil
+         dynamic var userId: String? = nil
+         dynamic var lastAnswer: String? = nil
+         dynamic var answerValue: String? = nil
+         dynamic var updateStatus: Int = 0
+        */
+        
+        
+        print("\(cell.submitModel) --- \(cell.submitModel?.answer)")
         
     }
  
@@ -166,6 +205,11 @@ private extension ExamineDetailViewController {
             let detailModel: ExamineDetailModel = ExamineDetailModel.mj_object(withKeyValues: dict)
             weakSelf!.items = detailModel.items!
             
+            weakSelf!.submitModel.allCount = Int64(weakSelf!.items.count)
+            
+            for _ in weakSelf!.items {
+                weakSelf!.submitModel.items.append(ExamineSubmitItemModel())
+            }
            // let detailQueue = DispatchQueue(label: "ExamineDetailModel")
             let answerQueue = DispatchQueue(label: "ExamineAnswerModel")
             let queryQueue = DispatchQueue.main
@@ -181,26 +225,8 @@ private extension ExamineDetailViewController {
                 
             }))
 
-            /*
-            // 存储题目
-            detailQueue.async(group: group, execute: DispatchWorkItem(block: { 
-                
-                weakSelf?.setupRealm(itemModels: detailModel.items!)
-
-                print("x = itemModels")
-
-            }))
-            */
-            
             // 获取数据
             group.notify(queue: queryQueue, execute: {
-                /*
-                let realm = try! Realm()
-                
-                let resultsItem = realm.objects(TopicDetail.self).filter("groupId = '\(weakSelf!.model!.groupId!)'")
-                
-                weakSelf!.topicListItems = Array(resultsItem)
-                */
                 
                 weakSelf!.collectionView?.reloadData()
                 
@@ -239,8 +265,20 @@ private extension ExamineDetailViewController {
 
         if self.submitModel.items.count > 0 {
             
-
-            let alertVC = UIAlertController(title: "提示", message: "您已经回答了\(self.submitModel.items.count)道题(共\(self.model!.allCount)题)，您打算？", preferredStyle: .alert)
+            for submitModel in self.submitModel.items {
+                
+                if submitModel.correct == 1 {
+                    
+                    self.submitModel.correctCount += 1
+                }
+                
+                if submitModel.answer.characters.count > 0 {
+                    
+                    self.submitModel.doCount += 1
+                }
+            }
+            
+            let alertVC = UIAlertController(title: "提示", message: "您已经回答了\(self.submitModel.doCount)道题(共\(self.model!.allCount)题)，您打算？", preferredStyle: .alert)
             
             weak var weakSelf = self
             
@@ -276,10 +314,7 @@ private extension ExamineDetailViewController {
     
         UserDefaults.standard.set(self.model?.exerciseTimer, forKey: (self.model?.groupId)!)
         
-        self.submitModel.allCount = self.model!.allCount
-        self.submitModel.doCount = self.submitModel.items.count
-        
-        if self.submitModel.items.count == 0 {
+        if self.submitModel.doCount == 0 {
             
             let alertVC = UIAlertController(title: "提示", message: "请回答一道题之后在提交", preferredStyle: .alert)
             let action = UIAlertAction(title: "确定", style: .default, handler: nil)
@@ -289,26 +324,36 @@ private extension ExamineDetailViewController {
             self.present(alertVC, animated: true, completion: nil)
             return
         }
-        for i in 0..<self.submitModel.items.count {
-            
-            let item = self.submitModel.items[i]
-            
-            if item.correct == 1 {
-                
-                self.submitModel.correctCount += 1
-            }
-        }
-        self.submitModel.exerciseGroupId = self.items[0].exerciseGroupId
-        self.submitModel.exerciseRecordId = self.items[0].exerciseRecordId ?? ""
-        self.submitModel.exerciseExtendId = self.items[0].exerciseExtendId ?? ""
+        
+        self.submitModel.exerciseGroupId = self.model?.groupId ?? ""
+        self.submitModel.exerciseRecordId = self.model?.exerciseRecordId ?? ""
+        self.submitModel.exerciseExtendId = ""
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         self.submitModel.submitTime = formatter.string(from: Date())
         
         self.submitModel.status = status
+        
+        var submit = ExamineSubmitModel()
+        submit.exerciseGroupId = self.model?.groupId ?? ""
+        submit.exerciseRecordId = self.model?.exerciseRecordId ?? ""
+        submit.exerciseExtendId = ""
+        submit.status = self.submitModel.status
+        submit.submitTime = self.submitModel.submitTime
+        submit.doCount = self.submitModel.doCount
+        submit.allCount = self.submitModel.allCount
+        submit.correctCount = self.submitModel.correctCount
+        
+        for item in self.submitModel.items {
+            
+            if item.answer.characters.count > 0 {
                 
-        let dict = self.submitModel.mj_keyValues()
+                submit.items.append(item)
+            }
+        }
+        
+        let dict = submit.mj_keyValues()
     
         guard let jsonData = try? JSONSerialization.data(withJSONObject: dict!, options: .prettyPrinted) else {
             
@@ -331,10 +376,10 @@ private extension ExamineDetailViewController {
             
             if isSuccess == true {
                 
-                let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
+                //let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
                 //vc.answers = detailModel.answers
-                vc.dataArray = self.items
-                self.navigationController?.pushViewController(vc, animated: true)
+                //vc.dataArray = self.items
+                //self.navigationController?.pushViewController(vc, animated: true)
 
                 print("成功, \(msg)")
                 
@@ -412,80 +457,6 @@ extension ExamineDetailViewController {
 }
 
 private extension ExamineDetailViewController {
-    /*
-    /// 数据库添加文件
-    func setupRealm(itemModels: [ExamineItemModel]) {
-        
-        
-        let realm = try! Realm()
-        
-        for i in 0..<itemModels.count {
-                    
-            let item = itemModels[i]
-                    
-            let tanTopic = realm.objects(TopicDetail.self).filter("exerciseId = '\(item.exerciseId!)'")
-            let analisis = TopicAnalisis(value: ["allAccuracy": item.analisisResult!["allAccuracy"],
-                                                    "analysis": item.analisisResult!["analysis"],
-                                            "submitAllNumber": item.analisisResult!["submitAllNumber"],
-                                                   "accuracy": item.analisisResult!["accuracy"],
-                                               "submitNumber": item.analisisResult!["submitNumber"],
-                                          "submitErrorNumber": item.analisisResult!["submitErrorNumber"],
-                                                 "analisisId": item.exerciseId])
-                    
-                    let options = List<TopicOptions>()
-                    for option in item.options! {
-                        
-                        let o = TopicOptions(value: [option.optionId!, option.content!, option.optionOrder!, option.exerciseItemId, false])
-                        
-                        let imgs = List<TopicImgs>()
-                        if option.imgs != nil && option.imgs!.count > 0 {
-                            
-                            for img in option.imgs! {
-                                
-                                imgs.append(TopicImgs(value: [img.imgId, img.exerciseObjectId, img.imgURL]))
-                            }
-                            
-                        }
-                        o.imgs = imgs
-                        options.append(o)
-                    }
-                    
-                    let imgs = List<TopicImgs>()
-                    
-                    if item.imgs != nil && item.imgs!.count > 0 {
-                        for img in item.imgs! {
-                            
-                            imgs.append(TopicImgs(value: [img.imgURL]))
-                        }
-                        
-                    }
-                    
-                    let detail = TopicDetail(value: [model?.groupId, item.exerciseId, item.title, item.type, item.update, item.answer])
-                    detail.options = options
-                    detail.imgs = imgs
-                    detail.analisisResult = analisis
-                    detail.totalCount = itemModels.count
-                    detail.currentCount = i + 1
-                    print("detail = \(detail)")
-
-                    if tanTopic.count == 0 {
-                        
-                        try! realm.write({
-                            realm.add(detail)
-                            
-                        })
-                    } else {
-                        
-                        try! realm.write {
-                            realm.add(detail, update: true)
-                        }
-                      
-                    }
-                    
-                }
-
-    }
-    */
     
     func setupRealm(answerItems: [ExamineAnswerModel]) {
   
@@ -494,12 +465,22 @@ private extension ExamineDetailViewController {
                 realm.beginWrite()
                 
                 for item in answerItems {
+                   
+                    let tanTopic = realm.object(ofType: TopicAnswer.self, forPrimaryKey: "\(item.exerciseItemId!)")
+                    let value: [String: Any] = ["answerUId": item.answerUId,
+                                                "answer": item.answer,
+                                                "correct": item.correct?.intValue,
+                                                "createTime": item.createTime,
+                                                "creator": item.creator,
+                                                "exerciseItemId": item.exerciseItemId,
+                                                "exerciseRecordId": item.exerciseRecordId,
+                                                "userId": item.userId,
+                                                "lastAnswer": item.lastAnswer,
+                                                "answerValue": item.answerValue,
+                                                "updateStatus": item.updateStatus]
                     
-                    let tanTopic = realm.objects(TopicAnswer.self).filter("answerUId = '\(item.answerUId!)'")
-                    
-                    let value: [String: Any] = ["answerUId": item.answerUId, "answer": item.answer, "correct": item.correct?.intValue,"createTime": item.createTime, "creator": item.creator, "exerciseItemId": item.exerciseItemId, "exerciseRecordId": item.exerciseRecordId, "userId": item.userId, "lastAnswer": item.lastAnswer, "answerValue": item.answerValue, "updateStatus": item.updateStatus]
-                    
-                    if tanTopic.count == 0 {
+                    if tanTopic == nil {
+                        
                         realm.create(TopicAnswer.self, value: value, update: false)
                     } else {
                         

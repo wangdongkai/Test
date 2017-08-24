@@ -12,42 +12,27 @@ import FMDB
 class ExamineDetailsViewCell: UICollectionViewCell {
 
     @IBOutlet weak var dataTableView: UITableView!
-    var submitModel: ExamineSubmitItemModel = ExamineSubmitItemModel()
     
-    
-    var model: ExamineItemModel? {
-        
+    var submitModel: ExamineSubmitItemModel? {
         didSet {
-            guard model != nil else {
+            
+            guard let _ = submitModel else {
                 
                 return
             }
             
-            submitModel.exerciseId = model!.exerciseId!
-            submitModel.type = model!.type
-            
-            self.dataTableView.reloadData()
-
-        }
-    }
-    
-    var answer: String? {
-        didSet {
-            
-            guard let _ = answer else {
-                
-                return
-            }
+            submitModel!.exerciseId = model!.exerciseId!
+            submitModel!.type = model!.type
             
             if model?.type == 1 { // 单选
                 
                 for option in (model?.options)! {
                     
-                    option.optionState = option.optionAnswer == answer! ? true : false
+                    option.optionState = option.optionAnswer == submitModel!.answer ? true : false
                 }
             } else if model?.type == 2 { //多选
                 
-                let answers = answer!.components(separatedBy: ",")
+                let answers = submitModel!.answer.components(separatedBy: ",")
                 
                 for option in (model?.options)! {
                     
@@ -56,11 +41,11 @@ class ExamineDetailsViewCell: UICollectionViewCell {
                         option.optionState = true
                     }
                 }
-
+                
                 
             } else { // 判断
                 
-                if answer! == "False" {
+                if submitModel!.answer == "False" {
                     
                     self.model?.options?[0].optionState = true
                     self.model?.options?[1].optionState = false
@@ -69,6 +54,20 @@ class ExamineDetailsViewCell: UICollectionViewCell {
                     self.model?.options?[0].optionState = false
                 }
             }
+
+        }
+    }
+    var model: ExamineItemModel? {
+        
+        didSet {
+            guard model != nil else {
+                
+                return
+            }
+           
+            
+            self.dataTableView.reloadData()
+
         }
     }
     
@@ -145,7 +144,7 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
                 option?.optionState = !option!.optionState
                 tableView.reloadRows(at: [indexPath], with: .none)
                 
-                self.submitModel.answer = ""
+                self.submitModel?.answer = ""
 
                 
                 for index in 0..<self.model!.options!.count {
@@ -154,12 +153,12 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
                     
                     if option.optionState == true {
                         
-                        if self.submitModel.answer.characters.count > 0 &&  self.submitModel.answer.characters.count < self.model!.options!.count + 3{
+                        if self.submitModel!.answer.characters.count > 0 &&  self.submitModel!.answer.characters.count < self.model!.options!.count + 3{
                             
-                            self.submitModel.answer.append(",\(option.optionAnswer!)")
+                            self.submitModel!.answer.append(",\(option.optionAnswer!)")
                         } else {
                             
-                            self.submitModel.answer.append(option.optionAnswer!)
+                            self.submitModel!.answer.append(option.optionAnswer!)
                         }
                         
                     }
@@ -173,7 +172,7 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
                     if index == indexPath.row {
                         
                         self.model!.options![index].optionState = true
-                        self.submitModel.answer = self.model!.options![index].optionAnswer!
+                        self.submitModel!.answer = self.model!.options![index].optionAnswer!
                     } else {
                         
                         self.model!.options![index].optionState = false
@@ -191,13 +190,13 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
 
             }
            
-            if self.submitModel.answer != self.model!.ans! {
+            if self.submitModel!.answer != self.model!.ans! {
                 
-                self.submitModel.correct = 0
+                self.submitModel!.correct = 0
                 
             } else {
                 
-                self.submitModel.correct = 1
+                self.submitModel!.correct = 1
                 
             }
 
