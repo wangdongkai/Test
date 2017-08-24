@@ -74,9 +74,6 @@ class ExamineDetailViewController: UICollectionViewController {
             submitModel.answer = answer!.answerValue ?? ""
         }
         cell.submitModel = self.submitModel.items[indexPath.row]
-
-        //cell.answer = answer?.answerValue
-        
         
         return cell
     }
@@ -85,58 +82,12 @@ class ExamineDetailViewController: UICollectionViewController {
         
         let point = self.view.convert(self.collectionView!.center, to: self.collectionView)
         let index = self.collectionView?.indexPathForItem(at: point)
-        /*
-        let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
         
-        // 去除空答案
-        if cell.submitModel.answer.characters.count > 0 {
-            
-            self.submitModel.items.append(cell.submitModel)
-
-            for i in 0..<self.submitModel.items.count {// 去除已经存在答案
-                
-                let item = self.submitModel.items[i]
-                
-                if item.exerciseId == cell.submitModel.exerciseId {
-                    
-                    self.submitModel.items.remove(at: i)
-                    break
-                }
-            
-            }
-        }
-        */
         self.submitModel.currTitleNum = index!.item + 1
         
     }
 
-    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        
-        
-        let point = self.view.convert(self.collectionView!.center, to: self.collectionView)
-        let index = self.collectionView?.indexPathForItem(at: point)
-
-        let cell = collectionView?.cellForItem(at: index!) as! ExamineDetailsViewCell
-        
-        /*
-         dynamic var answerUId: String? = nil
-         dynamic var answer: String? = nil
-         dynamic var correct: Int = 0
-         dynamic var createTime: Float = 0
-         dynamic var creator: String? = nil
-         dynamic var exerciseItemId: String? = nil
-         dynamic var exerciseRecordId: String? = nil
-         dynamic var userId: String? = nil
-         dynamic var lastAnswer: String? = nil
-         dynamic var answerValue: String? = nil
-         dynamic var updateStatus: Int = 0
-        */
-        
-        
-        print("\(cell.submitModel) --- \(cell.submitModel?.answer)")
-        
-    }
- 
+   
 }
 
 private extension ExamineDetailViewController {
@@ -166,8 +117,7 @@ private extension ExamineDetailViewController {
         self.collectionView?.register(UINib.init(nibName: "ExamineDetailsViewCell", bundle: nil), forCellWithReuseIdentifier: identifier)
 
         self.collectionView?.isPagingEnabled = true
-        
-        
+   
     }
     
    
@@ -217,11 +167,7 @@ private extension ExamineDetailViewController {
             // 存储答案
             answerQueue.async(group: group, execute: DispatchWorkItem(block: {
                 
-                if detailModel.answers != nil{
-                    weakSelf?.setupRealm(answerItems: detailModel.answers!)
-                    
-                    print("x = answerItems")
-                }
+                 weakSelf?.setupRealm(answerItems: detailModel.answers)
                 
             }))
 
@@ -458,39 +404,54 @@ extension ExamineDetailViewController {
 
 private extension ExamineDetailViewController {
     
-    func setupRealm(answerItems: [ExamineAnswerModel]) {
+    func setupRealm(answerItems: [ExamineAnswerModel]?) {
   
-        let realm = try! Realm()
+        if answerItems == nil || answerItems!.count == 0 {
+            
+            let realm = try! Realm()
+            let results = realm.objects(TopicAnswer.self)
+
+            try! realm.write {
                 
-                realm.beginWrite()
+                realm.delete(results)
+            }
+        } else {
+            
+            let realm = try! Realm()
+            
+            realm.beginWrite()
+            
+            for item in answerItems! {
                 
-                for item in answerItems {
-                   
-                    let tanTopic = realm.object(ofType: TopicAnswer.self, forPrimaryKey: "\(item.exerciseItemId!)")
-                    let value: [String: Any] = ["answerUId": item.answerUId,
-                                                "answer": item.answer,
-                                                "correct": item.correct?.intValue,
-                                                "createTime": item.createTime,
-                                                "creator": item.creator,
-                                                "exerciseItemId": item.exerciseItemId,
-                                                "exerciseRecordId": item.exerciseRecordId,
-                                                "userId": item.userId,
-                                                "lastAnswer": item.lastAnswer,
-                                                "answerValue": item.answerValue,
-                                                "updateStatus": item.updateStatus]
+                let tanTopic = realm.object(ofType: TopicAnswer.self, forPrimaryKey: "\(item.exerciseItemId!)")
+                let value: [String: Any] = ["answerUId": item.answerUId,
+                                            "answer": item.answer,
+                                            "correct": item.correct?.intValue,
+                                            "createTime": item.createTime,
+                                            "creator": item.creator,
+                                            "exerciseItemId": item.exerciseItemId,
+                                            "exerciseRecordId": item.exerciseRecordId,
+                                            "userId": item.userId,
+                                            "lastAnswer": item.lastAnswer,
+                                            "answerValue": item.answerValue,
+                                            "updateStatus": item.updateStatus]
+                
+                if tanTopic == nil {
                     
-                    if tanTopic == nil {
-                        
-                        realm.create(TopicAnswer.self, value: value, update: false)
-                    } else {
-                        
-                        realm.create(TopicAnswer.self, value: value, update: true)
-                    }
+                    realm.create(TopicAnswer.self, value: value, update: false)
+                } else {
                     
+                    realm.create(TopicAnswer.self, value: value, update: true)
                 }
                 
-                try! realm.commitWrite()
             }
+            
+            try! realm.commitWrite()
+
+        }
+        
+    
+    }
 
 }
 

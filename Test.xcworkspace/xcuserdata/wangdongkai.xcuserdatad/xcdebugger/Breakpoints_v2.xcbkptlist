@@ -28,11 +28,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Test/Classes/Main/Examine/Controller/ExamineDetailViewController.swift"
-            timestampString = "525234668.886854"
+            timestampString = "525235523.959857"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "356"
-            endingLineNumber = "356"
+            startingLineNumber = "302"
+            endingLineNumber = "302"
             landmarkName = "submitClick(status:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -44,11 +44,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Test/Classes/Main/Examine/Controller/ExamineDetailViewController.swift"
-            timestampString = "525234780.692298"
+            timestampString = "525235523.959857"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "374"
-            endingLineNumber = "374"
+            startingLineNumber = "320"
+            endingLineNumber = "320"
             landmarkName = "submitClick(status:)"
             landmarkType = "7">
          </BreakpointContent>
