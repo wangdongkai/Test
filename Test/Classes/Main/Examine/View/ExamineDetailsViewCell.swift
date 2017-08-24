@@ -49,14 +49,16 @@ class ExamineDetailsViewCell: UICollectionViewCell {
                     
                     self.model?.options?[0].optionState = true
                     self.model?.options?[1].optionState = false
-                } else {
+                } else if self.submitModel!.answer == "True" {
                     self.model?.options?[1].optionState = true
                     self.model?.options?[0].optionState = false
                 }
             }
 
+
         }
     }
+    
     var model: ExamineItemModel? {
         
         didSet {
@@ -65,7 +67,6 @@ class ExamineDetailsViewCell: UICollectionViewCell {
                 return
             }
            
-            
             self.dataTableView.reloadData()
 
         }

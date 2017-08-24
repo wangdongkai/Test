@@ -207,7 +207,7 @@ private extension ExamineDetailViewController {
     @objc func backClick() {
         
         UserDefaults.standard.set(self.model?.exerciseTimer, forKey: (self.model?.groupId)!)
-
+        self.submitModel.doCount = 0
         for submitModel in self.submitModel.items {
             
             if submitModel.correct == 1 {
@@ -215,15 +215,16 @@ private extension ExamineDetailViewController {
                 self.submitModel.correctCount += 1
             }
             
+            
             if submitModel.answer.characters.count > 0 {
                 
                 self.submitModel.doCount += 1
             }
+ 
         }
 
         if self.submitModel.doCount > 0 {
             
-    
             let alertVC = UIAlertController(title: "提示", message: "您已经回答了\(self.submitModel.doCount)道题(共\(self.model!.allCount)题)，您打算？", preferredStyle: .alert)
             
             weak var weakSelf = self
