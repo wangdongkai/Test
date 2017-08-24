@@ -57,7 +57,7 @@ class ExamineDetailViewController: UICollectionViewController {
         item.totalCount = self.items.count
         item.currentCount = indexPath.row
         cell.model = item
-
+        /*
         let realm = try! Realm()
         
         let answer = realm.object(ofType: TopicAnswer.self, forPrimaryKey: "\(item.exerciseId!)")
@@ -72,8 +72,9 @@ class ExamineDetailViewController: UICollectionViewController {
             }
             
         }
+        */
         cell.submitModel = self.submitModel.items[indexPath.row]
-        
+ 
         return cell
     }
     
@@ -157,6 +158,7 @@ private extension ExamineDetailViewController {
             weakSelf!.submitModel.allCount = Int64(weakSelf!.items.count)
             
             for _ in weakSelf!.items {
+                
                 weakSelf!.submitModel.items.append(ExamineSubmitItemModel())
             }
            // let detailQueue = DispatchQueue(label: "ExamineDetailModel")
@@ -173,6 +175,7 @@ private extension ExamineDetailViewController {
             // 获取数据
             group.notify(queue: queryQueue, execute: {
                 
+                weakSelf?.queryAnswer()
                 weakSelf!.collectionView?.reloadData()
                 
                 if weakSelf!.index > 0 {
@@ -488,9 +491,32 @@ private extension ExamineDetailViewController {
         
         try! realm.commitWrite()
         
+        
     }
 
+    func queryAnswer() {
+        
+        for index in 0..<self.items.count {// ExamineItemModel
+            
+            let realm = try! Realm()
+            
+            let answer = realm.object(ofType: TopicAnswer.self, forPrimaryKey: "\(self.items[index].exerciseId!)")
+            
+            if answer != nil {
+                print("answer = \(answer!)")
+                let submitModel = self.submitModel.items[index]
+                
+                if submitModel.answer == "" {
+                    
+                    submitModel.answer = answer!.answerValue ?? ""
+                }
+                
+            }
+
+        }
     }
+    
+}
 
 
 extension ExamineDetailViewController {
