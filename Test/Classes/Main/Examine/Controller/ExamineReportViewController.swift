@@ -84,7 +84,6 @@ class ExamineReportViewController: UIViewController {
             if isSuccess == true {
                 
                 let vc = weakSelf?.navigationController?.childViewControllers[1] as! ExamineMainViewController
-                SVProgressHUD.dismiss()
                 
                 weakSelf?.navigationController?.popToViewController(vc, animated: true)
             }

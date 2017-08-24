@@ -23,6 +23,8 @@ class TopicAnswer: Object {
     dynamic var lastAnswer: String? = nil
     dynamic var answerValue: String? = nil
     dynamic var updateStatus: Int = 0
+    dynamic var type: Int = 0
+    
     override static func primaryKey() -> String {
         
         return "exerciseItemId"

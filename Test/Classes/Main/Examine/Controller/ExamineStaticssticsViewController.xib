@@ -13,6 +13,7 @@
             <connections>
                 <outlet property="doLabel" destination="S6y-xt-FE0" id="S5Q-Tl-Zb7"/>
                 <outlet property="listCollection" destination="jpF-TO-cRS" id="oxp-NS-3Gp"/>
+                <outlet property="titleLabel" destination="lHK-0p-oQc" id="qjJ-cO-OQC"/>
                 <outlet property="totalLabel" destination="6xO-eG-4JG" id="zen-pG-RL4"/>
                 <outlet property="undoLabel" destination="aa8-tV-aVY" id="Hmf-rR-Qab"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>

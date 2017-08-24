@@ -21,11 +21,6 @@ class ExamineDetailViewController: UICollectionViewController {
     var items: [ExamineItemModel] = [ExamineItemModel]()
     var answers: [ExamineAnswerModel] = [ExamineAnswerModel]()
     
-    var topicListItems: [TopicDetail]?
-    var topicListAnswers: [TopicAnswer]?
-    
-    var submitDataArray: [[String: ExamineItemModel]] = [[String: ExamineItemModel]]()
-    
     fileprivate let button: UIButton = UIButton(type: .custom)
     
     fileprivate var timer: Timer?
@@ -47,7 +42,6 @@ class ExamineDetailViewController: UICollectionViewController {
     }
 
     // MARK: UICollectionViewDataSource
-
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -302,8 +296,11 @@ private extension ExamineDetailViewController {
             if item.answer.characters.count > 0 {
                 
                 submit.items.append(item)
+                
+                
             }
         }
+        
         
         let dict = submit.mj_keyValues()
     
@@ -328,10 +325,9 @@ private extension ExamineDetailViewController {
             
             if isSuccess == true {
                 
-                //let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
-                //vc.answers = detailModel.answers
-                //vc.dataArray = self.items
-                //self.navigationController?.pushViewController(vc, animated: true)
+                let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
+                vc.dataArray = self.items
+                self.navigationController?.pushViewController(vc, animated: true)
 
                 print("成功, \(msg)")
                 
@@ -341,23 +337,25 @@ private extension ExamineDetailViewController {
        
     }
     
+    // 答题卡
     @objc func staticstisClick() {
         
-        self.submitModel.allCount = self.model!.allCount
-        self.submitModel.doCount = self.submitModel.items.count
-        
-        for i in 0..<self.submitModel.items.count {
+        for submitModel in self.submitModel.items {
             
-            let item = self.submitModel.items[i]
-                        
-            if item.correct == 1 {
+            if submitModel.correct == 1 {
                 
                 self.submitModel.correctCount += 1
             }
+            
+            if submitModel.answer.characters.count > 0 {
+                
+                self.submitModel.doCount += 1
+            }
         }
-        self.submitModel.exerciseGroupId = self.items[0].exerciseGroupId
-        self.submitModel.exerciseRecordId = self.items[0].exerciseRecordId
-        self.submitModel.exerciseExtendId = self.items[0].exerciseExtendId
+        
+        self.submitModel.exerciseGroupId = self.model?.groupId ?? ""
+        self.submitModel.exerciseRecordId = self.model?.exerciseRecordId ?? ""
+        self.submitModel.exerciseExtendId = ""
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -366,13 +364,13 @@ private extension ExamineDetailViewController {
         self.submitModel.status = 1
         
         let vc = ExamineStaticssticsViewController.init(nibName: "ExamineStaticssticsViewController", bundle: Bundle.main)
-        vc.dataArray = self.items
+        vc.model = self.model
         vc.submitModel = self.submitModel
         self.navigationController?.pushViewController(vc, animated: true)
         
         
     }
-    
+    // 计时功能
     @objc func timeClick() {
         
         let h = self.model!.exerciseTimer / 3600
@@ -410,6 +408,7 @@ extension ExamineDetailViewController {
 
 private extension ExamineDetailViewController {
     
+    // 存储答案
     func setupRealm(answerItems: [ExamineAnswerModel]?) {
   
         if answerItems == nil || answerItems!.count == 0 {
@@ -459,7 +458,39 @@ private extension ExamineDetailViewController {
     
     }
 
-}
+    func setupAnswer(submitAnswers: [ExamineSubmitItemModel]) {
+        
+        let realm = try! Realm()
+        
+        realm.beginWrite()
+        
+        for item in submitAnswers {
+            
+            let tanTopic = realm.object(ofType: TopicAnswer.self, forPrimaryKey: "\(item.exerciseId)")
+            let value: [String: Any] = [
+                                        "answer": item.answer,
+                                        "correct": item.correct,
+                                        "exerciseItemId": item.exerciseId,
+                                        "answerValue": item.answer,
+                                        "type": item.type
+                                        ]
+            
+            if tanTopic == nil {
+                
+                realm.create(TopicAnswer.self, value: value, update: false)
+            } else {
+                
+                realm.create(TopicAnswer.self, value: value, update: true)
+            }
+            
+        }
+        
+        try! realm.commitWrite()
+        
+    }
+
+    }
+
 
 extension ExamineDetailViewController {
     // 页面跳转

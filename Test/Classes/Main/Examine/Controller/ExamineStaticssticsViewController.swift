@@ -11,14 +11,16 @@ import FMDB
 import SVProgressHUD
 class ExamineStaticssticsViewController: UIViewController {
 
-    var submitModel: ExamineSubmitModel = ExamineSubmitModel()
+    var submitModel: ExamineSubmitModel?
+    
     var dataArray: [ExamineItemModel] = [ExamineItemModel]()
-    var groupId: String?
+    var model: ExamineMainModel?
     
     @IBOutlet weak var listCollection: UICollectionView!
     @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var doLabel: UILabel!
     @IBOutlet weak var undoLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,10 +28,14 @@ class ExamineStaticssticsViewController: UIViewController {
         title = "答题卡"
         setupCollection()
         
-        totalLabel.text = "\(self.submitModel.currTitleNum)/\(self.dataArray.count)"
-        doLabel.text = "已做 \(self.submitModel.items.count)"
-        undoLabel.text = "未做 \(self.dataArray.count - self.submitModel.items.count)"
-        
+        guard let _ = self.submitModel else{
+            
+            return
+        }
+        totalLabel.text = "\(self.submitModel!.currTitleNum)/\(self.submitModel!.allCount)"
+        doLabel.text = "已做 \(self.submitModel!.doCount)"
+        undoLabel.text = "未做 \(Int(self.submitModel!.allCount) - self.submitModel!.doCount)"
+        titleLabel.text = self.model?.name ?? "测试题目"
         // Do any additional setup after loading the view.
     }
 
@@ -39,14 +45,14 @@ extension ExamineStaticssticsViewController: UICollectionViewDelegate, UICollect
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return self.dataArray.count
+        return self.submitModel!.items.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
         
-        let itemModel = self.dataArray[indexPath.row]
+        let itemModel = self.submitModel?.items[indexPath.row]
         
         for view in cell.contentView.subviews {
             
@@ -60,22 +66,22 @@ extension ExamineStaticssticsViewController: UICollectionViewDelegate, UICollect
         button.isUserInteractionEnabled = false
         button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         button.center = cell.contentView.center
-        let image = itemModel.chooseAnswer == nil ? UIImage(named: "circle") : UIImage(named: "circle_select")
+        let image = itemModel?.answer == "" ? UIImage(named: "circle") : UIImage(named: "circle_select")
         button.setImage(image, for: .normal)
         cell.contentView.addSubview(button)
         
-        if indexPath.row == self.submitModel.currTitleNum {
+        if indexPath.row == self.submitModel!.currTitleNum - 1{
             
             let image = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
             image.center = button.center
-            image.image = itemModel.chooseAnswer == nil ? UIImage(named: "pen") : UIImage(named: "pen_white")
+            image.image = itemModel?.answer == "" ? UIImage(named: "pen") : UIImage(named: "pen_white")
             cell.contentView.addSubview(image)
 
         } else {
             
             let label = UILabel(frame: button.bounds)
             label.center = button.center
-            label.textColor = itemModel.chooseAnswer == nil ? UIColor.black : UIColor.white
+            label.textColor = itemModel?.answer == "" ? UIColor.black : UIColor.white
             label.font = UIFont.systemFont(ofSize: 10.0)
             label.textAlignment = .center
             label.text = "\(indexPath.row + 1)"
@@ -116,49 +122,12 @@ private extension ExamineStaticssticsViewController {
     // 重做
     @IBAction func redoClick(_ sender: UIButton) {
         
-        SVProgressHUD.show(withStatus: "正在发送请求请稍等。。。")
-
-        guard let groupId = self.dataArray[0].exerciseGroupId else {
+        guard let groupId = self.submitModel!.exerciseGroupId else {
             
             return
         }
         
-        let name = UserDefaults.standard.object(forKey: "username") as! String
-        
-        let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
-        
-        let sqlPath = path.appendingPathComponent("\(name).sqlite")
-        
-        let queue = FMDatabaseQueue.init(path: sqlPath)
-        queue.inDeferredTransaction { (db, rollBack) in
-            
-            do {
-                
-                let sql = "SELECT * FROM t_topic"
-                
-                let res = try db.executeQuery(sql, values: nil)
-                
-                while res.next() {
-                    
-                    do {
-                        
-                        try db.executeUpdate("UPDATE t_topic SET chooseAnswer = ''", values: nil)
-                        
-                    } catch {
-                        
-                        print("failed: \(error.localizedDescription)")
-                    }
-                    
-                }
-                
-            } catch {
-                
-                print(error)
-            }
-        }
-        
-        
-        UserDefaults.standard.set(0, forKey: self.dataArray[0].exerciseGroupId!)
+        UserDefaults.standard.set(0, forKey: self.submitModel!.exerciseGroupId!)
         UserDefaults.standard.synchronize()
         
         let url = "http://www.qxueyou.com/qxueyou/exercise/Exercise/updateNewExerRecordNew"
@@ -176,7 +145,6 @@ private extension ExamineStaticssticsViewController {
             
             if isSuccess == true {
                 
-                SVProgressHUD.dismiss()
                 let vc = self.navigationController?.childViewControllers[1] as! ExamineMainViewController
                 
                 weakSelf?.navigationController?.popToViewController(vc, animated: true)
@@ -190,9 +158,27 @@ private extension ExamineStaticssticsViewController {
     // 提交
     @IBAction func submitClick(_ sender: UIButton) {
         
-        self.submitModel.exerciseGroupId = self.dataArray[0].exerciseGroupId
+        var submit = ExamineSubmitModel()
+        submit.exerciseGroupId = self.model?.groupId ?? ""
+        submit.exerciseRecordId = self.model?.exerciseRecordId ?? ""
+        submit.exerciseExtendId = ""
+        submit.status = self.submitModel!.status
+        submit.submitTime = self.submitModel!.submitTime
+        submit.doCount = self.submitModel!.doCount
+        submit.allCount = self.submitModel!.allCount
+        submit.correctCount = self.submitModel!.correctCount
         
-        let dict = self.submitModel.mj_keyValues()
+        for item in self.submitModel!.items {
+            
+            if item.answer.characters.count > 0 {
+                
+                submit.items.append(item)
+                
+                
+            }
+        }
+
+        let dict = submit.mj_keyValues()
         
         guard let jsonData = try? JSONSerialization.data(withJSONObject: dict!, options: .prettyPrinted) else {
             
@@ -207,6 +193,7 @@ private extension ExamineStaticssticsViewController {
             
             guard let data = success as? [String: Any] else {
                 
+                print(error?.localizedDescription)
                 return
             }
             
