@@ -27,8 +27,9 @@ class ExamineReportViewController: UIViewController {
     @IBOutlet weak var answerCollection: UICollectionView!
     
     var submitModel: ExamineSubmitModel?
-    var dataArray: [ExamineItemModel]?
-    var answers: [ExamineAnswerModel]?
+    //var dataArray: [ExamineItemModel]?
+    //var answers: [ExamineAnswerModel]?
+    var model: ExamineMainModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,14 +58,13 @@ class ExamineReportViewController: UIViewController {
     // 重做一次
     @IBAction func redoClick() {
         
-        SVProgressHUD.show()
         
-        guard let groupId = self.dataArray?[0].exerciseGroupId else {
+        guard let groupId = self.model!.groupId else {
             
             return
         }
                 
-        UserDefaults.standard.set(0, forKey: (self.dataArray?[0].exerciseGroupId!)!)
+        UserDefaults.standard.set(0, forKey: (self.model!.groupId!))
         UserDefaults.standard.synchronize()
 
         
@@ -102,39 +102,26 @@ private extension ExamineReportViewController {
         
         title = "答题报告"
         
-        var correct = 0
-        for answer in self.answers! {
-            
-            if answer.correct == 1 {
-                
-                correct += 1
-            }
-        }
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let date = Date.init(timeIntervalSince1970: (self.answers![0].createTime?.doubleValue)! / 1000.0)
+        let date = Date()
         
         self.submitLabel.text = "\(formatter.string(from: date)) 提交"
-        self.correctLabel.text = "\(correct)"
-        self.totalLabel.text = "共 \(self.dataArray!.count)道题"
+        self.correctLabel.text = "\(self.submitModel!.correctCount)"
+        self.totalLabel.text = "共 \(self.submitModel!.allCount)道题"
+        self.titleLabel.text = self.model!.name
         
-        let accuracy = CGFloat(correct) / CGFloat(self.dataArray!.count)
+        let accuracy = CGFloat(self.submitModel!.correctCount) / CGFloat(self.submitModel!.allCount)
         
         self.correctAccuracyLabel.text = String(format: "%.2f%%", accuracy * 100)
         
-        self.answerCorrectLabel.text = "对 \(correct)"
-        self.answerWrongLabel.text = "错 \(self.answers!.count - correct)"
-        self.answerUndoLabel.text = "未做 \(self.dataArray!.count - self.answers!.count)"
+        self.answerCorrectLabel.text = "对 \(self.submitModel!.correctCount)"
+        self.answerWrongLabel.text = "错 \(self.submitModel!.doCount - Int(self.submitModel!.correctCount))"
+        self.answerUndoLabel.text = "未做 \(self.submitModel!.allCount - self.submitModel!.doCount)"
 
-        
-        let classRank = UserDefaults.standard.object(forKey: "\(self.dataArray![0].exerciseGroupId!)classRank") as! String
-        let classAccuracy = UserDefaults.standard.object(forKey: "\(self.dataArray![0].exerciseGroupId!)classAccuracy") as! String
-        
-        print("\(self.dataArray![0].exerciseGroupId!)classRank")
-        
-        self.rankLabel.text = classRank
-        self.classCorrectAccuracyLabel.text = classAccuracy
+        self.rankLabel.text = "\(self.model!.classRank ?? "")"
+        self.classCorrectAccuracyLabel.text = "\(self.model!.classAccuracy ?? "")"
         
         self.answerCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         self.answerCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
@@ -151,15 +138,12 @@ extension ExamineReportViewController: UICollectionViewDataSource, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return self.dataArray!.count
+        return self.submitModel!.items.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        
-                //let itemModel = self.answers![indexPath.row]
-        
         
         for view in cell.contentView.subviews {
             
@@ -174,7 +158,7 @@ extension ExamineReportViewController: UICollectionViewDataSource, UICollectionV
         button.center = cell.contentView.center
         
         button.setImage(UIImage(named: "circle"), for: .normal)
-
+        button.isUserInteractionEnabled = false
         cell.contentView.addSubview(button)
         
         let label = UILabel(frame: button.bounds)
@@ -185,8 +169,39 @@ extension ExamineReportViewController: UICollectionViewDataSource, UICollectionV
         label.text = "\(indexPath.row + 1)"
         cell.contentView.addSubview(label)
 
-        let item = self.dataArray![indexPath.row]
+        let item = self.submitModel!.items[indexPath.row]
         
+        if indexPath.row == self.submitModel!.currTitleNum - 1 { //当前题号
+            
+            
+        }
+        
+        if item.answer == "" { //未做
+            
+            //button.setImage(UIImage(named: "circle"), for: .normal)
+              button.setBackgroundImage(UIImage(named: "circle"), for: .normal)
+            if self.submitModel!.currTitleNum == indexPath.row + 1 {
+                
+                //button.setImage(UIImage(named: "glass"), for: .normal)
+                //button.setTitle("", for: .normal)
+                
+            }
+        } else {
+            
+            let image = item.correct == 1 ? UIImage(named: "circle_green") : UIImage(named: "circle_red")
+            button.setBackgroundImage(image, for: .normal)
+            
+            if self.submitModel!.currTitleNum == indexPath.row + 1 {
+                
+                //button.setImage(UIImage(named: "glass_select"), for: .normal)
+                //button.setTitle("", for: .normal)
+
+            }
+
+        }
+        
+        
+        /*
         for answer in self.answers! {
             
             if item.exerciseId == answer.exerciseItemId {
@@ -204,7 +219,8 @@ extension ExamineReportViewController: UICollectionViewDataSource, UICollectionV
                 
             }
         }
-
+        */
+        
         return cell
     }
     

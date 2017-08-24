@@ -155,8 +155,8 @@ private extension ExamineAnaysisViewController {
         
         let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: Bundle.main)
         
-        vc.dataArray = self.items!
-        vc.answers = self.answers!
+        //vc.dataArray = self.items!
+        //vc.answers = self.answers!
         
         self.navigationController?.pushViewController(vc, animated: true)
 

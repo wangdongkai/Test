@@ -330,7 +330,7 @@ private extension ExamineDetailViewController {
             if isSuccess == true {
                 
                 let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
-                vc.dataArray = self.items
+                //vc.dataArray = self.items
                 self.navigationController?.pushViewController(vc, animated: true)
 
                 print("成功, \(msg)")

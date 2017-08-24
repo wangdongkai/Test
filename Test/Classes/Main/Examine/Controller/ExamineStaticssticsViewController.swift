@@ -206,7 +206,7 @@ private extension ExamineStaticssticsViewController {
                 
                 let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
                 vc.submitModel = self.submitModel
-                vc.dataArray = self.dataArray
+                vc.model = self.model
                 self.navigationController?.pushViewController(vc, animated: true)
                 
             }
