@@ -218,7 +218,7 @@ private extension ExamineStaticssticsViewController {
                 print("成功, \(msg)")
                 
                 let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
-                //vc.submitModel = self.submitModel
+                vc.submitModel = self.submitModel
                 vc.dataArray = self.dataArray
                 self.navigationController?.pushViewController(vc, animated: true)
                 

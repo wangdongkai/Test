@@ -24,6 +24,7 @@ class ExamineOptionViewCell: UITableViewCell {
                 
                 return
             }
+            print("\(m.content) --- \(m.optionState)")
             
             self.answerButton.setTitle(m.optionAnswer, for: .normal)
             self.answerButton.setTitle(m.optionAnswer, for: .selected)

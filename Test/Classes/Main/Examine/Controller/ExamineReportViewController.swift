@@ -63,76 +63,7 @@ class ExamineReportViewController: UIViewController {
             
             return
         }
-        /*
-        let name = UserDefaults.standard.object(forKey: "username") as! String
-        
-        let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
-        
-        let sqlPath = path.appendingPathComponent("\(name).sqlite")
-        let queue = FMDatabaseQueue.init(path: sqlPath)
-        queue.inDeferredTransaction { (db, rollBack) in
-            
-            do {
                 
-                let sql = "SELECT * FROM t_topic"
-                
-                let res = try db.executeQuery(sql, values: nil)
-                
-                while res.next() {
-                    
-                    do {
-                        
-                        try db.executeUpdate("UPDATE t_topic SET chooseAnswer = ''", values: nil)
-                        
-                    } catch {
-                        
-                        print("failed: \(error.localizedDescription)")
-                    }
-                    
-                }
-                
-            } catch {
-                
-                print(error)
-            }
-        }
-        
-        */
-        
-        /*
-        let db = FMDatabase(path: sqlPath)
-        
-        if db.open() {
-            
-            do {
-                
-                let sql = "SELECT * FROM t_topic"
-                
-                let res = try db.executeQuery(sql, values: nil)
-                
-                while res.next() {
-                    
-                    do {
-                        
-                        try db.executeUpdate("UPDATE t_topic SET chooseAnswer = ''", values: nil)
-                        
-                    } catch {
-                        
-                        print("failed: \(error.localizedDescription)")
-                    }
-                    
-                }
-                
-            } catch {
-                
-                print(error)
-            }
-            
-            db.close()
-        }
- 
- */
-        
         UserDefaults.standard.set(0, forKey: (self.dataArray?[0].exerciseGroupId!)!)
         UserDefaults.standard.synchronize()
 

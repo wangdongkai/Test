@@ -71,7 +71,12 @@ class ExamineDetailViewController: UICollectionViewController {
         if answer != nil {
             
             let submitModel = self.submitModel.items[indexPath.row]
-            submitModel.answer = answer!.answerValue ?? ""
+            
+            if submitModel.answer == "" {
+                
+                submitModel.answer = answer!.answerValue ?? ""
+            }
+            
         }
         cell.submitModel = self.submitModel.items[indexPath.row]
         
