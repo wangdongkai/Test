@@ -63,15 +63,17 @@ class ExamineMainViewController: UITableViewController {
         
         if model.buttonStatus == 1 { //已提交
            
-            let vc = ExamineAnaysisViewController(collectionViewLayout: UICollectionViewFlowLayout())
+            let detailVC = ExamineDetailViewController(collectionViewLayout: UICollectionViewFlowLayout())
             
             if self.modelArray.count == 0 {
                 return
             }
             
-            vc.model = self.modelArray[indexPath.row]
-
-            navigationController!.pushViewController(vc, animated: true)
+            detailVC.model = self.modelArray[indexPath.row]
+            detailVC.index = Int(model.currTitleNumber)
+            detailVC.hasSubmit = true
+            
+            navigationController!.pushViewController(detailVC, animated: true)
 
             
         } else {
@@ -84,10 +86,9 @@ class ExamineMainViewController: UITableViewController {
             
             detailVC.model = self.modelArray[indexPath.row]
             detailVC.index = Int(model.currTitleNumber)
+            detailVC.hasSubmit = false
             navigationController!.pushViewController(detailVC, animated: true)
         }
-        
-        
         
     }
 }

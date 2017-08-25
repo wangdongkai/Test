@@ -41,13 +41,26 @@ class ExamineItemModel: NSObject {
 
     var update: String? = nil
     var answer: String? {
-        
         didSet {
             
-            ans = answer?.replacingOccurrences(of: ",", with: "")
+            guard let s = answer else {
+                
+                return
+            }
+            
+            if s == "True" {
+                
+                answerValue = "B"
+            } else if s == "False" {
+                
+                answerValue = "A"
+            } else {
+                
+                answerValue = s
+            }
         }
     }
-    var ans: String?
+    var answerValue: String?
     var chooseAnswer: String?
     
     var options: [ExamineOptionModel]?

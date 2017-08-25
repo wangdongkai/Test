@@ -79,7 +79,7 @@ extension ExamineAnalysisCollectionCell: UITableViewDataSource, UITableViewDeleg
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        return 4
+        return 5
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -112,7 +112,7 @@ extension ExamineAnalysisCollectionCell: UITableViewDataSource, UITableViewDeleg
             return "统计"
         } else {
             
-            return ""
+            return "评论"
         }
     }
     
@@ -136,28 +136,22 @@ extension ExamineAnalysisCollectionCell: UITableViewDataSource, UITableViewDeleg
         if indexPath.section == 0 {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineOptionLabelCell", for: indexPath) as! ExamineOptionLabelCell
-            //cell.model = self.model ?? nil
+            cell.model = self.model
             
             return cell
 
         } else if indexPath.section == 1 {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineOptionViewCell", for: indexPath) as! ExamineOptionViewCell
-            //cell.model = self.model?.options?[indexPath.row]
+            cell.model = self.model?.options?[indexPath.row]
             return cell
 
         } else if indexPath.section == 2 {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineAnalysisViewCell", for: indexPath) as! ExamineAnalysisViewCell
             
-            cell.answer = self.answer?.answer ?? ""
-            cell.correct = self.model?.answer ?? ""
-            if let dict = self.model?.analisisResult {
-                
-                cell.analysis = dict["analysis"] as? String
-
-            }
-
+            
+                        
             return cell
 
         } else if indexPath.section == 3 {
@@ -195,7 +189,6 @@ private extension ExamineAnalysisCollectionCell {
         self.listTableView.rowHeight = UITableViewAutomaticDimension
         self.listTableView.estimatedRowHeight = 44.0
         self.listTableView.separatorStyle = .none
-        //self.listTableView.tableFooterView = UIView()
         
         self.listTableView.register(UINib.init(nibName: "ExamineOptionLabelCell", bundle: nil), forCellReuseIdentifier: "ExamineOptionLabelCell")
         self.listTableView.register(UINib.init(nibName: "ExamineOptionViewCell", bundle: nil), forCellReuseIdentifier: "ExamineOptionViewCell")

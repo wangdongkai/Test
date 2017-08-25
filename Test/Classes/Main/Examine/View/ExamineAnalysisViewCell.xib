@@ -34,13 +34,13 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="你的答案：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NBA-LE-Kyc">
-                        <rect key="frame" x="182.5" y="8" width="77" height="18"/>
+                        <rect key="frame" x="191.5" y="8" width="77" height="18"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="无" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pzo-HE-yTq">
-                        <rect key="frame" x="260.5" y="8" width="15.5" height="18"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pzo-HE-yTq">
+                        <rect key="frame" x="269.5" y="17" width="0.0" height="0.0"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -59,7 +59,7 @@
                     <constraint firstItem="pzo-HE-yTq" firstAttribute="centerY" secondItem="NBA-LE-Kyc" secondAttribute="centerY" id="Fvh-bu-5VJ"/>
                     <constraint firstItem="Sgc-MJ-gmt" firstAttribute="leading" secondItem="ca8-Wh-99d" secondAttribute="trailing" constant="1" id="S0o-ub-8hf"/>
                     <constraint firstItem="mEM-ug-YoV" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="SeY-7i-RKi"/>
-                    <constraint firstItem="NBA-LE-Kyc" firstAttribute="leading" secondItem="Sgc-MJ-gmt" secondAttribute="trailing" constant="1" id="Ssn-Zp-ON2"/>
+                    <constraint firstItem="NBA-LE-Kyc" firstAttribute="leading" secondItem="Sgc-MJ-gmt" secondAttribute="trailing" constant="10" id="Ssn-Zp-ON2"/>
                     <constraint firstAttribute="bottomMargin" secondItem="mEM-ug-YoV" secondAttribute="bottom" constant="1" id="eFQ-6S-rE2"/>
                     <constraint firstItem="NBA-LE-Kyc" firstAttribute="centerY" secondItem="Sgc-MJ-gmt" secondAttribute="centerY" id="jkk-oa-bJg"/>
                     <constraint firstItem="ca8-Wh-99d" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="q3t-lX-37q"/>
@@ -70,6 +70,7 @@
             <connections>
                 <outlet property="analysisLabel" destination="mEM-ug-YoV" id="HZX-BN-8Ih"/>
                 <outlet property="answerLabel" destination="pzo-HE-yTq" id="rEW-e0-MR0"/>
+                <outlet property="answerTextLabel" destination="NBA-LE-Kyc" id="Vh5-1t-H7K"/>
                 <outlet property="correctLabel" destination="Sgc-MJ-gmt" id="lXq-Zt-h2Y"/>
             </connections>
             <point key="canvasLocation" x="115" y="59.5"/>

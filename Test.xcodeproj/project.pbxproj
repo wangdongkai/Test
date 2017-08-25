@@ -19,7 +19,6 @@
 		548DDFE51F45256B005880C1 /* DataBaseTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548DDFE41F45256B005880C1 /* DataBaseTool.swift */; };
 		549793821F41567900D8C05A /* ExamineReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549793801F41567900D8C05A /* ExamineReportViewController.swift */; };
 		549793831F41567900D8C05A /* ExamineReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 549793811F41567900D8C05A /* ExamineReportViewController.xib */; };
-		549793851F4284F500D8C05A /* ExamineAnaysisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549793841F4284F500D8C05A /* ExamineAnaysisViewController.swift */; };
 		5497938C1F428A2F00D8C05A /* ExamineAnalysisViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5497938A1F428A2F00D8C05A /* ExamineAnalysisViewCell.swift */; };
 		5497938D1F428A2F00D8C05A /* ExamineAnalysisViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5497938B1F428A2F00D8C05A /* ExamineAnalysisViewCell.xib */; };
 		549793901F428D7800D8C05A /* ExamineStatisticsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5497938E1F428D7800D8C05A /* ExamineStatisticsViewCell.swift */; };
@@ -149,7 +148,6 @@
 		548DDFE41F45256B005880C1 /* DataBaseTool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataBaseTool.swift; sourceTree = "<group>"; };
 		549793801F41567900D8C05A /* ExamineReportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamineReportViewController.swift; sourceTree = "<group>"; };
 		549793811F41567900D8C05A /* ExamineReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExamineReportViewController.xib; sourceTree = "<group>"; };
-		549793841F4284F500D8C05A /* ExamineAnaysisViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamineAnaysisViewController.swift; sourceTree = "<group>"; };
 		5497938A1F428A2F00D8C05A /* ExamineAnalysisViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamineAnalysisViewCell.swift; sourceTree = "<group>"; };
 		5497938B1F428A2F00D8C05A /* ExamineAnalysisViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExamineAnalysisViewCell.xib; sourceTree = "<group>"; };
 		5497938E1F428D7800D8C05A /* ExamineStatisticsViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamineStatisticsViewCell.swift; sourceTree = "<group>"; };
@@ -542,7 +540,6 @@
 				543321DA1F3C3DA200028CCB /* ExamineStaticssticsViewController.xib */,
 				549793801F41567900D8C05A /* ExamineReportViewController.swift */,
 				549793811F41567900D8C05A /* ExamineReportViewController.xib */,
-				549793841F4284F500D8C05A /* ExamineAnaysisViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -908,7 +905,6 @@
 				549793901F428D7800D8C05A /* ExamineStatisticsViewCell.swift in Sources */,
 				548DDFE21F42A111005880C1 /* ExamineAnalysisCollectionCell.swift in Sources */,
 				54AC20BC1F3951670055E28D /* ExamineOptionLabelCell.swift in Sources */,
-				549793851F4284F500D8C05A /* ExamineAnaysisViewController.swift in Sources */,
 				54BEAEB11F3054570033F68C /* ExamineDetailViewController.swift in Sources */,
 				54AC20C11F39B9EC0055E28D /* ExamineSubmitModel.swift in Sources */,
 				54A860D61F341A310033C854 /* ExamineOptionViewCell.swift in Sources */,

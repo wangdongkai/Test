@@ -17,16 +17,16 @@ class ExamineDetailViewController: UICollectionViewController {
 
     var model: ExamineMainModel?
     var submitModel: ExamineSubmitModel = ExamineSubmitModel()
-    
+    var hasSubmit: Bool = false
     var items: [ExamineItemModel] = [ExamineItemModel]()
-    var answers: [ExamineAnswerModel] = [ExamineAnswerModel]()
+    //var answers: [ExamineAnswerModel] = [ExamineAnswerModel]()
     
     fileprivate let button: UIButton = UIButton(type: .custom)
     
     fileprivate var timer: Timer?
     
     var index: Int = 0
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -42,9 +42,17 @@ class ExamineDetailViewController: UICollectionViewController {
     }
 
     // MARK: UICollectionViewDataSource
+    
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        if self.hasSubmit {
+            
+            return 4
+        } else {
+            
+            return 1
+        }
+        
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -53,26 +61,12 @@ class ExamineDetailViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! ExamineDetailsViewCell
        
+        cell.hasSubmit = self.hasSubmit
         let item = self.items[indexPath.row]
         item.totalCount = self.items.count
         item.currentCount = indexPath.row
         cell.model = item
-        /*
-        let realm = try! Realm()
         
-        let answer = realm.object(ofType: TopicAnswer.self, forPrimaryKey: "\(item.exerciseId!)")
-        
-        if answer != nil {
-            
-            let submitModel = self.submitModel.items[indexPath.row]
-            
-            if submitModel.answer == "" {
-                
-                submitModel.answer = answer!.answerValue ?? ""
-            }
-            
-        }
-        */
         cell.submitModel = self.submitModel.items[indexPath.row]
  
         return cell
@@ -101,11 +95,18 @@ private extension ExamineDetailViewController {
         self.view.backgroundColor = UIColor.white
         self.collectionView?.backgroundColor = UIColor.clear
         
-        self.navigationItem.rightBarButtonItems = [
-            UIBarButtonItem.barButtonItemWith(image: "submit", target: self, action: #selector(ExamineDetailViewController.submit)),
-            UIBarButtonItem.barButtonItemWith(image: "star", target: self, action: #selector(ExamineDetailViewController.collectClick))
-        ]
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem.barButtonItemWith(image: "back", target: self, action: #selector(ExamineDetailViewController.backClick))
+        if hasSubmit {
+            
+           self.navigationItem.rightBarButtonItem = UIBarButtonItem.barButtonItemWith(image: "star", target: self, action: #selector(ExamineDetailViewController.collectClick))
+        } else {
+            
+            self.navigationItem.rightBarButtonItems = [
+                UIBarButtonItem.barButtonItemWith(image: "submit", target: self, action: #selector(ExamineDetailViewController.submit)),
+                UIBarButtonItem.barButtonItemWith(image: "star", target: self, action: #selector(ExamineDetailViewController.collectClick))
+            ]
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem.barButtonItemWith(image: "back", target: self, action: #selector(ExamineDetailViewController.backClick))
+        }
+        
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0.0
@@ -133,7 +134,14 @@ private extension ExamineDetailViewController {
         self.button.addTarget(self, action: #selector(ExamineDetailViewController.staticstisClick), for: .touchUpInside)
         self.view.insertSubview(self.button, aboveSubview: self.collectionView!)
         
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ExamineDetailViewController.timeClick), userInfo: nil, repeats: true)
+        if hasSubmit {
+            
+            self.button.setTitle("菜单", for: .normal)
+        } else {
+            
+            timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ExamineDetailViewController.timeClick), userInfo: nil, repeats: true)
+
+        }
         
        
     }
@@ -262,6 +270,22 @@ private extension ExamineDetailViewController {
     // 提交
     @objc func submitClick(status: Int) {
     
+        self.submitModel.doCount = 0
+        for submitModel in self.submitModel.items {
+            
+            if submitModel.correct == 1 {
+                
+                self.submitModel.correctCount += 1
+            }
+            
+            
+            if submitModel.answer.characters.count > 0 {
+                
+                self.submitModel.doCount += 1
+            }
+            
+        }
+
         UserDefaults.standard.set(self.model?.exerciseTimer, forKey: (self.model?.groupId)!)
         
         if self.submitModel.doCount == 0 {
@@ -317,6 +341,8 @@ private extension ExamineDetailViewController {
         
         let url = "http://www.qxueyou.com/qxueyou/exercise/Exercise/exerAnswers?answers=\(encoding!)"
         
+        weak var weakSelf = self
+        
         NetworkTool.shareInstance.request(method: .POST, url: url, param: nil) { (_, success: Any?, error: Error?) in
             
             guard let data = success as? [String: Any] else {
@@ -330,9 +356,9 @@ private extension ExamineDetailViewController {
             if isSuccess == true {
                 
                 let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
-                //vc.dataArray = self.items
-                self.navigationController?.pushViewController(vc, animated: true)
-
+                vc.submitModel = self.submitModel
+                vc.model = self.model
+                weakSelf?.navigationController?.pushViewController(vc, animated: true)
                 print("成功, \(msg)")
                 
             }
@@ -343,6 +369,7 @@ private extension ExamineDetailViewController {
     
     // 答题卡
     @objc func staticstisClick() {
+        
         
         for submitModel in self.submitModel.items {
             
@@ -367,11 +394,23 @@ private extension ExamineDetailViewController {
         
         self.submitModel.status = 1
         
-        let vc = ExamineStaticssticsViewController.init(nibName: "ExamineStaticssticsViewController", bundle: Bundle.main)
-        vc.model = self.model
-        vc.submitModel = self.submitModel
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+        if hasSubmit {
+            
+            let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
+            vc.submitModel = self.submitModel
+            vc.model = self.model
+            self.navigationController?.pushViewController(vc, animated: true)
+
+        } else {
+            
+            let vc = ExamineStaticssticsViewController.init(nibName: "ExamineStaticssticsViewController", bundle: Bundle.main)
+            vc.model = self.model
+            vc.submitModel = self.submitModel
+            self.navigationController?.pushViewController(vc, animated: true)
+            
+            
+        }
+
         
     }
     // 计时功能
@@ -532,5 +571,14 @@ extension ExamineDetailViewController {
             
         }
 
+    }
+    
+    func refresh(isSubmit: Bool) {
+        
+        hasSubmit = isSubmit
+        
+        setupButton()
+        self.collectionView?.reloadData()
+        
     }
 }

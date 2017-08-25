@@ -43,9 +43,17 @@ class ExamineReportViewController: UIViewController {
     // 全部解析
     @IBAction func allAnalysisClick() {
         
-        let vc = self.navigationController?.childViewControllers[2] as! ExamineAnaysisViewController
-        
-        self.navigationController?.popToViewController(vc, animated: true)
+        for vc in self.navigationController!.childViewControllers {
+            
+            if vc.isKind(of: ExamineDetailViewController.self) {
+                
+                let detailVC = vc as! ExamineDetailViewController
+                detailVC.refresh(isSubmit: true)
+
+                self.navigationController?.popToViewController(detailVC, animated: true)
+
+            }
+        }
 
     }
     
@@ -200,33 +208,24 @@ extension ExamineReportViewController: UICollectionViewDataSource, UICollectionV
 
         }
         
-        
-        /*
-        for answer in self.answers! {
-            
-            if item.exerciseId == answer.exerciseItemId {
-                
-                if answer.answer == nil {
-                    
-                    button.setImage(UIImage(named: "circle"), for: .normal)
-                    
-                } else {
-                    
-                    let image = answer.correct?.intValue == 1 ? UIImage(named: "circle_green") : UIImage(named: "circle_red")
-                    button.setImage(image, for: .normal)
-                    
-                }
-                
-            }
-        }
-        */
-        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        for vc in self.navigationController!.childViewControllers {
+            
+            if vc.isKind(of: ExamineDetailViewController.self)  {
+                
+                let detailVC = vc as! ExamineDetailViewController
+                detailVC.scrollCollection(index: indexPath.row + 1)
+
+                self.navigationController?.popToViewController(detailVC, animated: true)
+
+            }
+        }
         
+
     }
 }
 

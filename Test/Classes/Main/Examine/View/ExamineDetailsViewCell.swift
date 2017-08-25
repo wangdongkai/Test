@@ -12,6 +12,7 @@ import FMDB
 class ExamineDetailsViewCell: UICollectionViewCell {
 
     @IBOutlet weak var dataTableView: UITableView!
+    var hasSubmit: Bool = false
     
     var submitModel: ExamineSubmitItemModel? {
         didSet {
@@ -85,14 +86,17 @@ private extension ExamineDetailsViewCell {
     
     func setupUI() {
         
-        self.dataTableView.register(UINib.init(nibName: "ExamineOptionViewCell", bundle: nil), forCellReuseIdentifier: "ExamineOptionViewCell")
-        self.dataTableView.register(UINib.init(nibName: "ExamineOptionLabelCell", bundle: nil), forCellReuseIdentifier: "ExamineOptionLabelCell")
-        
         self.dataTableView.rowHeight = UITableViewAutomaticDimension
         self.dataTableView.estimatedRowHeight = 44.0
         self.dataTableView.separatorStyle = .none
-        self.dataTableView.tableFooterView = UIView()
-        
+
+        self.dataTableView.register(UINib.init(nibName: "ExamineOptionLabelCell", bundle: nil), forCellReuseIdentifier: "ExamineOptionLabelCell")
+        self.dataTableView.register(UINib.init(nibName: "ExamineOptionViewCell", bundle: nil), forCellReuseIdentifier: "ExamineOptionViewCell")
+        self.dataTableView.register(UINib.init(nibName: "ExamineAnalysisViewCell", bundle: nil), forCellReuseIdentifier: "ExamineAnalysisViewCell")
+        self.dataTableView.register(UINib.init(nibName: "ExamineStatisticsViewCell", bundle: nil), forCellReuseIdentifier: "ExamineStatisticsViewCell")
+        self.dataTableView.register(UINib.init(nibName: "ExamineCommentsViewCell", bundle: nil), forCellReuseIdentifier: "ExamineCommentsViewCell")
+
+            
     }
     
    
@@ -102,40 +106,159 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         
-        return 2
+        if hasSubmit {
+            
+            return 4
+        } else {
+            
+            return 2
+        }
+        
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
         if section == 0 {
             
-            return 1
+            return CGFloat.leastNormalMagnitude
+        } else if section == 1 {
+            
+            return CGFloat.leastNormalMagnitude
+        } else {
+            
+            return 30
         }
         
-        return self.model?.options!.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        
+        return CGFloat.leastNormalMagnitude
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        if section == 2 {
+            
+            return "解析"
+        } else if section == 3 {
+            
+            return "统计"
+        } else if section == 4 {
+            
+            return "评论"
+        } else {
+            
+            return ""
+        }
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+       
+        if hasSubmit {
+            
+            if section == 0 || section == 2 || section == 3 {
+                
+                return 1
+            } else if section == 1 {
+                
+                return self.model?.options?.count ?? 0
+            } else {
+                
+                return 10
+            }
+
+            
+        } else {
+            
+            if section == 0 {
+                
+                return 1
+            }
+            
+            return self.model?.options!.count ?? 0
+
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if indexPath.section == 1 {
+        if hasSubmit {
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineOptionViewCell", for: indexPath) as! ExamineOptionViewCell
-            
-            cell.model = self.model?.options?[indexPath.row]
-            return cell
+            if indexPath.section == 0 {
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineOptionLabelCell", for: indexPath) as! ExamineOptionLabelCell
+                cell.model = self.model
+                
+                return cell
+                
+            } else if indexPath.section == 1 {
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineOptionViewCell", for: indexPath) as! ExamineOptionViewCell
+                cell.model = self.model?.options?[indexPath.row]
+                return cell
+                
+            } else if indexPath.section == 2 {
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineAnalysisViewCell", for: indexPath) as! ExamineAnalysisViewCell
+                
+                cell.analisis = self.model?.analisisResult
+                cell.model = self.model
+                cell.submitModel = self.submitModel
+                
+                return cell
+                
+            } else if indexPath.section == 3 {
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineStatisticsViewCell", for: indexPath) as! ExamineStatisticsViewCell
+                
+                if let dict = self.model?.analisisResult {
+                    cell.person = "个人统计：作答本题\(dict["submitNumber"]!)次，做错\(dict["submitErrorNumber"]!)次，正确率为\(dict["accuracy"]!)%"
+                    
+                    cell.all = "全站统计：作答本题\(dict["submitAllNumber"]!)次，正确率为\(dict["allAccuracy"]!)%"
+                    
+                }
+                
+                return cell
+
+            } else {
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineCommentsViewCell", for: indexPath) as! ExamineCommentsViewCell
+                
+                return cell
+
+            }
+
         } else {
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineOptionLabelCell", for: indexPath) as! ExamineOptionLabelCell
-            
-            cell.model = self.model
-            
-            return cell
+            if indexPath.section == 1 {
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineOptionViewCell", for: indexPath) as! ExamineOptionViewCell
+                
+                cell.model = self.model?.options?[indexPath.row]
+                return cell
+
+            } else {
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ExamineOptionLabelCell", for: indexPath) as! ExamineOptionLabelCell
+                
+                cell.model = self.model
+                
+                return cell
+
+            }
         }
-        
         
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if hasSubmit {
+            
+            return
+        }
         
         if indexPath.section == 1 {
             
@@ -147,7 +270,6 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
                 
                 self.submitModel?.answer = ""
 
-                
                 for index in 0..<self.model!.options!.count {
                     
                     let option = self.model!.options![index]
@@ -191,7 +313,7 @@ extension ExamineDetailsViewCell: UITableViewDelegate, UITableViewDataSource {
 
             }
            
-            if self.submitModel!.answer != self.model!.ans! {
+            if self.submitModel!.answer != self.model!.answer! {
                 
                 self.submitModel!.correct = 0
                 

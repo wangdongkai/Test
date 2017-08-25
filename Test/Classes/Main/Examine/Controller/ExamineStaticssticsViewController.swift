@@ -189,6 +189,8 @@ private extension ExamineStaticssticsViewController {
         
         let url = "http://www.qxueyou.com/qxueyou/exercise/Exercise/exerAnswers?answers=\(encoding!)"
         
+        weak var weakSelf = self
+        
         NetworkTool.shareInstance.request(method: .POST, url: url, param: nil) { (_, success: Any?, error: Error?) in
             
             guard let data = success as? [String: Any] else {
@@ -207,7 +209,7 @@ private extension ExamineStaticssticsViewController {
                 let vc = ExamineReportViewController.init(nibName: "ExamineReportViewController", bundle: nil)
                 vc.submitModel = self.submitModel
                 vc.model = self.model
-                self.navigationController?.pushViewController(vc, animated: true)
+                weakSelf?.navigationController?.pushViewController(vc, animated: true)
                 
             }
             

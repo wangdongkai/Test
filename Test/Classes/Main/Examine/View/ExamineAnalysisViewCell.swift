@@ -14,99 +14,69 @@ class ExamineAnalysisViewCell: UITableViewCell {
     @IBOutlet weak var correctLabel: UILabel!
     @IBOutlet weak var answerLabel: UILabel!
     @IBOutlet weak var analysisLabel: UILabel!
+    @IBOutlet weak var answerTextLabel: UILabel!
     
-    var correct: String? {
-        didSet {
-            
-            guard let c = correct else {
-                
-                return
-            }
-            
-            if c == "True" {
-                self.correctLabel.text = "A，"
-            } else if c == "False" {
-                self.correctLabel.text = "B，"
-            } else {
-                self.correctLabel.text = "\(c), "
-
-            }
-        }
-    }
-    
-    var answer: String? {
-        didSet {
-            
-            guard let c = answer else {
-                
-                return
-            }
-            
-            if c == "True" {
-                self.answerLabel.text = "A，"
-            } else if c == "False" {
-                self.answerLabel.text = "B，"
-            } else {
-                self.answerLabel.text = "\(c), "
-                
-            }
-
-            /*
-            let name = UserDefaults.standard.object(forKey: "username") as! String
-            
-            let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as NSString
-            
-            let sqlPath = path.appendingPathComponent("\(name).sqlite")
-            let db = FMDatabase(path: sqlPath)
-
-            if db.open() {
-                
-                    do {
-                        
-                        let sql = "SELECT * FROM t_topic where exerciseId = '\(c)'"
-                        
-                        let res = try db.executeQuery(sql, values: nil)
-                        while res.next() {
-                            
-                            let ans = res.string(forColumn: "chooseAnswer")
-                            
-                            if let _ = ans {
-                                
-                                self.answerLabel.text = ans
-                            } else {
-                                
-                                
- 
-                            }
-                        }
-                        
-                    } catch {
-                        
-                        print(error)
-                    }
-                
-                db.close()
-            }
-*/
-            
-        }
-
-    }
-    
-    var analysis: String? {
+    var analisis: [String: Any]? {
         
         didSet {
             
-            guard let c = analysis else {
+            guard let dict = analisis else {
                 
                 return
             }
             
-            self.analysisLabel.text = c
+            self.analysisLabel.text = dict["analysis"] as? String ?? "解析：无"
         }
-
     }
     
+    var model: ExamineItemModel? {
+        
+        didSet {
+            
+            guard let _ = model else {
+                
+                return
+            }
+            
+            self.correctLabel.text = model?.answerValue
+            /*
+            if model?.answer == "True" {
+                
+                self.correctLabel.text = "B"
+            } else if model?.answer == "False" {
+                
+                self.correctLabel.text = "A"
+            } else {
+                
+                self.correctLabel.text = model?.answer
+            }
+            */
+            
+        }
+    }
+    
+    var submitModel: ExamineSubmitItemModel? {
+        
+        didSet {
+            
+            guard let model = submitModel else {
+                
+                return
+            }
+            
+            if model.answer == self.model?.answerValue {
+                
+                self.answerTextLabel.text = "您答对了"
+                self.answerLabel.text = ""
+                self.answerTextLabel.textColor = UIColor.orange
+            } else {
+                
+                self.answerTextLabel.text = "您的答案："
+                self.answerLabel.text = model.answer.characters.count == 0 ? "无" : model.answer
+                self.answerTextLabel.textColor = UIColor.black
+            }
+        }
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
